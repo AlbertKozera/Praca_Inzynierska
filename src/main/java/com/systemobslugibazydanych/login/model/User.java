@@ -1,29 +1,22 @@
 package com.systemobslugibazydanych.login.model;
 
+import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
+import com.systemobslugibazydanych.sqlcodecreator.model.DatabaseTable;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
-@Table(name = "auth_user")
+@Table(name = "user")
 public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "auth_user_id")
+	@Column(name = "user_id")
 	private int id;
 
 	@NotNull(message="First name is compulsory")
@@ -44,13 +37,16 @@ public class User {
 	@Column(name = "password")
 	private String password;
 
-
 	@Column(name = "status")
 	private String status;
 
 	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "auth_user_role", joinColumns = @JoinColumn(name = "auth_user_id"), inverseJoinColumns = @JoinColumn(name = "auth_role_id"))
+	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles;
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<DatabaseTable> databaseTables;
+
 
 	public int getId() {
 		return id;
@@ -107,6 +103,12 @@ public class User {
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
-	
 
+	public List<DatabaseTable> getDatabaseTables() {
+		return databaseTables;
+	}
+
+	public void setDatabaseTables(List<DatabaseTable> databaseTables) {
+		this.databaseTables = databaseTables;
+	}
 }

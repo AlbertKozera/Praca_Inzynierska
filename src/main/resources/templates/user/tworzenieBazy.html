@@ -10,26 +10,22 @@
 <script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js} " type="text/javascript"></script>
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>tworzenie bazy</title>
 </head>
 <body>
-<p>Hello <span sec:authentication="principal.username"> user</span></p>
-<p sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></p>
 
 
-<a href="/user" class="btn btn-success">
-    <i class="fas fa-user-plus ml-2"> Dodaj ofertę pracy </i></a>
+<div class="container my-5">
+    <div class="text-center">
+        <h3> Dodaj ogłoszenie</h3></div>
+    <form th:action="@{/user/saveNameOfDatabase}" th:object="${databaseTable}"
+          method="post">
+        <td>Nazwa bazy danych</td>
+        <input type="text"  th:field="*{name}" />
+        <input type="submit" class="btn btn-primary" value=" Dodaj ">
+    </form>
+</div>
 
-
-
-
-
-
-
-
-
-
-
+    <output th:text="@{/}"></output>
 </body>
 </html>
-
