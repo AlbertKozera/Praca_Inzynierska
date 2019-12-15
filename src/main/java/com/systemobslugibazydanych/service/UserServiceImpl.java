@@ -1,12 +1,12 @@
-package com.systemobslugibazydanych.login.service;
+package com.systemobslugibazydanych.service;
 
 import java.util.Arrays;
 import java.util.HashSet;
 
-import com.systemobslugibazydanych.login.model.Role;
-import com.systemobslugibazydanych.login.model.User;
-import com.systemobslugibazydanych.login.repository.RoleRepository;
-import com.systemobslugibazydanych.login.repository.UserRepository;
+import com.systemobslugibazydanych.entity.Role;
+import com.systemobslugibazydanych.entity.User;
+import com.systemobslugibazydanych.repository.RoleRepository;
+import com.systemobslugibazydanych.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class UserServiceImp implements UserService {
+public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private BCryptPasswordEncoder encoder;

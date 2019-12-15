@@ -1,7 +1,6 @@
-package com.systemobslugibazydanych.sqlcodecreator.repository;
+package com.systemobslugibazydanych.repository;
 
-import com.systemobslugibazydanych.login.model.User;
-import com.systemobslugibazydanych.sqlcodecreator.model.DatabaseTable;
+import com.systemobslugibazydanych.entity.DatabaseTable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

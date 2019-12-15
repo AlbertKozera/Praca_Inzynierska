@@ -1,4 +1,4 @@
-package com.systemobslugibazydanych.login.configuration;
+package com.systemobslugibazydanych.configuration;
 
 import java.io.IOException;
 import java.util.ArrayList;

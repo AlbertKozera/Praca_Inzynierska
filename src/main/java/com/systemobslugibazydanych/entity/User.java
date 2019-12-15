@@ -1,4 +1,4 @@
-package com.systemobslugibazydanych.login.model;
+package com.systemobslugibazydanych.entity;
 
 import java.util.List;
 import java.util.Set;
@@ -7,7 +7,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
-import com.systemobslugibazydanych.sqlcodecreator.model.DatabaseTable;
 import org.hibernate.validator.constraints.Length;
 
 @Entity

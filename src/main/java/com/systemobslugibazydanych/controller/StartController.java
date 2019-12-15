@@ -1,4 +1,4 @@
-package com.systemobslugibazydanych.login.controller;
+package com.systemobslugibazydanych.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

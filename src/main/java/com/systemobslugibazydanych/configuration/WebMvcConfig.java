@@ -1,4 +1,4 @@
-package com.systemobslugibazydanych.login.configuration;
+package com.systemobslugibazydanych.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

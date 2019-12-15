@@ -1,9 +1,9 @@
-package com.systemobslugibazydanych.login.controller;
+package com.systemobslugibazydanych.controller;
 
 import javax.validation.Valid;
 
-import com.systemobslugibazydanych.login.model.User;
-import com.systemobslugibazydanych.login.service.UserService;
+import com.systemobslugibazydanych.entity.User;
+import com.systemobslugibazydanych.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

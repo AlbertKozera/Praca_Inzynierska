@@ -1,6 +1,5 @@
-package com.systemobslugibazydanych.sqlcodecreator.model;
+package com.systemobslugibazydanych.entity;
 
-import com.systemobslugibazydanych.login.model.User;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;

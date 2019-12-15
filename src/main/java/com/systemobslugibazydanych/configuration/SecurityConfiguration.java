@@ -1,4 +1,4 @@
-package com.systemobslugibazydanych.login.configuration;
+package com.systemobslugibazydanych.configuration;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,21 +1,28 @@
-package com.systemobslugibazydanych.sqlcodecreator.service;
+package com.systemobslugibazydanych.service;
 
-import com.systemobslugibazydanych.login.model.User;
-import com.systemobslugibazydanych.login.repository.UserRepository;
-import com.systemobslugibazydanych.sqlcodecreator.model.DatabaseTable;
-import com.systemobslugibazydanych.sqlcodecreator.repository.CreateSchemaRepository;
+import com.systemobslugibazydanych.entity.User;
+import com.systemobslugibazydanych.repository.UserRepository;
+import com.systemobslugibazydanych.entity.DatabaseTable;
+import com.systemobslugibazydanych.repository.CreateSchemaRepository;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.io.*;
-import java.io.FileReader;
 import java.io.Reader;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 
 @Service
 public class CreateSchemaService {
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     private CreateSchemaRepository createSchemaRepository;
     private UserRepository userRepository;
@@ -56,11 +63,64 @@ public class CreateSchemaService {
             e.printStackTrace();
         }
 
+
+
+
+
+
+
+
+
+
+
+
+/*        // session
+        Session session = null;
+        if (entityManager == null
+                || (session = entityManager.unwrap(Session.class)) == null) {
+
+            throw new NullPointerException();
+        }
+        List<String> resultList;
+        String query = null;
+        try {
+            query = new String(Files.readAllBytes(Paths.get(ClassLoader.getSystemResource(filename).toURI())));
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+        String finalQuery = query;
+        session.doWork(connection -> connection.prepareStatement(finalQuery).execute());
+        resultList = entityManager.createNativeQuery("SHOW DATABASES;").getResultList();
+        for(String x: resultList){
+            System.out.println(x);
+        }
+        try {
+            query = new String(Files.readAllBytes(Paths.get(ClassLoader.getSystemResource(filename).toURI())));
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+        session.createNativeQuery(query);
+        session.close();*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         databaseTable = createSchemaRepository.save(databaseTable);
         return databaseTable;
     }
-
-
 }
 
 

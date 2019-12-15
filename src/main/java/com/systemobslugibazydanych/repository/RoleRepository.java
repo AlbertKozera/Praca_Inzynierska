@@ -1,6 +1,6 @@
-package com.systemobslugibazydanych.login.repository;
+package com.systemobslugibazydanych.repository;
 
-import com.systemobslugibazydanych.login.model.Role;
+import com.systemobslugibazydanych.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

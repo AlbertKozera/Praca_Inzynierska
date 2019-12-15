@@ -1,7 +1,7 @@
-package com.systemobslugibazydanych.login.service;
+package com.systemobslugibazydanych.service;
 
 
-import com.systemobslugibazydanych.login.model.User;
+import com.systemobslugibazydanych.entity.User;
 
 public interface UserService {
 
