@@ -1,7 +1,7 @@
 package com.systemobslugibazydanych.configuration;
 import com.systemobslugibazydanych.entity.DatabaseTable;
-import com.systemobslugibazydanych.repository.CreateSchemaRepository;
-import com.systemobslugibazydanych.service.CreateSchemaService;
+import com.systemobslugibazydanych.repository.DatabaseTableRepository;
+import com.systemobslugibazydanych.service.DatabaseTableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class CreateSchemaController {
 
     @Autowired
-    private CreateSchemaRepository createSchemaRepository;
+    private DatabaseTableRepository databaseTableRepository;
 
     @Autowired
-    CreateSchemaService createSchemaService;
+    DatabaseTableService databaseTableService;
 
 
     @PostMapping(path = { "/user/saveNameOfDatabase" })
     public String createSchema(@ModelAttribute("databaseTable") DatabaseTable databaseTable) {
-        createSchemaService.nazwametody(databaseTable);
+        databaseTableService.nazwametody(databaseTable);
         return "redirect:/user";
     }
 

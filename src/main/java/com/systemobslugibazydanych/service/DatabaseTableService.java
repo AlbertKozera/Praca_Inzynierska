@@ -3,8 +3,7 @@ package com.systemobslugibazydanych.service;
 import com.systemobslugibazydanych.entity.User;
 import com.systemobslugibazydanych.repository.UserRepository;
 import com.systemobslugibazydanych.entity.DatabaseTable;
-import com.systemobslugibazydanych.repository.CreateSchemaRepository;
-import org.hibernate.Session;
+import com.systemobslugibazydanych.repository.DatabaseTableRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -13,22 +12,18 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.io.*;
 import java.io.Reader;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
 
 @Service
-public class CreateSchemaService {
+public class DatabaseTableService {
 
     @PersistenceContext
     private EntityManager entityManager;
 
-    private CreateSchemaRepository createSchemaRepository;
+    private DatabaseTableRepository databaseTableRepository;
     private UserRepository userRepository;
 
-    public CreateSchemaService(CreateSchemaRepository createSchemaRepository, UserRepository userRepository){
-        this.createSchemaRepository = createSchemaRepository;
+    public DatabaseTableService(DatabaseTableRepository databaseTableRepository, UserRepository userRepository){
+        this.databaseTableRepository = databaseTableRepository;
         this.userRepository = userRepository;
     }
 
@@ -118,7 +113,7 @@ public class CreateSchemaService {
 
 
 
-        databaseTable = createSchemaRepository.save(databaseTable);
+        databaseTable = databaseTableRepository.save(databaseTable);
         return databaseTable;
     }
 }

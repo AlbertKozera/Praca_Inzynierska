@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CreateSchemaRepository extends JpaRepository<DatabaseTable, Integer> {
+public interface DatabaseTableRepository extends JpaRepository<DatabaseTable, Integer> {
 
 
 }
