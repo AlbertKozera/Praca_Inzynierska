@@ -5,7 +5,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "databasetable")
+@Table(name = "databasetable", schema = "pracainzynierska")
 public class DatabaseTable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // poprawić na identity

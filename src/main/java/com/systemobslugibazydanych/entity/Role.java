@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "role")
+@Table(name = "role", schema = "pracainzynierska")
 public class Role {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO) // poprawić na identity
