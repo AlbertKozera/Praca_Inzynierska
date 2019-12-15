@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Table(name = "databasetable")
 public class DatabaseTable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) // poprawić na identity
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "database_id")
     private Integer databaseId;
 

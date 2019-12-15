@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @Table(name = "role")
 public class Role {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO) // poprawić na identity
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "role_id")
 	private int id;
 
