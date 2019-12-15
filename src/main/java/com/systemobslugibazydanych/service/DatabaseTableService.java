@@ -16,8 +16,8 @@ import java.io.Reader;
 @Service
 public class DatabaseTableService {
 
-    @PersistenceContext
-    private EntityManager entityManager;
+/*    @PersistenceContext
+    private EntityManager entityManager;*/
 
     private DatabaseTableRepository databaseTableRepository;
     private UserRepository userRepository;
