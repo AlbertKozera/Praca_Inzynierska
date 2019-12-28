@@ -4,6 +4,8 @@ import com.systemobslugibazydanych.repository.CustomerRepository;
 import com.systemobslugibazydanych.entity.DatabaseTable;
 import com.systemobslugibazydanych.repository.DatabaseTableRepository;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -20,8 +22,8 @@ import java.util.List;
 @Service
 public class DatabaseTableService {
 
-    @PersistenceContext
-    private EntityManager entityManager;
+    @Autowired
+    SomeService someService;
 
     private DatabaseTableRepository databaseTableRepository;
     private CustomerRepository customerRepository;
@@ -69,52 +71,20 @@ public class DatabaseTableService {
 
 
 
-
-
-
-
-
-/*
-
-        // session
-        Session session = null;
-        if (entityManager == null
-                || (session = entityManager.unwrap(Session.class)) == null) {
-
-            throw new NullPointerException();
-        }
-        List<String> resultList;
-        String query = null;
-*/
-/*        try {
-            query = new String(Files.readAllBytes(Paths.get(ClassLoader.getSystemResource(filename).toURI())));
+        SessionFactory hibernateFactory = someService.getHibernateFactory();
+        Session session = hibernateFactory.openSession();
+        String query1 = null;
+        try {
+            query1 = new String(Files.readAllBytes(Paths.get(ClassLoader.getSystemResource("test.sql").toURI())));
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
-        String finalQuery = query;
-        session.doWork(connection -> connection.prepareStatement(finalQuery).execute());*//*
-
-        resultList = entityManager.createNativeQuery("select username from all_users WHERE user_id NOT LIKE '2147483638' order by user_id DESC").getResultList();
-        for(String x: resultList){
-            System.out.println(x);
-        }
-*/
-/*        try {
-            query = new String(Files.readAllBytes(Paths.get(ClassLoader.getSystemResource(filename).toURI())));
-        } catch (IOException | URISyntaxException e) {
-            e.printStackTrace();
-        }
-        session.createNativeQuery(query);
-        session.close();*//*
+        String finalQuery = query1;
+        session.doWork(connection -> connection.prepareStatement(finalQuery).execute());
+        session.close();
 
 
 
-
-
-
-
-
-*/
 
 
 
