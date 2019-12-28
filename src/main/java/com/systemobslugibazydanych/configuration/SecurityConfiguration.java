@@ -24,13 +24,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private DataSource dataSource;
 
-	private final String userQuery = "select email, password, '1' as enabled from pracainzynierska.user where email=? and status='VERIFIED'";
+	private final String customerQuery = "select email, password, '1' as enabled from customer where email=? and status='VERIFIED'";
 
-	private final String roleQuery = "select u.email, r.role_name from pracainzynierska.user u inner join pracainzynierska.user_role ur on(u.user_id=ur.user_id) inner join pracainzynierska.role r on(ur.role_id=r.role_id) where u.email=?";
+	private final String roleQuery = "select c.email, r.role_name from customer c inner join user_role cr on(c.user_id=cr.user_id) inner join role r on(cr.role_id=r.role_id) where c.email=?";
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.jdbcAuthentication().usersByUsernameQuery(userQuery).authoritiesByUsernameQuery(roleQuery)
+		auth.jdbcAuthentication().usersByUsernameQuery(customerQuery).authoritiesByUsernameQuery(roleQuery)
 				.dataSource(dataSource).passwordEncoder(bCryptPasswordEncoder);
 	}
 

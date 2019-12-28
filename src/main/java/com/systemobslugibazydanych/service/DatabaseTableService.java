@@ -1,9 +1,9 @@
 package com.systemobslugibazydanych.service;
 
-import com.systemobslugibazydanych.entity.User;
-import com.systemobslugibazydanych.repository.UserRepository;
+import com.systemobslugibazydanych.repository.CustomerRepository;
 import com.systemobslugibazydanych.entity.DatabaseTable;
 import com.systemobslugibazydanych.repository.DatabaseTableRepository;
+import org.hibernate.Session;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -12,19 +12,23 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.io.*;
 import java.io.Reader;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 
 @Service
 public class DatabaseTableService {
 
-/*    @PersistenceContext
-    private EntityManager entityManager;*/
+    @PersistenceContext
+    private EntityManager entityManager;
 
     private DatabaseTableRepository databaseTableRepository;
-    private UserRepository userRepository;
+    private CustomerRepository customerRepository;
 
-    public DatabaseTableService(DatabaseTableRepository databaseTableRepository, UserRepository userRepository){
+    public DatabaseTableService(DatabaseTableRepository databaseTableRepository, CustomerRepository customerRepository){
         this.databaseTableRepository = databaseTableRepository;
-        this.userRepository = userRepository;
+        this.customerRepository = customerRepository;
     }
 
     public static String readAllCharactersOneByOne(Reader reader) throws IOException {
@@ -38,7 +42,8 @@ public class DatabaseTableService {
 
     public DatabaseTable nazwametody(DatabaseTable databaseTable){
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+/*        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
         if (principal instanceof UserDetails) {
             username = ((UserDetails)principal).getUsername();
@@ -47,8 +52,8 @@ public class DatabaseTableService {
         }
         User user = userRepository.findByEmail(username);
 
-        String filename = user.getId() + "_" + databaseTable.getName()+".sql";
-        File file = new File("C:/Users/Alfu/IdeaProjects/Inzynierka/src/main/resources/sqlCodeFile/" + filename);
+        String filename = user.getId() + "_" + databaseTable.getName()+".sql";*/
+/*        File file = new File("C:/Users/Alfu/IdeaProjects/Inzynierka/src/main/resources/sqlCodeFile/" + filename);
         FileWriter fileWriter = null;
         try {
             fileWriter = new FileWriter(file);
@@ -56,7 +61,7 @@ public class DatabaseTableService {
             fileWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
 
 
@@ -69,7 +74,9 @@ public class DatabaseTableService {
 
 
 
-/*        // session
+/*
+
+        // session
         Session session = null;
         if (entityManager == null
                 || (session = entityManager.unwrap(Session.class)) == null) {
@@ -78,24 +85,27 @@ public class DatabaseTableService {
         }
         List<String> resultList;
         String query = null;
-        try {
+*/
+/*        try {
             query = new String(Files.readAllBytes(Paths.get(ClassLoader.getSystemResource(filename).toURI())));
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
         String finalQuery = query;
-        session.doWork(connection -> connection.prepareStatement(finalQuery).execute());
-        resultList = entityManager.createNativeQuery("SHOW DATABASES;").getResultList();
+        session.doWork(connection -> connection.prepareStatement(finalQuery).execute());*//*
+
+        resultList = entityManager.createNativeQuery("select username from all_users WHERE user_id NOT LIKE '2147483638' order by user_id DESC").getResultList();
         for(String x: resultList){
             System.out.println(x);
         }
-        try {
+*/
+/*        try {
             query = new String(Files.readAllBytes(Paths.get(ClassLoader.getSystemResource(filename).toURI())));
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
         session.createNativeQuery(query);
-        session.close();*/
+        session.close();*//*
 
 
 
@@ -104,6 +114,7 @@ public class DatabaseTableService {
 
 
 
+*/
 
 
 

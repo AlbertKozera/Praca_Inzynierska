@@ -2,8 +2,8 @@ package com.systemobslugibazydanych.controller;
 
 import javax.validation.Valid;
 
-import com.systemobslugibazydanych.entity.User;
-import com.systemobslugibazydanych.service.UserService;
+import com.systemobslugibazydanych.entity.Customer;
+import com.systemobslugibazydanych.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -18,7 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class AuthenticationController {
 
 	@Autowired
-	UserService userService;
+	CustomerService customerService;
 
 	@RequestMapping(value = { "/login" }, method = RequestMethod.GET)
 	public ModelAndView login() {
@@ -30,7 +30,7 @@ public class AuthenticationController {
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public ModelAndView register() {
 		ModelAndView modelAndView = new ModelAndView();
-		User user = new User();
+		Customer user = new Customer();
 		modelAndView.addObject("user", user);
 		modelAndView.setViewName("register.html"); // resources/templates/register.html
 		return modelAndView;
@@ -51,22 +51,22 @@ public class AuthenticationController {
 	}
 
 	@RequestMapping(value="/register", method=RequestMethod.POST)
-	public ModelAndView registerUser(@Valid User user, BindingResult bindingResult, ModelMap modelMap) {
+	public ModelAndView registerUser(@Valid Customer customer, BindingResult bindingResult, ModelMap modelMap) {
 		ModelAndView modelAndView = new ModelAndView();
 		// Check for the validations
 		if(bindingResult.hasErrors()) {
 			modelAndView.addObject("successMessage", "Please correct the errors in form!");
 			modelMap.addAttribute("bindingResult", bindingResult);
 		}
-		else if(userService.isUserAlreadyPresent(user)){
+		else if(customerService.isCustomerAlreadyPresent(customer)){
 			modelAndView.addObject("successMessage", "user already exists!");			
 		}
 		// we will save the user if, no binding errors
 		else {
-			userService.saveUser(user);
+			customerService.saveCustomer(customer);
 			modelAndView.addObject("successMessage", "User is registered successfully!");
 		}
-		modelAndView.addObject("user", new User());
+		modelAndView.addObject("user", new Customer());
 		modelAndView.setViewName("register");
 		return modelAndView;
 	}

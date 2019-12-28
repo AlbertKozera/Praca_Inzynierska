@@ -5,7 +5,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "databasetable", schema = "pracainzynierska")
+@Table(name = "databasetable")
 public class DatabaseTable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // poprawić na identity
@@ -21,7 +21,7 @@ public class DatabaseTable {
 
     @ManyToOne
     @JoinColumn(name = "user_idFK")
-    private User user;
+    private Customer customer;
 
     public Integer getDatabaseId() {
         return databaseId;
@@ -33,6 +33,14 @@ public class DatabaseTable {
 
     public String getName() {
         return name;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public void setName(String name) {
@@ -47,11 +55,5 @@ public class DatabaseTable {
         this.sqlCodePath = sqlCodePath;
     }
 
-    public User getUser() {
-        return user;
-    }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
 }
