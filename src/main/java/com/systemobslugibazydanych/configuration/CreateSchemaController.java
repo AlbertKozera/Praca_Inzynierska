@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class CreateSchemaController {
@@ -33,6 +35,19 @@ public class CreateSchemaController {
         return "/user/tworzenieBazy.html";
     }
 
+    @RequestMapping(value = { "/DBDesign" }, method = RequestMethod.GET)
+    public ModelAndView dbdesign() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("DBDesign.html"); // resources/templates/login.html
+        return modelAndView;
+    }
+
+    @RequestMapping(value = { "/index" }, method = RequestMethod.GET)
+    public ModelAndView index() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("index.html"); // resources/templates/login.html
+        return modelAndView;
+    }
 }
 
 
