@@ -368,6 +368,10 @@ mark,
   padding-left: 0;
   list-style: none; }
 
+li > a > span {
+  min-width: 20px;
+}
+
 .list-inline {
   padding-left: 0;
   list-style: none; }

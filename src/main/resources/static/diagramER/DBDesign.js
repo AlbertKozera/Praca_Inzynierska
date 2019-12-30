@@ -11,7 +11,7 @@ var ColumnStyle = MindFusion.Diagramming.ColumnStyle;
 var ConnectionStyle = MindFusion.Diagramming.ConnectionStyle;
 var ArrayList = MindFusion.Collections.ArrayList;
 var AbstractionLayer = MindFusion.AbstractionLayer;
-
+var Rect = MindFusion.Drawing.Rect;
 
 var diagram;
 var tableCount = 0, rowClicked = -1;
@@ -24,24 +24,46 @@ var btnAddRow, btnEditRow, btnDeleteRow, btnRenameTable, btnInfo;
 
 $(document).ready(function () {
 	// create a Diagram component that wraps the "diagram" canvas
-	diagram = MindFusion.AbstractionLayer.createControl(Diagram, null, null, null, $("#diagram")[0]);
+	//diagram = MindFusion.AbstractionLayer.createControl(Diagram, null, null, null, $("#diagram")[0]);
+	diagram = Diagram.create(document.getElementById("diagram"));
+	diagram.setBounds(new Rect(0, 0, 600, 205));
+
+
+
+/*
+	diagram.getFactory().createShapeNode(10, 10, 45, 30).init()
+		.text('Node 1');
+	diagram.getFactory().createShapeNode(75, 25, 45, 30).init()
+		.text('Node 2');
+	diagram.getFactory().createShapeNode(35, 70, 45, 30).init()
+		.text('Node 3');
+	diagram.getFactory().createDiagramLink(diagram.getNodes()[0], diagram.getNodes()[1]);
+	diagram.getFactory().createDiagramLink(diagram.getNodes()[0], diagram.getNodes()[2]);
+
+	diagram.resizeToFitItems(0);
+	diagram.zoomToFit();
+*/
+
+
 
 	// set some Diagram properties.
 	diagram.setBehavior(Behavior.LinkTables);
 	diagram.setAllowSelfLoops(false);
-	diagram.setBackBrush('#F0F0F0');
+	diagram.setBackBrush('#3e4349');
 	diagram.setLinkHeadShape('Triangle');
 	diagram.setLinkHeadShapeSize(4);
 	diagram.getSelection().allowMultipleSelection = false;
+	//diagram.zoomToFit();
+
 	//diagram.setAllowInplaceEdit(true);
 
 	// set the Diagram style.
 	var theme = new Theme();
 
 	var tableNodeStyle = new Style();
-	tableNodeStyle.setBrush({ type: 'LinearGradientBrush', color1: 'rgb(224, 233, 233)', color2: 'rgb(102, 154, 204)', angle: 30 });
-	tableNodeStyle.setTextColor({ type: 'SolidBrush', color: 'rgb(45, 57, 86)' });
-	tableNodeStyle.setStroke('rgb(192, 192, 192)');
+	tableNodeStyle.setBrush({ type: 'LinearGradientBrush', color1: 'rgb(170,194,255)', color2: 'rgb(125,160,204)', angle: 30 });
+	tableNodeStyle.setTextColor({ type: 'SolidBrush', color: 'rgb(0,0,0)' });
+	tableNodeStyle.setStroke('rgb(255,255,255)');
 
 	var linkStyle = new Style();
 	linkStyle.setBrush({ type: 'SolidBrush', color: 'rgb(0, 52, 102)' });
@@ -138,6 +160,16 @@ $(document).ready(function () {
 	diagram.addEventListener(Events.linkDeselected, function (sender, args) {
 		$('#btnInfo').button("option", "disabled", true);
 	});
+	/*	document.addEventListener('wheel', function(e)
+        {
+            var zoom = diagram.getZoomFactor();
+            zoom -= e.deltaY / 100;
+            if (zoom > 10)
+                diagram.setZoomFactor(zoom);
+
+            e.preventDefault(); // do not scroll
+        });*/
+
 
 	// Prepare popup dialogs
 	addRowDialog = $("#addRow-dialog").dialog({

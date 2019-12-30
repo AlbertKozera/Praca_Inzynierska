@@ -9,33 +9,10 @@
 	<script type="text/javascript" src="/static/diagramER/common/samples.js"></script>
 </head>
 <body>
-	<div id="header" style="height: 49px;">
-		<div style="float: right; margin-right: 5px; margin-top: 17px;">
-			<a href="DBDesign.js" style="margin-right: 10px;">View source</a>
-			<button id="expandButton" onclick="onExpandCollapse()">
-				&gt;</button>
-		</div>
-	</div>
-	<div id="info" style="top: 60px; bottom: 24px;">
-		<div id="infoTab" style="padding: 10px;">
-			<h1>
-				About this sample</h1>
-			<p>
-				This sample demonstrates the TableRelations Behavior style. Draw tables in the diagram
-				area to the left and add some fields to them. The event handlers generate SQL definition
-				clauses corresponding to the tables drawn.
-			</p>
-			<p>
-				Double-click on a table to add a row, double-click on a row to edit it, double-click
-				on a table's header to rename it, doble-click on a link to show info about it. 
-				To delete a row from a table, click on it and use the button below the diagram.
-			</p>
-		</div>
-	</div>
-	<div id="content" style="top: 60px; bottom: 174px;">
+	<div id="content" >
 		<!-- The Diagram component is bound to the canvas element below -->
-		<div style="position: absolute; width: 100%; height: 100%; overflow: auto;">
-			<canvas id="diagram" width="2100" height="2100">
+		<div style="position: absolute; overflow: auto;">
+			<canvas id="diagram">
 				This page requires a browser that supports HTML 5 Canvas element.
 			</canvas>
 		</div>
@@ -55,9 +32,6 @@
 			margin-bottom: 2px;" />
 		<textarea id="generatedSql" style="height: 120px; width: 100%; bottom: 0px; left: 0px;
 			right: 0px; top: 30px;"></textarea>
-	</div>
-	<div id="footer" style="height: 24px;">
-		<span id="copyright"></span>
 	</div>
 	<div id="addRow-dialog" title="New Field">
 		<form>
