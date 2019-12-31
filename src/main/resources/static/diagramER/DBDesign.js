@@ -27,7 +27,7 @@ $(document).ready(function () {
 	//diagram = MindFusion.AbstractionLayer.createControl(Diagram, null, null, null, $("#diagram")[0]);
 	diagram = Diagram.create(document.getElementById("diagram"));
 	diagram.setBounds(new Rect(0, 0, 600, 205));
-
+	diagram.setUndoEnabled(true);
 
 
 /*
@@ -430,4 +430,16 @@ function generateSQL() {
 		text += "\r\n);\r\n\r\n";
 	});
 	$('#generatedSql')[0].innerHTML = text;
+}
+
+function onUndo()
+{
+	deleteTable();
+	diagram.undo();
+}
+
+function onRedo()
+{
+	createTable();
+	diagram.redo();
 }
