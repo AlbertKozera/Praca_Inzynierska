@@ -1,5 +1,4 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+﻿<!doctype html>
 <head>
 	<title>MindFusion JsDiagram Sample - Database Design</title>
 	<link href="/static/diagramER/common/jquery-ui.min.css" rel="stylesheet" />
@@ -36,11 +35,7 @@
 	<div id="addRow-dialog" title="New Field">
 		<form>
 		<fieldset>
-			<label for="addRow-fieldName">
-				Field name</label>
-			<input type="text" id="addRow-fieldName" value="" class="text ui-widget-content ui-corner-all" />
-			<label for="addRow-fieldType">
-				Field type</label>
+			<input type="text" id="addRow-fieldName" placeholder="wprowadź nazwę pola" class="text ui-widget-content ui-corner-all" />
 			<select id="addRow-fieldType">
 				<option>NUMBER</option>
 				<option>CHAR(32)</option>
@@ -56,9 +51,7 @@
 		<fieldset>
 			<label for="editRow-fieldName">
 				Field name</label>
-			<input type="text" id="editRow-fieldName" value="" class="text ui-widget-content ui-corner-all" />
-			<label for="editRow-fieldType">
-				Field type</label>
+			<input type="text" id="editRow-fieldName" placeholder="wprowadź nazwę pola" class="text ui-widget-content ui-corner-all" />
 			<select id="editRow-fieldType">
 				<option>NUMBER</option>
 				<option>CHAR(32)</option>

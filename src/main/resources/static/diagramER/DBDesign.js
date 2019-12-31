@@ -55,7 +55,7 @@ $(document).ready(function () {
 	diagram.getSelection().allowMultipleSelection = false;
 	//diagram.zoomToFit();
 
-	//diagram.setAllowInplaceEdit(true);
+	diagram.setAllowInplaceEdit(true);
 
 	// set the Diagram style.
 	var theme = new Theme();
@@ -113,6 +113,7 @@ $(document).ready(function () {
 		}
 	});
 
+	// activate table after click, activate cell after click, rename table after click
 	diagram.addEventListener(Events.nodeDoubleClicked, function (sender, args) {
 		if (tblClicked != args.getNode()) {
 			tblClicked = args.getNode();
@@ -160,15 +161,15 @@ $(document).ready(function () {
 	diagram.addEventListener(Events.linkDeselected, function (sender, args) {
 		$('#btnInfo').button("option", "disabled", true);
 	});
-	/*	document.addEventListener('wheel', function(e)
+		document.addEventListener('wheel', function(e)
         {
             var zoom = diagram.getZoomFactor();
-            zoom -= e.deltaY / 100;
+            zoom -= e.deltaY / 20;
             if (zoom > 10)
                 diagram.setZoomFactor(zoom);
 
             e.preventDefault(); // do not scroll
-        });*/
+        });
 
 
 	// Prepare popup dialogs
