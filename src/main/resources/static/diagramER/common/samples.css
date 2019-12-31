@@ -14,18 +14,23 @@ select
 {
 	position: absolute;
 	width: 140px;
-	z-index: 1000;
+	z-index: 3000;
 }
 
+fieldset
+{
+	border: 1px solid #dddddd;
+	margin: auto;
+	text-align: center;
+}
 
-input[type=text]
+input
 {
 	font: 12px/18px "Trebuchet MS", sans-serif;
 	border: 1px solid #e2e4e7;
-}
-
-input[type=text]
-{
+	width: 126px;
+	padding-left: 13px;
+	text-align: left;
 	outline: none;
 }
 
