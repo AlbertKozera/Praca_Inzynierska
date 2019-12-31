@@ -24,9 +24,9 @@ var btnAddRow, btnEditRow, btnDeleteRow, btnRenameTable, btnInfo;
 
 $(document).ready(function () {
 	// create a Diagram component that wraps the "diagram" canvas
-	//diagram = MindFusion.AbstractionLayer.createControl(Diagram, null, null, null, $("#diagram")[0]);
-	diagram = Diagram.create(document.getElementById("diagram"));
-	diagram.setBounds(new Rect(0, 0, 600, 205));
+	diagram = MindFusion.AbstractionLayer.createControl(Diagram, null, null, null, $("#diagram")[0]);
+	//diagram = Diagram.create(document.getElementById("diagram"));
+	diagram.setBounds(new Rect(0, 0, 600, 207));
 	diagram.setUndoEnabled(true);
 	diagram.setShowGrid(true);
 
@@ -61,7 +61,7 @@ $(document).ready(function () {
 	var theme = new Theme();
 
 	var tableNodeStyle = new Style();
-	tableNodeStyle.setBrush({ type: 'LinearGradientBrush', color1: 'rgb(170,194,255)', color2: 'rgb(125,160,204)', angle: 30 });
+	tableNodeStyle.setBrush({ type: 'RadialGradientBrush', color1: 'rgb(255,255,255)', color2: 'rgb(183,236,189)', angle: 30 });
 	tableNodeStyle.setTextColor({ type: 'SolidBrush', color: 'rgb(0,0,0)' });
 	tableNodeStyle.setStroke('rgb(255,255,255)');
 
