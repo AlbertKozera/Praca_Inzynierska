@@ -28,7 +28,7 @@ $(document).ready(function () {
 	diagram = Diagram.create(document.getElementById("diagram"));
 	diagram.setBounds(new Rect(0, 0, 600, 205));
 	diagram.setUndoEnabled(true);
-
+	diagram.setShowGrid(true);
 
 /*
 	diagram.getFactory().createShapeNode(10, 10, 45, 30).init()
