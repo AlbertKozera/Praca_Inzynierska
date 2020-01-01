@@ -6,6 +6,7 @@ var DiagramLink = MindFusion.Diagramming.DiagramLink;
 var Behavior = MindFusion.Diagramming.Behavior;
 var Events = MindFusion.Diagramming.Events;
 var Theme = MindFusion.Diagramming.Theme;
+var Font = MindFusion.Drawing.Font;
 var Style = MindFusion.Diagramming.Style;
 var ColumnStyle = MindFusion.Diagramming.ColumnStyle;
 var ConnectionStyle = MindFusion.Diagramming.ConnectionStyle;
@@ -68,6 +69,8 @@ $(document).ready(function () {
     });
     tableNodeStyle.setTextColor({type: 'SolidBrush', color: 'rgb(0,0,0)'});
     tableNodeStyle.setStroke('rgb(255,255,255)');
+    tableNodeStyle.setFontName('Verdana');
+    tableNodeStyle.setFontSize(4);
     tableNodeStyle.setTextColor('white');
 
     var linkStyle = new Style();
@@ -81,17 +84,21 @@ $(document).ready(function () {
 
 
     // Set diagram event listeners
-    diagram.addEventListener(Events.nodeCreated, function (sender, args) {
+    diagram.addEventListener(Events.nodeCreated, function (sender, args) {   // tabele tworzone za pomocą myszki
         var table = args.getNode();
 
         if (table) {
             table.setText("Table" + tableCount++);
+            table.setCaptionFont(new Font("Verdana", 4, true, true));
+            table.setTextColor("white");
             table.redimTable(2, 0);
             table.setScrollable(true);
             table.setConnectionStyle(ConnectionStyle.Rows);
 
             // set the first column to resize with the table
             table.getColumn(0).columnStyle = ColumnStyle.AutoWidth;
+            table.getColumn(1).columnStyle = ColumnStyle.AutoWidth;
+            table.getColumn(1).width = 100;
 
             generateSQL();
         }
@@ -366,15 +373,19 @@ function deleteRow() {
 function createTable() {
     // create a new table with the specified extent
     var table = diagram.getFactory().createTableNode(
-        15 + tableCount * 3, 15 + tableCount * 4, 50, 60);
+        15 + tableCount * 5, 15 + tableCount * 5, 50, 60);  // ( położenie tabeli X, położenie tabeli Y, szerokość tabeli, długość tabeli) (zabezpieczenie przed nachodzeniem na siebie kolejnych tabel)
     table.setText("Table" + tableCount++);
-    table.redimTable(4, 0);
+    table.setCaptionFont(new Font("Verdana", 4, true, true));
+    table.setTextColor("white");
+    table.redimTable(2, 0);
     table.setScrollable(true);
     table.setConnectionStyle(ConnectionStyle.Rows);
 
     // set the first column to resize with the table
-
     table.getColumn(0).columnStyle = ColumnStyle.AutoWidth;
+    table.getColumn(1).columnStyle = ColumnStyle.AutoWidth;
+
+
     generateSQL();
 }
 
