@@ -8,13 +8,13 @@ body
 {
 	font-family: 'Courgette', cursive;
 	margin: 0px;
+	color: white;
 }
 
 select
 {
 	position: absolute;
 	width: 140px;
-	z-index: 3000;
 }
 
 fieldset
@@ -43,7 +43,16 @@ input
 	background-color: #cfcfcf;
 }
 
+::placeholder {
+	color: #adadad;
+	opacity: 1;
+}
 
+fieldset{
+	display: block;
+	margin: 0 auto;
+	text-align: center;
+}
 
 hr
 {

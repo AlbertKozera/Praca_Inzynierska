@@ -21,37 +21,39 @@
 	</div>
 	<div id="controls" style="position: absolute; bottom: 24px; left: 0;
 		right: 401px;">
-		<button class="fas fa-undo" onclick="onUndo()" style="margin-left: 5px; margin-bottom: 2px;">Undo</button>
-		<button class="fas fa-redo" onclick="onRedo()" style="margin-left: 5px; margin-bottom: 2px;">Redo</button>
-		<button class="fas fa-table" id="btnCreateTable" style="margin-left: 5px; margin-bottom: 2px;">Add table</button>
-		<button class="fas fa-edit" id="btnRenameTable" style="margin-left: 5px; margin-bottom: 2px;">Rename table</button>
-		<button class="fas fa-trash-alt" id="btnDeleteTable" style="margin-left: 5px;margin-bottom: 2px;">Delete table</button>
-		<button class="fas fa-plus" id="btnAddRow" style="margin-left: 5px; margin-bottom: 2px;">Add row</button>
-		<button class="fas fa-pen-square" id="btnEditRow" style="margin-left: 5px; margin-bottom: 2px;">Edit row</button>
-		<button class="fas fa-minus" id="btnDeleteRow" style="margin-left: 5px; margin-bottom: 2px;">Delete row</button>
-		<button class="fas fa-sitemap" id="btnInfo" style="margin-left: 5px;">Connection info</button>
-		<textarea id="generatedSql" style="height: 120px; width: 100%; bottom: 0px; left: 0px; right: 0px; top: 30px;"></textarea>
+		<button class="fas fa-undo" onclick="onUndo()" style="margin-left: 5px; margin-bottom: 2px; padding-top: 5px; height: 49px;">Undo</button>
+		<button class="fas fa-redo" onclick="onRedo()" style="margin-left: 5px; margin-bottom: 2px; padding-top: 5px; height: 49px;">Redo</button>
+		<button class="fas fa-table" id="btnCreateTable" style="margin-left: 5px; margin-bottom: 2px; padding-top: 5px; height: 49px;">Add table</button>
+		<button class="fas fa-edit" id="btnRenameTable" style="margin-left: 5px; margin-bottom: 2px; padding-top: 5px; height: 49px;">Rename table</button>
+		<button class="fas fa-trash-alt" id="btnDeleteTable" style="margin-left: 5px;margin-bottom: 2px; padding-top: 5px; height: 49px;">Delete table</button>
+		<button class="fas fa-plus" id="btnAddRow" style="margin-left: 5px; margin-bottom: 2px; padding-top: 5px; height: 49px;">Add row</button>
+		<button class="fas fa-pen-square" id="btnEditRow" style="margin-left: 5px; margin-bottom: 2px; padding-top: 5px; height: 49px;">Edit row</button>
+		<button class="fas fa-minus" id="btnDeleteRow" style="margin-left: 5px; margin-bottom: 2px; padding-top: 5px; height: 49px;">Delete row</button>
+		<button class="fas fa-sitemap" id="btnInfo" style="margin-left: 5px; padding-top: 5px; height: 49px;">Connection info</button>
+		<textarea id="generatedSql" style="height: 120px; width: 100%; bottom: 0px; left: 0px; right: 0px; top: 30px; "></textarea>
 
 	</div>
 	<div id="addRow-dialog" title="Dodanie nowego pola">
 		<form>
 		<fieldset>
-			<input type="text" id="addRow-fieldName" placeholder="nazwa pola" class="text ui-widget-content ui-corner-all"  />
-			<select id="addRow-fieldType">
-				<option>NUMBER</option>
-				<option>CHAR(32)</option>
-				<option>DATE</option>
-				<option>VARCHAR</option>
-				<option>BLOB</option>
+			<input type="text" id="addRow-fieldName" placeholder="nazwa..." class="text ui-widget-content ui-corner-all" style="margin-top: 10px; width: 165px; height: 32px; margin-bottom: -1px;" />
+			<select id="addRow-fieldType" style="margin-top: 10px; width: 180px; ">
+				<option value="1">NUMBER</option>
+				<option value="2">CHAR(32)</option>
+				<option value="3">DATE</option>
+				<option value="4">VARCHAR</option>
+				<option value="5">BLOB</option>
 			</select>
+
 		</fieldset>
 		</form>
 	</div>
+
 	<div id="editRow-dialog" title="Zmiana nazwy pola">
 		<form>
 		<fieldset>
-			<input type="text" id="editRow-fieldName" placeholder="nazwa pola" class="text ui-widget-content ui-corner-all" />
-			<select id="editRow-fieldType">
+			<input type="text" id="editRow-fieldName" placeholder="nazwa pola" class="text ui-widget-content ui-corner-all" style="margin-top: 10px; width: 165px; height: 32px; margin-bottom: -1px;" />
+			<select id="editRow-fieldType" style="margin-top: 10px; width: 180px; ">
 				<option>NUMBER</option>
 				<option>CHAR(32)</option>
 				<option>DATE</option>
