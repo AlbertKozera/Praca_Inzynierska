@@ -288,7 +288,7 @@ input.ui-button::-moz-focus-inner, button.ui-button::-moz-focus-inner {
     top: 50%;
     width: 20px;
     margin: -10px 0 0 0;
-    padding: 1px;
+    padding: 10px;
     height: 20px
 }
 
