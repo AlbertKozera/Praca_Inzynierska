@@ -48,7 +48,7 @@ $(document).ready(function () {
     // set some Diagram properties.
     diagram.setBehavior(Behavior.LinkTables);
     diagram.setAllowSelfLoops(false);
-    diagram.setBackBrush('#3e4349');
+    diagram.setBackBrush('rgba(21,21,21,0.87)');
     diagram.setLinkHeadShape('Triangle');
     diagram.setLinkHeadShapeSize(4);
     diagram.getSelection().allowMultipleSelection = false;
@@ -62,15 +62,16 @@ $(document).ready(function () {
     var tableNodeStyle = new Style();
     tableNodeStyle.setBrush({
         type: 'RadialGradientBrush',
-        color1: 'rgb(255,255,255)',
-        color2: 'rgb(183,236,189)',
+        color1: 'rgba(21,21,21,0.92)',
+        color2: 'rgb(0,0,0)',
         angle: 30
     });
     tableNodeStyle.setTextColor({type: 'SolidBrush', color: 'rgb(0,0,0)'});
     tableNodeStyle.setStroke('rgb(255,255,255)');
+    tableNodeStyle.setTextColor('white');
 
     var linkStyle = new Style();
-    linkStyle.setBrush({type: 'SolidBrush', color: 'rgb(0, 52, 102)'});
+    linkStyle.setBrush({type: 'SolidBrush', color: 'rgb(0,0,0)'});
     linkStyle.setStroke('rgb(192, 192, 192)');
 
     theme.styles['std:TableNode'] = tableNodeStyle;
@@ -367,13 +368,13 @@ function createTable() {
     var table = diagram.getFactory().createTableNode(
         15 + tableCount * 3, 15 + tableCount * 4, 50, 60);
     table.setText("Table" + tableCount++);
-    table.redimTable(2, 0);
+    table.redimTable(4, 0);
     table.setScrollable(true);
     table.setConnectionStyle(ConnectionStyle.Rows);
 
     // set the first column to resize with the table
-    table.getColumn(0).columnStyle = ColumnStyle.AutoWidth;
 
+    table.getColumn(0).columnStyle = ColumnStyle.AutoWidth;
     generateSQL();
 }
 
