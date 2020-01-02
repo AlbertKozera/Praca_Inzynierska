@@ -91,13 +91,14 @@ $(document).ready(function () {
         if (table) {
             table.setText("Table" + tableCount++);
             table.setCaptionFont(new Font("Verdana", 4, true, true));
-            table.redimTable(2, 0);
+            table.redimTable(3, 0);
             table.setScrollable(true);
             table.setConnectionStyle(ConnectionStyle.Rows);
 
             // set the first column to resize with the table
-            table.getColumn(0).columnStyle = ColumnStyle.AutoWidth;
+            table.getColumn(0).columnStyle = 40;
             table.getColumn(1).columnStyle = ColumnStyle.AutoWidth;
+            table.getColumn(2).columnStyle = ColumnStyle.AutoWidth;
 
             generateSQL();
         }
@@ -314,9 +315,9 @@ function addRow() {
     var lastRow = table.cells.rows - 1;
 
     // use the cell indexer to access cells by their column and row
-    name = table.getCell(0, lastRow); // nazwa
+    name = table.getCell(1, lastRow); // nazwa
     name.setText(addRowName[0].value);
-    type = table.getCell(1, lastRow);  // typ
+    type = table.getCell(2, lastRow);  // typ
     type.setText(addRowType[0].value);
 
     // align text in new cells
@@ -339,8 +340,8 @@ function editRowOpen() {
     if (!table || !AbstractionLayer.isInstanceOfType(TableNode, table) || rowClicked < 0)
         return;
 
-    editRowName.val(table.getCell(0, rowClicked).getText());
-    editRowType.val(table.getCell(1, rowClicked).getText());
+    editRowName.val(table.getCell(1, rowClicked).getText());
+    editRowType.val(table.getCell(2, rowClicked).getText());
     editRowType.selectmenu("refresh");
 
     editRowDialog.dialog("open");
@@ -353,8 +354,8 @@ function editRow() {
         return;
 
     // use the cell indexer to access cells by their column and row
-    table.getCell(0, rowClicked).setText(editRowName[0].value);
-    table.getCell(1, rowClicked).setText(editRowType[0].value);
+    table.getCell(1, rowClicked).setText(editRowName[0].value);
+    table.getCell(2, rowClicked).setText(editRowType[0].value);
 
     // close the dialog
     editRowDialog.dialog("close");
@@ -386,13 +387,14 @@ function createTable() {
         15 + tableCount * 5, 15 + tableCount * 5, 50, 60);  // ( położenie tabeli X, położenie tabeli Y, szerokość tabeli, długość tabeli) (zabezpieczenie przed nachodzeniem na siebie kolejnych tabel)
     table.setText("Table" + tableCount++);
     table.setCaptionFont(new Font("Verdana", 4, true, true));
-    table.redimTable(2, 0);
+    table.redimTable(3, 0);
     table.setScrollable(true);
     table.setConnectionStyle(ConnectionStyle.Rows);
 
     // set the first column to resize with the table
-    table.getColumn(0).columnStyle = ColumnStyle.AutoWidth;
+    table.getColumn(0).columnStyle = 40;
     table.getColumn(1).columnStyle = ColumnStyle.AutoWidth;
+    table.getColumn(2).columnStyle = ColumnStyle.AutoWidth;
 
     generateSQL();
 }
@@ -464,7 +466,7 @@ function generateSQL() {
         // enumerate all rows of a table
         for (var r = 0; r < table.cells.rows; ++r) {
             // get text of cells in current row
-            text += "\t" + table.getCell(0, r).getText() + " " + table.getCell(1, r).getText();
+            text += "\t" + table.getCell(1, r).getText() + " " + table.getCell(2, r).getText();
             if (r < table.cells.rows - 1)
                 text += ",\r\n";
         }
