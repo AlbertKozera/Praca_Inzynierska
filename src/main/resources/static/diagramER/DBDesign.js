@@ -337,6 +337,9 @@ function addRow() {
     counter.setTextColor('rgb(225,225,225)');
     type.setTextColor('rgb(255,91,98)');
 
+    // dopasowuje tabele do tekstu po dodaniu nowego wiersza - do poprawki
+    table.resizeToFitText(false, false);
+
     // close the dialog
     addRowDialog.dialog("close");
 
@@ -407,11 +410,11 @@ function createTable() {
     table.setText("Table" + tableCount++);
     table.setCaptionFont(new Font("Verdana", 4, true, true));
     table.redimTable(3, 0);
-    table.setScrollable(true);
+    table.setScrollable(false);
     table.setConnectionStyle(ConnectionStyle.Rows);
 
     // set the first column to resize with the table
-    //table.getColumn(0).columnStyle.resizeToFitText(true, true);
+    table.columns[0].width = 5;
     table.getColumn(1).columnStyle = ColumnStyle.AutoWidth;
     table.getColumn(2).columnStyle = ColumnStyle.AutoWidth;
 
