@@ -24,7 +24,6 @@ var renameTableDialog = null, renameTableForm = null, renameTableCaption = null;
 var infoDialog = null, infoText = null;
 var btnAddRow, btnEditRow, btnDeleteRow, btnRenameTable, btnInfo;
 
-var i = 1;
 
 $(document).ready(function () {
     // create a Diagram component that wraps the "diagram" canvas
@@ -318,7 +317,7 @@ function addRow() {
 
     // use the cell indexer to access cells by their column and row
     counter = table.getCell(0, lastRow); // licznik
-    counter.setText(i);
+    counter.setText(table.rows.length); // ilosc wierszy w tabeli
     name = table.getCell(1, lastRow); // nazwa
     name.setText(addRowName[0].value);
     type = table.getCell(2, lastRow);  // typ
@@ -340,9 +339,6 @@ function addRow() {
 
     // close the dialog
     addRowDialog.dialog("close");
-
-    // refresh number of rows
-    i++;
 
     // refresh SQL definition
     generateSQL();
@@ -385,10 +381,19 @@ function deleteRow() {
         return;
 
     table.deleteRow(rowClicked);
+    var number_of_rows = table.rows.length;
 
     rowClicked = -1;
     $('#btnEditRow').button().val("Edit row");
     $('#btnDeleteRow').button().val("Delete row");
+
+
+    // update the numbering in the table after removing the row
+    var counter;
+    for (var r = 0; r < number_of_rows; ++r) {
+        counter = table.getCell(0, r);
+        counter.setText(r+1);
+    }
 
     // refresh SQL definition
     generateSQL();
