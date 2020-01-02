@@ -7,6 +7,7 @@ var Behavior = MindFusion.Diagramming.Behavior;
 var Events = MindFusion.Diagramming.Events;
 var Theme = MindFusion.Diagramming.Theme;
 var Font = MindFusion.Drawing.Font;
+var Alignment = MindFusion.Diagramming.Alignment;
 var Style = MindFusion.Diagramming.Style;
 var ColumnStyle = MindFusion.Diagramming.ColumnStyle;
 var ConnectionStyle = MindFusion.Diagramming.ConnectionStyle;
@@ -90,7 +91,6 @@ $(document).ready(function () {
         if (table) {
             table.setText("Table" + tableCount++);
             table.setCaptionFont(new Font("Verdana", 4, true, true));
-            table.setTextColor("white");
             table.redimTable(2, 0);
             table.setScrollable(true);
             table.setConnectionStyle(ConnectionStyle.Rows);
@@ -98,7 +98,6 @@ $(document).ready(function () {
             // set the first column to resize with the table
             table.getColumn(0).columnStyle = ColumnStyle.AutoWidth;
             table.getColumn(1).columnStyle = ColumnStyle.AutoWidth;
-            table.getColumn(1).width = 100;
 
             generateSQL();
         }
@@ -305,6 +304,7 @@ function addRowOpen() {
 
 function addRow() {
     var table = tblClicked || diagram.getActiveItem();
+    var name,type;
 
     if (!table || !AbstractionLayer.isInstanceOfType(TableNode, table))
         return;
@@ -314,8 +314,14 @@ function addRow() {
     var lastRow = table.cells.rows - 1;
 
     // use the cell indexer to access cells by their column and row
-    table.getCell(0, lastRow).setText(addRowName[0].value);
-    table.getCell(1, lastRow).setText(addRowType[0].value);
+    name = table.getCell(0, lastRow); // nazwa
+    name.setText(addRowName[0].value);
+    type = table.getCell(1, lastRow);  // typ
+    type.setText(addRowType[0].value);
+
+    // align text in new cells
+    name.setTextAlignment(Alignment.Center);
+    type.setTextAlignment(Alignment.Center);
 
     // close the dialog
     addRowDialog.dialog("close");
@@ -372,11 +378,11 @@ function deleteRow() {
 
 function createTable() {
     // create a new table with the specified extent
+    var cell;
     var table = diagram.getFactory().createTableNode(
         15 + tableCount * 5, 15 + tableCount * 5, 50, 60);  // ( położenie tabeli X, położenie tabeli Y, szerokość tabeli, długość tabeli) (zabezpieczenie przed nachodzeniem na siebie kolejnych tabel)
     table.setText("Table" + tableCount++);
     table.setCaptionFont(new Font("Verdana", 4, true, true));
-    table.setTextColor("white");
     table.redimTable(2, 0);
     table.setScrollable(true);
     table.setConnectionStyle(ConnectionStyle.Rows);
@@ -384,7 +390,6 @@ function createTable() {
     // set the first column to resize with the table
     table.getColumn(0).columnStyle = ColumnStyle.AutoWidth;
     table.getColumn(1).columnStyle = ColumnStyle.AutoWidth;
-
 
     generateSQL();
 }
