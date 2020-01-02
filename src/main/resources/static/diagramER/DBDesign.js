@@ -24,6 +24,8 @@ var renameTableDialog = null, renameTableForm = null, renameTableCaption = null;
 var infoDialog = null, infoText = null;
 var btnAddRow, btnEditRow, btnDeleteRow, btnRenameTable, btnInfo;
 
+var i = 1;
+
 $(document).ready(function () {
     // create a Diagram component that wraps the "diagram" canvas
     diagram = MindFusion.AbstractionLayer.createControl(Diagram, null, null, null, $("#diagram")[0]);
@@ -305,7 +307,7 @@ function addRowOpen() {
 
 function addRow() {
     var table = tblClicked || diagram.getActiveItem();
-    var name,type;
+    var counter,name,type;
 
     if (!table || !AbstractionLayer.isInstanceOfType(TableNode, table))
         return;
@@ -315,20 +317,32 @@ function addRow() {
     var lastRow = table.cells.rows - 1;
 
     // use the cell indexer to access cells by their column and row
+    counter = table.getCell(0, lastRow); // licznik
+    counter.setText(i);
     name = table.getCell(1, lastRow); // nazwa
     name.setText(addRowName[0].value);
     type = table.getCell(2, lastRow);  // typ
     type.setText(addRowType[0].value);
 
     // align text in new cells
+    counter.setTextAlignment(Alignment.Center);
     name.setTextAlignment(Alignment.Center);
     type.setTextAlignment(Alignment.Center);
 
-    // setFont to type column
+    // setFont to specific column
+    counter.setFont(new Font("Arial", 3, false, false));
+    name.setFont(new Font("Verdana", 3, false, false));
     type.setFont(new Font("Verdana", 3, false, false));
+
+    // setTextColor to specific column
+    counter.setTextColor('rgb(225,225,225)');
+    type.setTextColor('rgb(255,91,98)');
 
     // close the dialog
     addRowDialog.dialog("close");
+
+    // refresh number of rows
+    i++;
 
     // refresh SQL definition
     generateSQL();
@@ -392,7 +406,7 @@ function createTable() {
     table.setConnectionStyle(ConnectionStyle.Rows);
 
     // set the first column to resize with the table
-    table.getColumn(0).columnStyle = 40;
+    //table.getColumn(0).columnStyle.resizeToFitText(true, true);
     table.getColumn(1).columnStyle = ColumnStyle.AutoWidth;
     table.getColumn(2).columnStyle = ColumnStyle.AutoWidth;
 
