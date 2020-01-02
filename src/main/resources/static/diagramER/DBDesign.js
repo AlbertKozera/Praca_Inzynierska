@@ -10,6 +10,7 @@ var Font = MindFusion.Drawing.Font;
 var Alignment = MindFusion.Diagramming.Alignment;
 var Style = MindFusion.Diagramming.Style;
 var ColumnStyle = MindFusion.Diagramming.ColumnStyle;
+var ScrollBar = MindFusion.Diagramming.ScrollBar;
 var ConnectionStyle = MindFusion.Diagramming.ConnectionStyle;
 var ArrayList = MindFusion.Collections.ArrayList;
 var AbstractionLayer = MindFusion.AbstractionLayer;
@@ -32,21 +33,6 @@ $(document).ready(function () {
     diagram.setBounds(new Rect(0, 0, 600, 207));
     diagram.setUndoEnabled(true);
     diagram.setShowGrid(true);
-
-    /*
-        diagram.getFactory().createShapeNode(10, 10, 45, 30).init()
-            .text('Node 1');
-        diagram.getFactory().createShapeNode(75, 25, 45, 30).init()
-            .text('Node 2');
-        diagram.getFactory().createShapeNode(35, 70, 45, 30).init()
-            .text('Node 3');
-        diagram.getFactory().createDiagramLink(diagram.getNodes()[0], diagram.getNodes()[1]);
-        diagram.getFactory().createDiagramLink(diagram.getNodes()[0], diagram.getNodes()[2]);
-
-        diagram.resizeToFitItems(0);
-        diagram.zoomToFit();
-    */
-
 
     // set some Diagram properties.
     diagram.setBehavior(Behavior.LinkTables);
@@ -85,6 +71,14 @@ $(document).ready(function () {
     diagram.setTheme(theme);
 
 
+    // set table scrollbars
+    TableNode.prototype.useScrollBars = true;
+    ScrollBar.prototype.background = "#e0e9e9";
+    ScrollBar.prototype.foreground = "DarkGray";
+
+
+
+
     // Set diagram event listeners
     diagram.addEventListener(Events.nodeCreated, function (sender, args) {   // tabele tworzone za pomocą myszki
         var table = args.getNode();
@@ -92,14 +86,15 @@ $(document).ready(function () {
         if (table) {
             table.setText("Table" + tableCount++);
             table.setCaptionFont(new Font("Verdana", 4, true, true));
-            table.redimTable(3, 0);
+            table.redimTable(4, 0);
             table.setScrollable(true);
             table.setConnectionStyle(ConnectionStyle.Rows);
 
             // set the first column to resize with the table
-            table.getColumn(0).columnStyle = 40;
+            table.columns[0] = {width: 5, columnStyle: 0};
             table.getColumn(1).columnStyle = ColumnStyle.AutoWidth;
             table.getColumn(2).columnStyle = ColumnStyle.AutoWidth;
+            table.columns[3] = {width: 4.9, columnStyle: 0};
 
             generateSQL();
         }
@@ -338,7 +333,7 @@ function addRow() {
     type.setTextColor('rgb(255,91,98)');
 
     // dopasowuje tabele do tekstu po dodaniu nowego wiersza - do poprawki
-    table.resizeToFitText(false, false);
+   // table.resizeToFitText(false, false);
 
     // close the dialog
     addRowDialog.dialog("close");
@@ -409,14 +404,16 @@ function createTable() {
         15 + tableCount * 5, 15 + tableCount * 5, 50, 60);  // ( położenie tabeli X, położenie tabeli Y, szerokość tabeli, długość tabeli) (zabezpieczenie przed nachodzeniem na siebie kolejnych tabel)
     table.setText("Table" + tableCount++);
     table.setCaptionFont(new Font("Verdana", 4, true, true));
-    table.redimTable(3, 0);
+    table.redimTable(4, 0);
     table.setScrollable(false);
     table.setConnectionStyle(ConnectionStyle.Rows);
 
     // set the first column to resize with the table
-    table.columns[0].width = 5;
+
+    table.columns[0] = {width: 5, columnStyle: 0};
     table.getColumn(1).columnStyle = ColumnStyle.AutoWidth;
     table.getColumn(2).columnStyle = ColumnStyle.AutoWidth;
+    table.columns[3] = {width: 4.9, columnStyle: 0};
 
     generateSQL();
 }
