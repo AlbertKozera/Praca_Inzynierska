@@ -215,6 +215,7 @@ $(document).ready(function () {
         buttons: {
             "OK": editRow,
             Cancel: function () {
+                rowIsBeingEditedNow = false;
                 editRowDialog.dialog("close");
             }
         },
