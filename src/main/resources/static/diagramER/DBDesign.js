@@ -323,6 +323,9 @@ function addRow() {
     name.setTextAlignment(Alignment.Center);
     type.setTextAlignment(Alignment.Center);
 
+    // setFont to type column
+    type.setFont(new Font("Verdana", 3, false, false));
+
     // close the dialog
     addRowDialog.dialog("close");
 
