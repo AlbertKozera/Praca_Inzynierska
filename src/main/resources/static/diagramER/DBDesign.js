@@ -25,6 +25,8 @@ var renameTableDialog = null, renameTableForm = null, renameTableCaption = null;
 var infoDialog = null, infoText = null;
 var btnAddRow, btnEditRow, btnDeleteRow, btnRenameTable, btnInfo;
 
+var rowIsBeingEditedNow = false;
+
 
 $(document).ready(function () {
     // create a Diagram component that wraps the "diagram" canvas
@@ -99,19 +101,19 @@ $(document).ready(function () {
     });
 
     diagram.addEventListener(Events.clicked, function (sender, args) {
-        rowClicked = -1;
         tblClicked = null;
 
+        $("#addRow-fieldType").selectmenu("destroy").selectmenu({ style: "dropdown" }); // lista opcji fix
+        $("#editRow-fieldType").selectmenu("destroy").selectmenu({ style: "dropdown" }); // lista opcji fix
         $('#btnEditRow').button().val("Edit row");
         $('#btnDeleteRow').button().val("Delete row");
     });
 
     diagram.addEventListener(Events.nodeClicked, function (sender, args) {
-        rowClicked = -1;
         tblClicked = args.getNode();
         if (tblClicked) {
             var cellClicked = tblClicked.cellFromPoint(args.getMousePosition());
-            if (cellClicked) {
+            if (cellClicked && !rowIsBeingEditedNow) {
                 rowClicked = cellClicked.row;
                 $('#btnEditRow').button().val("Edit row " + rowClicked);
                 $('#btnDeleteRow').button().val("Delete row " + rowClicked);
@@ -202,7 +204,6 @@ $(document).ready(function () {
     });
     addRowName = $("#addRow-fieldName");
     addRowType = $("#addRow-fieldType");
-    addRowType.selectmenu("destroy").selectmenu({ style: "dropdown" }); // lista opcji fix
 
 
     editRowDialog = $("#editRow-dialog").dialog({
@@ -350,13 +351,14 @@ function editRowOpen() {
     editRowType.val(table.getCell(2, rowClicked).getText());
     editRowType.selectmenu("refresh");
 
+    rowIsBeingEditedNow = true;
     editRowDialog.dialog("open");
 }
 
 function editRow() {
     var table = tblClicked || diagram.getActiveItem();
 
-    if (!table || !AbstractionLayer.isInstanceOfType(TableNode, table) || rowClicked < 0)
+    if (!table || !AbstractionLayer.isInstanceOfType(TableNode, table))
         return;
 
     // use the cell indexer to access cells by their column and row
@@ -364,6 +366,7 @@ function editRow() {
     table.getCell(2, rowClicked).setText(editRowType[0].value);
 
     // close the dialog
+    rowIsBeingEditedNow = false;
     editRowDialog.dialog("close");
 
     // refresh SQL definition
