@@ -43,7 +43,7 @@ $(document).ready(function () {
     diagram.getSelection().allowMultipleSelection = false;
     //diagram.zoomToFit();
 
-    diagram.setAllowInplaceEdit(true);
+    diagram.setAllowInplaceEdit(false); // click on field and you can edit this
 
     // set the Diagram style.
     var theme = new Theme();
@@ -70,12 +70,10 @@ $(document).ready(function () {
 
     diagram.setTheme(theme);
 
-
     // set table scrollbars
     TableNode.prototype.useScrollBars = true;
-    ScrollBar.prototype.background = "#e0e9e9";
-    ScrollBar.prototype.foreground = "DarkGray";
-
+    ScrollBar.prototype.background = "#000000";
+    ScrollBar.prototype.foreground = "rgba(21,21,21,0.87)";
 
 
 
@@ -405,7 +403,7 @@ function createTable() {
     table.setText("Table" + tableCount++);
     table.setCaptionFont(new Font("Verdana", 4, true, true));
     table.redimTable(4, 0);
-    table.setScrollable(false);
+    table.setScrollable(true);
     table.setConnectionStyle(ConnectionStyle.Rows);
 
     // set the first column to resize with the table
@@ -413,6 +411,7 @@ function createTable() {
     table.getColumn(1).columnStyle = ColumnStyle.AutoWidth;
     table.getColumn(2).columnStyle = ColumnStyle.AutoWidth;
     table.columns[3] = {width: 4.9, columnStyle: 0};
+
 
     generateSQL();
 }
@@ -502,3 +501,5 @@ function onRedo() {
     createTable();
     diagram.redo();
 }
+
+
