@@ -14,14 +14,24 @@
 
 
 
-	<div id="content" >
+	<div id="content" style="position: static; width: 1600px; height: 700px;"  >
+			<!-- The Overview component is bound to the canvas element below -->
+			<div style="position: absolute; right: 120px; width: 200px;
+				height: 200px; border: 1px solid #ffffff; background-color: #c0c0c0;">
+				<canvas id="overview" width="200" height="200">
+				</canvas>
+			</div>
 		<!-- The Diagram component is bound to the canvas element below -->
 		<div style="position: static; width: 100%; height: 100%; overflow: auto;">
-			<canvas id="diagram">
+			<canvas id="diagram" width="2100" height="2100">
 				This page requires a browser that supports HTML 5 Canvas element.
 			</canvas>
 		</div>
 	</div>
+
+
+
+
 	<div id="controls" style="position: absolute; bottom: 24px; left: 0;
 		right: 401px;">
 		<button class="fas fa-undo" onclick="onUndo()" style="margin-left: 5px; margin-bottom: 2px; padding-top: 5px; height: 49px;">Cofnij</button>
