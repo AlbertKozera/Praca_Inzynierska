@@ -15,6 +15,7 @@ var ConnectionStyle = MindFusion.Diagramming.ConnectionStyle;
 var ArrayList = MindFusion.Collections.ArrayList;
 var AbstractionLayer = MindFusion.AbstractionLayer;
 var Rect = MindFusion.Drawing.Rect;
+var DashStyle = MindFusion.Drawing.DashStyle;
 
 var diagram;
 var tableCount = 0, rowClicked = -1;
@@ -90,6 +91,9 @@ $(document).ready(function () {
             table.redimTable(4, 0);
             table.setScrollable(true);
             table.setConnectionStyle(ConnectionStyle.Rows);
+            table.setStroke("#ffffff");
+            table.setStrokeDashStyle(DashStyle.Solid);
+            table.setStrokeThickness(2);
 
             // set the first column to resize with the table
             table.columns[0] = {width: 5, columnStyle: 0};
@@ -420,6 +424,9 @@ function createTable() {
     table.redimTable(4, 0);
     table.setScrollable(true);
     table.setConnectionStyle(ConnectionStyle.Rows);
+    table.setStroke("#ffffff");
+    table.setStrokeDashStyle(DashStyle.Solid);
+    table.setStrokeThickness(2);
 
     // set the first column to resize with the table
     table.columns[0] = {width: 5, columnStyle: 0};
@@ -553,6 +560,7 @@ function rowDeselected(){
     $('#btnEditRow').button("option", "disabled", true);
     $('#btnDeleteRow').button("option", "disabled", true);
 }
+
 
 
 
