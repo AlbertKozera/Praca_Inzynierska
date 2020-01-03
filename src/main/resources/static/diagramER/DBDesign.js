@@ -196,13 +196,15 @@ $(document).ready(function () {
     });
 
     document.addEventListener('wheel', function (e) {
+        e.preventDefault(); // do not use scrollbars
         var zoom = diagram.getZoomFactor();
-        zoom -= e.deltaY / 20;
-        if (zoom > 10)
+        zoom -= e.deltaY / 15;
+        if(zoom > 70 && zoom < 200 )
+        {
             diagram.setZoomFactor(zoom);
+        }
+    }, { passive : false});
 
-        //e.preventDefault(); // do not scroll
-    });
 
 
     // Prepare popup dialogs
