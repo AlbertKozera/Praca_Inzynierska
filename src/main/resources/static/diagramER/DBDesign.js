@@ -2,6 +2,7 @@
 
 var Diagram = MindFusion.Diagramming.Diagram;
 var TableNode = MindFusion.Diagramming.TableNode;
+var DiagramNode = MindFusion.Diagramming.DiagramNode;
 var DiagramLink = MindFusion.Diagramming.DiagramLink;
 var Behavior = MindFusion.Diagramming.Behavior;
 var Events = MindFusion.Diagramming.Events;
@@ -17,6 +18,8 @@ var AbstractionLayer = MindFusion.AbstractionLayer;
 var Rect = MindFusion.Drawing.Rect;
 var DashStyle = MindFusion.Drawing.DashStyle;
 var ShadowsStyle = MindFusion.Diagramming.ShadowsStyle;
+var CellFrameStyle = MindFusion.Diagramming.CellFrameStyle;
+var InteractionState = MindFusion.Diagramming.InteractionState;
 
 var diagram;
 var tableCount = 0, rowClicked = -1;
@@ -93,10 +96,11 @@ $(document).ready(function () {
             table.redimTable(4, 0);
             table.setScrollable(true);
             table.setConnectionStyle(ConnectionStyle.Rows);
-            table.setStroke("#ffffff");
+            table.setStroke("#000000");
             table.setStrokeDashStyle(DashStyle.Solid);
             table.setStrokeThickness(1.5);
             table.setCaptionHeight(7.5);
+            table.setCellFrameStyle(CellFrameStyle.Simple);
 
             // set the first column to resize with the table
             table.columns[0] = {width: 5, columnStyle: 0};
@@ -114,6 +118,7 @@ $(document).ready(function () {
         turnOffHighlight();
         rowDeselected();
 
+
         $('#btnEditRow').button().val("Edit row");
         $('#btnDeleteRow').button().val("Delete row");
     });
@@ -125,7 +130,6 @@ $(document).ready(function () {
         rowDeselected();
 
         tblClicked = args.getNode();
-
         if (tblClicked) {
             var cellClicked = tblClicked.cellFromPoint(args.getMousePosition());
             if (cellClicked) {  //if (cellClicked && !rowIsBeingEditedNow) {
@@ -431,10 +435,12 @@ function createTable() {
     table.redimTable(4, 0);
     table.setScrollable(true);
     table.setConnectionStyle(ConnectionStyle.Rows);
-    table.setStroke("#ffffff");
+    table.setStroke("#000000");
     table.setStrokeDashStyle(DashStyle.Solid);
     table.setStrokeThickness(1.5);
     table.setCaptionHeight(7.5);
+    //table.onUpdateBounds();
+    table.setCellFrameStyle(CellFrameStyle.Simple);
 
     // set the first column to resize with the table
     table.columns[0] = {width: 5, columnStyle: 0};
