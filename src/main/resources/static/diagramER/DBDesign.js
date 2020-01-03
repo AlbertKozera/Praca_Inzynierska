@@ -21,7 +21,7 @@ var ShadowsStyle = MindFusion.Diagramming.ShadowsStyle;
 var CellFrameStyle = MindFusion.Diagramming.CellFrameStyle;
 var InteractionState = MindFusion.Diagramming.InteractionState;
 
-var diagram;
+var diagram, overview;
 var tableCount = 0, rowClicked = -1;
 var tblClicked = null, currentLink = null;
 var addRowDialog = null, addRowForm = null, addRowName = null, addRowType = null;
@@ -38,9 +38,15 @@ $(document).ready(function () {
     // create a Diagram component that wraps the "diagram" canvas
     diagram = MindFusion.AbstractionLayer.createControl(Diagram, null, null, null, $("#diagram")[0]);
     //diagram = Diagram.create(document.getElementById("diagram"));
-    diagram.setBounds(new Rect(0, 0, 600, 207));
+    //diagram.setBounds(new Rect(0, 0, 600, 207));
+    diagram.setBounds(new Rect(0, 0, 600, 400));
     diagram.setUndoEnabled(true);
     diagram.setShowGrid(true);
+
+    // create an Overview component that wraps the "overview" canvas
+    var overview = MindFusion.AbstractionLayer.createControl(MindFusion.Diagramming.Overview,
+        null, null, null, document.getElementById("overview"));
+    overview.setDiagram(diagram);
 
     // set some Diagram properties.
     diagram.setBehavior(Behavior.LinkTables);
@@ -82,7 +88,6 @@ $(document).ready(function () {
     TableNode.prototype.useScrollBars = true;
     ScrollBar.prototype.background = "#000000";
     ScrollBar.prototype.foreground = "rgba(62,62,62,0.87)";
-
 
 
     // Set diagram event listeners
@@ -191,13 +196,19 @@ $(document).ready(function () {
     });
 
     document.addEventListener('wheel', function (e) {
+        e.preventDefault(); // do not use scrollbars
+        e.clientX = 600;
         var zoom = diagram.getZoomFactor();
-        zoom -= e.deltaY / 20;
-        if (zoom > 10)
+        zoom -= e.deltaY / 15;
+        if(zoom > 70 && zoom < 200 )
+        {
             diagram.setZoomFactor(zoom);
+        }
+        e.clientX = 600;
+    }, { passive : false});
 
-        //e.preventDefault(); // do not scroll
-    });
+
+
 
 
     // Prepare popup dialogs
@@ -575,8 +586,6 @@ function rowDeselected(){
     $('#btnEditRow').button("option", "disabled", true);
     $('#btnDeleteRow').button("option", "disabled", true);
 }
-
-
 
 
 
