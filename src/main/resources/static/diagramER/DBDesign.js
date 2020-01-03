@@ -90,7 +90,6 @@ $(document).ready(function () {
     ScrollBar.prototype.foreground = "rgba(62,62,62,0.87)";
 
 
-
     // Set diagram event listeners
     diagram.addEventListener(Events.nodeCreated, function (sender, args) {   // tabele tworzone za pomocą myszki
         var table = args.getNode();
@@ -107,6 +106,7 @@ $(document).ready(function () {
             table.setStrokeThickness(1.5);
             table.setCaptionHeight(7.5);
             table.setCellFrameStyle(CellFrameStyle.Simple);
+            table.scroller.updateLocation();
 
             // set the first column to resize with the table
             table.columns[0] = {width: 5, columnStyle: 0};
@@ -197,13 +197,17 @@ $(document).ready(function () {
 
     document.addEventListener('wheel', function (e) {
         e.preventDefault(); // do not use scrollbars
+        e.clientX = 600;
         var zoom = diagram.getZoomFactor();
         zoom -= e.deltaY / 15;
         if(zoom > 70 && zoom < 200 )
         {
             diagram.setZoomFactor(zoom);
         }
+        e.clientX = 600;
     }, { passive : false});
+
+
 
 
 
@@ -447,8 +451,8 @@ function createTable() {
     table.setStrokeDashStyle(DashStyle.Solid);
     table.setStrokeThickness(1.5);
     table.setCaptionHeight(7.5);
-    //table.onUpdateBounds();
     table.setCellFrameStyle(CellFrameStyle.Simple);
+    table.scroller.updateLocation();
 
     // set the first column to resize with the table
     table.columns[0] = {width: 5, columnStyle: 0};
@@ -582,8 +586,6 @@ function rowDeselected(){
     $('#btnEditRow').button("option", "disabled", true);
     $('#btnDeleteRow').button("option", "disabled", true);
 }
-
-
 
 
 
