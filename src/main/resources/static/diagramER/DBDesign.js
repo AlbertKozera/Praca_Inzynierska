@@ -104,6 +104,7 @@ $(document).ready(function () {
     diagram.addEventListener(Events.clicked, function (sender, args) {
         tblClicked = null;
         rowClicked = -1;
+        turnOffHighlight();
 
         $('#btnEditRow').button().val("Edit row");
         $('#btnDeleteRow').button().val("Delete row");
@@ -111,20 +112,8 @@ $(document).ready(function () {
 
     diagram.addEventListener(Events.nodeClicked, function (sender, args) {
         rowClicked = -1;
-        // !(podswietlenie wiersza)
-        if(highlightedTable)
-        {
-            for (var c = 0; c < highlightedTable.rows.length; c++)
-            {
-                highlightedTable.getCell(0, c).setTextColor('rgb(225,225,225)');
-                highlightedTable.getCell(1, c).setTextColor('white');
-                highlightedTable.getCell(2, c).setTextColor('rgb(255,91,98)');
-                highlightedTable.getCell(0, c).setFont(new Font("Arial", 3, false, false, false));
-                highlightedTable.getCell(1, c).setFont(new Font("Verdana", 3, false, false, false));
-                highlightedTable.getCell(2, c).setFont(new Font("Verdana", 3, false, false, false));
-            }
-            highlightedTable = false;
-        }
+        // wyłączenie podświetlenia wiersza
+        turnOffHighlight();
 
         tblClicked = args.getNode();
 
@@ -137,15 +126,7 @@ $(document).ready(function () {
 
 
                 // podswietlenie wiersza
-                highlightedTable = tblClicked;
-                for (var i = 0; i < 3; i++)
-                {
-                    var cell = tblClicked.getCell(i, rowClicked);
-                    cell.setTextColor("#79ff70");
-                }
-                highlightedTable.getCell(0, rowClicked).setFont(new Font("Arial", 3, false, false, true));
-                highlightedTable.getCell(1, rowClicked).setFont(new Font("Verdana", 3, false, false, true));
-                highlightedTable.getCell(2, rowClicked).setFont(new Font("Verdana", 3, false, false, true));
+                turnOnHighlight();
             }
         }
     });
@@ -537,4 +518,30 @@ function onRedo() {
     diagram.redo();
 }
 
+function turnOnHighlight() {
+    highlightedTable = tblClicked;
+    for (var i = 0; i < 3; i++)
+    {
+        var cell = tblClicked.getCell(i, rowClicked);
+        cell.setTextColor("#79ff70");
+    }
+    highlightedTable.getCell(0, rowClicked).setFont(new Font("Arial", 3, false, false, true));
+    highlightedTable.getCell(1, rowClicked).setFont(new Font("Verdana", 3, false, false, true));
+    highlightedTable.getCell(2, rowClicked).setFont(new Font("Verdana", 3, false, false, true));
+}
 
+function turnOffHighlight(){
+    if(highlightedTable)
+    {
+        for (var c = 0; c < highlightedTable.rows.length; c++)
+        {
+            highlightedTable.getCell(0, c).setTextColor('rgb(225,225,225)');
+            highlightedTable.getCell(1, c).setTextColor('white');
+            highlightedTable.getCell(2, c).setTextColor('rgb(255,91,98)');
+            highlightedTable.getCell(0, c).setFont(new Font("Arial", 3, false, false, false));
+            highlightedTable.getCell(1, c).setFont(new Font("Verdana", 3, false, false, false));
+            highlightedTable.getCell(2, c).setFont(new Font("Verdana", 3, false, false, false));
+        }
+        highlightedTable = false;
+    }
+}
