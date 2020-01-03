@@ -16,6 +16,7 @@ var ArrayList = MindFusion.Collections.ArrayList;
 var AbstractionLayer = MindFusion.AbstractionLayer;
 var Rect = MindFusion.Drawing.Rect;
 var DashStyle = MindFusion.Drawing.DashStyle;
+var ShadowsStyle = MindFusion.Diagramming.ShadowsStyle;
 
 var diagram;
 var tableCount = 0, rowClicked = -1;
@@ -421,12 +422,13 @@ function createTable() {
         28 + tableCount * 8, 28 + tableCount * 8, 56, 72);  // kratka 4x4 ( położenie tabeli X, położenie tabeli Y, szerokość tabeli, długość tabeli) (zabezpieczenie przed nachodzeniem na siebie kolejnych tabel)
     table.setText("Table" + tableCount++);
     table.setCaptionFont(new Font("Verdana", 4, true, true));
+    table.setCaptionBackBrush("#191919");
     table.redimTable(4, 0);
     table.setScrollable(true);
     table.setConnectionStyle(ConnectionStyle.Rows);
     table.setStroke("#ffffff");
     table.setStrokeDashStyle(DashStyle.Solid);
-    table.setStrokeThickness(2);
+    table.setStrokeThickness(1.5);
 
     // set the first column to resize with the table
     table.columns[0] = {width: 5, columnStyle: 0};
