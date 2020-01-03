@@ -336,8 +336,11 @@ function addRow() {
 
     // align text in new cells
     counter.setTextAlignment(Alignment.Center);
-    name.setTextAlignment(Alignment.Center);
-    type.setTextAlignment(Alignment.Center);
+    counter.setLineAlignment(Alignment.Far);
+    name.setTextAlignment(Alignment.Near);
+    name.setLineAlignment(Alignment.Far);
+    type.setTextAlignment(Alignment.Near);
+    type.setLineAlignment(Alignment.Far);
 
     // setFont to specific column
     counter.setFont(new Font("Arial", 3, false, false));
