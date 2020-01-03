@@ -101,6 +101,7 @@ $(document).ready(function () {
             table.setStrokeThickness(1.5);
             table.setCaptionHeight(7.5);
             table.setCellFrameStyle(CellFrameStyle.Simple);
+            table.scroller.updateLocation();
 
             // set the first column to resize with the table
             table.columns[0] = {width: 5, columnStyle: 0};
@@ -439,8 +440,8 @@ function createTable() {
     table.setStrokeDashStyle(DashStyle.Solid);
     table.setStrokeThickness(1.5);
     table.setCaptionHeight(7.5);
-    //table.onUpdateBounds();
     table.setCellFrameStyle(CellFrameStyle.Simple);
+    table.scroller.updateLocation();
 
     // set the first column to resize with the table
     table.columns[0] = {width: 5, columnStyle: 0};
