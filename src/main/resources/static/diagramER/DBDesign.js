@@ -105,6 +105,7 @@ $(document).ready(function () {
         tblClicked = null;
         rowClicked = -1;
         turnOffHighlight();
+        rowDeselected();
 
         $('#btnEditRow').button().val("Edit row");
         $('#btnDeleteRow').button().val("Delete row");
@@ -114,6 +115,7 @@ $(document).ready(function () {
         rowClicked = -1;
         // wyłączenie podświetlenia wiersza
         turnOffHighlight();
+        rowDeselected();
 
         tblClicked = args.getNode();
 
@@ -127,6 +129,7 @@ $(document).ready(function () {
 
                 // podswietlenie wiersza
                 turnOnHighlight();
+                rowSelected();
             }
         }
     });
@@ -157,16 +160,12 @@ $(document).ready(function () {
 
     diagram.addEventListener(Events.nodeSelected, function (sender, args) {
         $('#btnAddRow').button("option", "disabled", false);
-        $('#btnEditRow').button("option", "disabled", false);
-        $('#btnDeleteRow').button("option", "disabled", false);
         $('#btnRenameTable').button("option", "disabled", false);
         $('#btnDeleteTable').button("option", "disabled", false);
     });
 
     diagram.addEventListener(Events.nodeDeselected, function (sender, args) {
         $('#btnAddRow').button("option", "disabled", true);
-        $('#btnEditRow').button("option", "disabled", true);
-        $('#btnDeleteRow').button("option", "disabled", true);
         $('#btnRenameTable').button("option", "disabled", true);
         $('#btnDeleteTable').button("option", "disabled", true);
     });
@@ -298,8 +297,8 @@ $(document).ready(function () {
     });
 
 
-    $("#addRow-fieldType").selectmenu("destroy").selectmenu({ style: "dropdown" }); // lista opcji fix
-    $("#editRow-fieldType").selectmenu("destroy").selectmenu({ style: "dropdown" }); // lista opcji fix
+    $("#addRow-fieldType").selectmenu("destroy").selectmenu({ style: "dropdown" }); // lista typów danych fix
+    $("#editRow-fieldType").selectmenu("destroy").selectmenu({ style: "dropdown" }); // lista typów danych fix
 });
 
 function addRowOpen() {
@@ -545,3 +544,16 @@ function turnOffHighlight(){
         highlightedTable = false;
     }
 }
+
+function rowSelected(){
+    $('#btnEditRow').button("option", "disabled", false);
+    $('#btnDeleteRow').button("option", "disabled", false);
+}
+function rowDeselected(){
+    $('#btnEditRow').button("option", "disabled", true);
+    $('#btnDeleteRow').button("option", "disabled", true);
+}
+
+
+
+
