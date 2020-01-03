@@ -51,7 +51,17 @@ input
 fieldset{
 	display: block;
 	margin: 0 auto;
-	text-align: center;
+}
+
+#addRow-dialog{
+	display: none;
+
+}
+#editRow-dialog{
+	display: none;
+}
+#renameTable-dialog{
+	display: none;
 }
 
 hr

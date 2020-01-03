@@ -25,7 +25,7 @@ var renameTableDialog = null, renameTableForm = null, renameTableCaption = null;
 var infoDialog = null, infoText = null;
 var btnAddRow, btnEditRow, btnDeleteRow, btnRenameTable, btnInfo;
 
-var rowIsBeingEditedNow = false;
+//var rowIsBeingEditedNow = false;
 
 
 $(document).ready(function () {
@@ -102,18 +102,19 @@ $(document).ready(function () {
 
     diagram.addEventListener(Events.clicked, function (sender, args) {
         tblClicked = null;
+        rowClicked = -1;
 
-        $("#addRow-fieldType").selectmenu("destroy").selectmenu({ style: "dropdown" }); // lista opcji fix
-        $("#editRow-fieldType").selectmenu("destroy").selectmenu({ style: "dropdown" }); // lista opcji fix
         $('#btnEditRow').button().val("Edit row");
         $('#btnDeleteRow').button().val("Delete row");
     });
 
     diagram.addEventListener(Events.nodeClicked, function (sender, args) {
+        rowClicked = -1;
         tblClicked = args.getNode();
+
         if (tblClicked) {
             var cellClicked = tblClicked.cellFromPoint(args.getMousePosition());
-            if (cellClicked && !rowIsBeingEditedNow) {
+            if (cellClicked) {  //if (cellClicked && !rowIsBeingEditedNow) {
                 rowClicked = cellClicked.row;
                 $('#btnEditRow').button().val("Edit row " + rowClicked);
                 $('#btnDeleteRow').button().val("Delete row " + rowClicked);
@@ -185,7 +186,7 @@ $(document).ready(function () {
         resizable: false,
         height: 'auto',
         width: 250,
-        modal: false,
+        modal: true,
         buttons: {
             "OK": addRow,
             Cancel: function () {
@@ -194,7 +195,6 @@ $(document).ready(function () {
         },
         close: function () {
             addRowType.val("NUMBER");
-            addRowType.selectmenu("refresh");
             addRowForm[0].reset();
         }
     });
@@ -211,11 +211,10 @@ $(document).ready(function () {
         resizable: false,
         height: 'auto',
         width: 250,
-        modal: false,
+        modal: true,
         buttons: {
             "OK": editRow,
             Cancel: function () {
-                rowIsBeingEditedNow = false;
                 editRowDialog.dialog("close");
             }
         },
@@ -235,7 +234,7 @@ $(document).ready(function () {
         resizable: false,
         height: 'auto',
         width: 250,
-        modal: false,
+        modal: true,
         buttons: {
             "OK": renameTable,
             Cancel: function () {
@@ -288,6 +287,10 @@ $(document).ready(function () {
     $('#btnInfo').button("option", "disabled", true).click(function (event) {
         infoOpen();
     });
+
+
+    $("#addRow-fieldType").selectmenu("destroy").selectmenu({ style: "dropdown" }); // lista opcji fix
+    $("#editRow-fieldType").selectmenu("destroy").selectmenu({ style: "dropdown" }); // lista opcji fix
 });
 
 function addRowOpen() {
@@ -359,7 +362,7 @@ function editRowOpen() {
 function editRow() {
     var table = tblClicked || diagram.getActiveItem();
 
-    if (!table || !AbstractionLayer.isInstanceOfType(TableNode, table))
+    if (!table || !AbstractionLayer.isInstanceOfType(TableNode, table) || rowClicked < 0)
         return;
 
     // use the cell indexer to access cells by their column and row
