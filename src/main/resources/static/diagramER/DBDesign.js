@@ -26,6 +26,7 @@ var infoDialog = null, infoText = null;
 var btnAddRow, btnEditRow, btnDeleteRow, btnRenameTable, btnInfo;
 
 //var rowIsBeingEditedNow = false;
+var highlightedTable = false;
 
 
 $(document).ready(function () {
@@ -110,6 +111,26 @@ $(document).ready(function () {
 
     diagram.addEventListener(Events.nodeClicked, function (sender, args) {
         rowClicked = -1;
+        // !(podswietlenie wiersza)
+        if(highlightedTable)
+        {
+            for (var c = 0; c < highlightedTable.rows.length; c++)
+            {
+                highlightedTable.getCell(0, c).setTextColor('rgb(225,225,225)');
+                highlightedTable.getCell(1, c).setTextColor('white');
+                highlightedTable.getCell(2, c).setTextColor('rgb(255,91,98)');
+
+                highlightedTable.getCell(0, c).setFont(new Font("Arial", 3, false, false, false));
+                highlightedTable.getCell(1, c).setFont(new Font("Verdana", 3, false, false, false));
+                highlightedTable.getCell(2, c).setFont(new Font("Verdana", 3, false, false, false));
+            }
+            highlightedTable = false;
+        }
+
+
+
+
+
         tblClicked = args.getNode();
 
         if (tblClicked) {
@@ -118,6 +139,18 @@ $(document).ready(function () {
                 rowClicked = cellClicked.row;
                 $('#btnEditRow').button().val("Edit row " + rowClicked);
                 $('#btnDeleteRow').button().val("Delete row " + rowClicked);
+
+
+                // podswietlenie wiersza
+                highlightedTable = tblClicked;
+                for (var i = 0; i < 3; i++)
+                {
+                    var cell = tblClicked.getCell(i, rowClicked);
+                    cell.setTextColor("#79ff70");
+                }
+                highlightedTable.getCell(0, rowClicked).setFont(new Font("Arial", 3, false, false, true));
+                highlightedTable.getCell(1, rowClicked).setFont(new Font("Verdana", 3, false, false, true));
+                highlightedTable.getCell(2, rowClicked).setFont(new Font("Verdana", 3, false, false, true));
             }
         }
     });
@@ -130,7 +163,7 @@ $(document).ready(function () {
 
         if (tblClicked) {
             var cellClicked = tblClicked.cellFromPoint(args.getMousePosition());
-            if (cellClicked) {
+            if (cellClicked && (cellClicked.column != 3)) {
                 rowClicked = cellClicked.row;
                 editRowOpen();
             } else if (tblClicked.hitTestManipulators(args.getMousePosition()) == null) {
