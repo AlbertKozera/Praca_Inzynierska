@@ -76,7 +76,7 @@ $(document).ready(function () {
     // set table scrollbars
     TableNode.prototype.useScrollBars = true;
     ScrollBar.prototype.background = "#000000";
-    ScrollBar.prototype.foreground = "rgba(21,21,21,0.87)";
+    ScrollBar.prototype.foreground = "rgba(62,62,62,0.87)";
 
 
 
@@ -119,17 +119,12 @@ $(document).ready(function () {
                 highlightedTable.getCell(0, c).setTextColor('rgb(225,225,225)');
                 highlightedTable.getCell(1, c).setTextColor('white');
                 highlightedTable.getCell(2, c).setTextColor('rgb(255,91,98)');
-
                 highlightedTable.getCell(0, c).setFont(new Font("Arial", 3, false, false, false));
                 highlightedTable.getCell(1, c).setFont(new Font("Verdana", 3, false, false, false));
                 highlightedTable.getCell(2, c).setFont(new Font("Verdana", 3, false, false, false));
             }
             highlightedTable = false;
         }
-
-
-
-
 
         tblClicked = args.getNode();
 
