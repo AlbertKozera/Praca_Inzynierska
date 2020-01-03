@@ -88,13 +88,14 @@ $(document).ready(function () {
 
         if (table) {
             table.setText("Table" + tableCount++);
-            table.setCaptionFont(new Font("Verdana", 4, true, true));
+            table.setCaptionFont(new Font("Verdana", 3.5, true, true));
+            table.setCaptionBackBrush("#191919");
             table.redimTable(4, 0);
             table.setScrollable(true);
             table.setConnectionStyle(ConnectionStyle.Rows);
             table.setStroke("#ffffff");
             table.setStrokeDashStyle(DashStyle.Solid);
-            table.setStrokeThickness(2);
+            table.setStrokeThickness(1.5);
 
             // set the first column to resize with the table
             table.columns[0] = {width: 5, columnStyle: 0};
@@ -343,12 +344,12 @@ function addRow() {
     type.setLineAlignment(Alignment.Far);
 
     // setFont to specific column
-    counter.setFont(new Font("Arial", 3, false, false));
+    counter.setFont(new Font("Arial", 2.8, false, false));
     name.setFont(new Font("Verdana", 3, false, false));
     type.setFont(new Font("Verdana", 3, false, false));
 
     // setTextColor to specific column
-    counter.setTextColor('rgb(225,225,225)');
+    counter.setTextColor('rgb(220,220,220)');
     type.setTextColor('rgb(255,91,98)');
 
     // dopasowuje tabele do tekstu po dodaniu nowego wiersza - do poprawki
@@ -424,7 +425,7 @@ function createTable() {
     var table = diagram.getFactory().createTableNode(
         28 + tableCount * 8, 28 + tableCount * 8, 56, 72);  // kratka 4x4 ( położenie tabeli X, położenie tabeli Y, szerokość tabeli, długość tabeli) (zabezpieczenie przed nachodzeniem na siebie kolejnych tabel)
     table.setText("Table" + tableCount++);
-    table.setCaptionFont(new Font("Verdana", 4, true, true));
+    table.setCaptionFont(new Font("Verdana", 3.5, true, true));
     table.setCaptionBackBrush("#191919");
     table.redimTable(4, 0);
     table.setScrollable(true);
