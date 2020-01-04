@@ -542,13 +542,13 @@ function generateSQL() {
 }
 
 function onUndo() {
-    deleteTable();
     diagram.undo();
+    generateSQL();
 }
 
 function onRedo() {
-    createTable();
     diagram.redo();
+    generateSQL();
 }
 
 function zoomToFit(){
