@@ -21,6 +21,7 @@ var ShadowsStyle = MindFusion.Diagramming.ShadowsStyle;
 var CellFrameStyle = MindFusion.Diagramming.CellFrameStyle;
 var InteractionState = MindFusion.Diagramming.InteractionState;
 var PivotPoint = MindFusion.Drawing;
+var GridStyle = MindFusion.Diagramming.GridStyle;
 
 var diagram, overview;
 var tableCount = 0, rowClicked = -1;
@@ -33,6 +34,7 @@ var btnAddRow, btnEditRow, btnDeleteRow, btnRenameTable, btnInfo;
 
 //var rowIsBeingEditedNow = false;
 var highlightedTable = false;
+var gridSliderFlag = true;
 
 
 $(document).ready(function () {
@@ -56,7 +58,10 @@ $(document).ready(function () {
     diagram.setLinkHeadShape('Triangle');
     diagram.setLinkHeadShapeSize(4);
     diagram.getSelection().allowMultipleSelection = false;
-    //diagram.zoomToFit();
+    diagram.setGridColor("#141414");
+    diagram.setGridStyle(GridStyle.Lines);
+    diagram.setShadowsStyle(ShadowsStyle.None);
+
 
     diagram.setAllowInplaceEdit(false); // click on field and you can edit this
 
@@ -70,11 +75,14 @@ $(document).ready(function () {
         color2: 'rgb(0,0,0)',
         angle: 30
     });
-    tableNodeStyle.setTextColor({type: 'SolidBrush', color: 'rgb(0,0,0)'});
-    tableNodeStyle.setStroke('rgb(255,255,255)');
+    //ustawienia tekstu wszystkich tabel
     tableNodeStyle.setFontName('Verdana');
+    tableNodeStyle.setTextColor({type: 'SolidBrush', color: "#000000"});
     tableNodeStyle.setFontSize(4);
-    tableNodeStyle.setTextColor('white');
+    tableNodeStyle.setTextColor("#ffffff");
+
+
+
 
     var linkStyle = new Style();
     linkStyle.setBrush({type: 'SolidBrush', color: 'rgb(0,0,0)'});
@@ -96,17 +104,21 @@ $(document).ready(function () {
         var table = args.getNode();
 
         if (table) {
-            table.setText("Table" + tableCount++);
-            table.setCaptionFont(new Font("Verdana", 3.5, true, true));
-            table.setCaptionBackBrush("#191919");
+            //podstawowe ustawienia
             table.redimTable(4, 0);
             table.setScrollable(true);
             table.setConnectionStyle(ConnectionStyle.Rows);
-            table.setStroke("#000000");
+            //nagłówek tabeli
+            table.setText("Table" + tableCount++);
+            table.setCaptionFont(new Font("Verdana", 3.5, true, true));
+            table.setCaptionBackBrush("#191919");
+            table.setCaptionHeight(7.5);
+            //obramowanie tabeli
             table.setStrokeDashStyle(DashStyle.Solid);
             table.setStrokeThickness(1.5);
-            table.setCaptionHeight(7.5);
             table.setCellFrameStyle(CellFrameStyle.Simple);
+            table.setStroke("#000000");
+            //aktualizacja scrollbara
             table.scroller.updateLocation();
 
             // set the first column to resize with the table
@@ -125,9 +137,6 @@ $(document).ready(function () {
         turnOffHighlight();
         rowDeselected();
 
-
-        $('#btnEditRow').button().val("Edit row");
-        $('#btnDeleteRow').button().val("Delete row");
     });
 
     diagram.addEventListener(Events.nodeClicked, function (sender, args) {
@@ -141,8 +150,6 @@ $(document).ready(function () {
             var cellClicked = tblClicked.cellFromPoint(args.getMousePosition());
             if (cellClicked) {  //if (cellClicked && !rowIsBeingEditedNow) {
                 rowClicked = cellClicked.row;
-                $('#btnEditRow').button().val("Edit row " + rowClicked);
-                $('#btnDeleteRow').button().val("Delete row " + rowClicked);
 
 
                 // podswietlenie wiersza
@@ -423,9 +430,7 @@ function deleteRow() {
     var number_of_rows = table.rows.length;
 
     rowClicked = -1;
-    $('#btnEditRow').button().val("Edit row");
-    $('#btnDeleteRow').button().val("Delete row");
-
+    rowDeselected();
 
     // update the numbering in the table after removing the row
     var counter;
@@ -443,17 +448,21 @@ function createTable() {
     var cell;
     var table = diagram.getFactory().createTableNode(
         28 + tableCount * 8, 28 + tableCount * 8, 56, 72);  // kratka 4x4 ( położenie tabeli X, położenie tabeli Y, szerokość tabeli, długość tabeli) (zabezpieczenie przed nachodzeniem na siebie kolejnych tabel)
-    table.setText("Table" + tableCount++);
-    table.setCaptionFont(new Font("Verdana", 3.5, true, true));
-    table.setCaptionBackBrush("#191919");
+    //podstawowe ustawienia
     table.redimTable(4, 0);
     table.setScrollable(true);
     table.setConnectionStyle(ConnectionStyle.Rows);
-    table.setStroke("#000000");
+    //nagłówek tabeli
+    table.setText("Table" + tableCount++);
+    table.setCaptionFont(new Font("Verdana", 3.5, true, true));
+    table.setCaptionBackBrush("#191919");
+    table.setCaptionHeight(7.5);
+    //obramowanie tabeli
     table.setStrokeDashStyle(DashStyle.Solid);
     table.setStrokeThickness(1.5);
-    table.setCaptionHeight(7.5);
     table.setCellFrameStyle(CellFrameStyle.Simple);
+    table.setStroke("#000000");
+    //aktualizacja scrollbara
     table.scroller.updateLocation();
 
     // set the first column to resize with the table
@@ -461,7 +470,6 @@ function createTable() {
     table.getColumn(1).columnStyle = ColumnStyle.AutoWidth;
     table.getColumn(2).columnStyle = ColumnStyle.AutoWidth;
     table.columns[3] = {width: 4.9, columnStyle: 0};
-
     generateSQL();
 }
 
@@ -474,8 +482,7 @@ function deleteTable() {
     diagram.removeItem(table);
 
     rowClicked = -1;
-    $('#btnEditRow').button().val("Edit row");
-    $('#btnDeleteRow').button().val("Delete row");
+    rowDeselected();
 
     // refresh SQL definition
     generateSQL();
@@ -588,6 +595,23 @@ function turnOffHighlight(){
         highlightedTable = false;
     }
 }
+
+function gridSlider(){
+
+    if(gridSliderFlag){
+        diagram.setShowGrid(false);
+        gridSliderFlag = false;
+    }
+    else{
+        diagram.setShowGrid(true);
+        gridSliderFlag = true;
+    }
+
+}
+
+
+
+
 
 function rowSelected(){
     $('#btnEditRow').button("option", "disabled", false);
