@@ -20,6 +20,7 @@ var DashStyle = MindFusion.Drawing.DashStyle;
 var ShadowsStyle = MindFusion.Diagramming.ShadowsStyle;
 var CellFrameStyle = MindFusion.Diagramming.CellFrameStyle;
 var InteractionState = MindFusion.Diagramming.InteractionState;
+var PivotPoint = MindFusion.Drawing;
 
 var diagram, overview;
 var tableCount = 0, rowClicked = -1;
@@ -197,14 +198,15 @@ $(document).ready(function () {
 
     document.addEventListener('wheel', function (e) {
         e.preventDefault(); // do not use scrollbars
-        e.clientX = 600;
+
+        PivotPoint.Point.x = diagram.pointerPosition.x;
+        PivotPoint.Point.y = diagram.pointerPosition.y;
         var zoom = diagram.getZoomFactor();
         zoom -= e.deltaY / 15;
         if(zoom > 70 && zoom < 200 )
         {
-            diagram.setZoomFactor(zoom);
+            diagram.setZoomFactorPivot(zoom, PivotPoint.Point)
         }
-        e.clientX = 600;
     }, { passive : false});
 
 
@@ -459,7 +461,6 @@ function createTable() {
     table.getColumn(1).columnStyle = ColumnStyle.AutoWidth;
     table.getColumn(2).columnStyle = ColumnStyle.AutoWidth;
     table.columns[3] = {width: 4.9, columnStyle: 0};
-
 
     generateSQL();
 }
