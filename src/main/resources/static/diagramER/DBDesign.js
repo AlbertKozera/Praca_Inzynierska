@@ -550,6 +550,16 @@ function onRedo() {
     diagram.redo();
 }
 
+function zoomToFit(){
+    diagram.zoomToFit();
+    if(diagram.getZoomFactor() > 200)
+        diagram.setZoomFactor(200);
+    else{
+        diagram.setZoomFactor(70);
+    }
+}
+
+
 function turnOnHighlight() {
     highlightedTable = tblClicked;
     for (var i = 0; i < 3; i++)
