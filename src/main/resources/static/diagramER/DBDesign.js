@@ -22,6 +22,8 @@ var CellFrameStyle = MindFusion.Diagramming.CellFrameStyle;
 var InteractionState = MindFusion.Diagramming.InteractionState;
 var PivotPoint = MindFusion.Drawing;
 var GridStyle = MindFusion.Diagramming.GridStyle;
+var Utils = MindFusion.Diagramming.Utils;
+var testowo = MindFusion.Drawing;
 
 var diagram, overview;
 var tableCount = 0, rowClicked = -1;
@@ -32,10 +34,11 @@ var renameTableDialog = null, renameTableForm = null, renameTableCaption = null;
 var infoDialog = null, infoText = null;
 var btnAddRow, btnEditRow, btnDeleteRow, btnRenameTable, btnInfo;
 
-//var rowIsBeingEditedNow = false;
 var highlightedTable = false;
 var gridSliderFlag = true;
-
+var oldHoverTable, oldHoverCell;
+var uniqueTagCell = 0;
+var uniqueTagTable = 0;
 
 $(document).ready(function () {
     // create a Diagram component that wraps the "diagram" canvas
@@ -82,8 +85,6 @@ $(document).ready(function () {
     tableNodeStyle.setTextColor("#ffffff");
 
 
-
-
     var linkStyle = new Style();
     linkStyle.setBrush({type: 'SolidBrush', color: 'rgb(0,0,0)'});
     linkStyle.setStroke('rgb(192, 192, 192)');
@@ -104,6 +105,8 @@ $(document).ready(function () {
         var table = args.getNode();
 
         if (table) {
+            //nadanie tagu
+            table.setTag(uniqueTagTable++);
             //podstawowe ustawienia
             table.redimTable(4, 0);
             table.setScrollable(true);
@@ -132,28 +135,81 @@ $(document).ready(function () {
     });
 
     diagram.addEventListener(Events.clicked, function (sender, args) {
+        turnOffHighlight(tblClicked);
         tblClicked = null;
         rowClicked = -1;
-        turnOffHighlight();
         rowDeselected();
+    });
+
+    content.addEventListener('mousemove', function () {
+        var point = PivotPoint.Point;
+        point.x = diagram.pointerPosition.x;
+        point.y = diagram.pointerPosition.y;
+        var tableNode = diagram.getNodeAt(point);
+        if (tableNode) {                                  // natrafiono na tabelę
+
+            if(oldHoverTable){
+                if(tableNode.getTag() != oldHoverTable.getTag()){
+                    turnOffHighlight(oldHoverTable);
+                    oldHoverTable = null;
+                    oldHoverCell = null;
+                }
+            }
+
+            var hoverCell = tableNode.cellFromPoint({x: point.x, y: point.y});
+            if (!oldHoverCell)
+                oldHoverCell = hoverCell;
+            if (!oldHoverTable)
+                oldHoverTable = tableNode;
+            if (hoverCell) {
+                if (hoverCell.cell.getTag() != "ignore") {
+                    if ((hoverCell.cell.getTag() == oldHoverCell.cell.getTag()) && (hoverCell.row == oldHoverCell.row)) {
+                        if (isThisCellAlreadyHightlight(hoverCell.cell)){
+                        }
+                            else {
+                            var hoverRow2 = hoverCell.row;
+                            turnOnHighlight(tableNode, hoverRow2)
+                        }
+                    } else if (hoverCell.cell.getTag() != oldHoverCell.cell.getTag()) {
+                        var hoverRow = hoverCell.row;
+                        var oldHoverRow = oldHoverCell.row;
+                        turnOffHighlight(tableNode);
+
+                        oldHoverCell = hoverCell;
+                        turnOnHighlight(tableNode, hoverRow);
+                    }
+                }
+                else{
+                    turnOffHighlight(tableNode);
+                }
+            } else {
+                turnOffHighlight(tableNode);
+            }
+        } else {                                           // nie natrafiono na tabelę
+            if (oldHoverTable) {
+                turnOffHighlight(oldHoverTable);
+                oldHoverTable = null;
+                oldHoverCell = null;
+            }
+        }
 
     });
 
     diagram.addEventListener(Events.nodeClicked, function (sender, args) {
         rowClicked = -1;
         // wyłączenie podświetlenia wiersza
-        turnOffHighlight();
+        turnOffHighlight(tblClicked);
         rowDeselected();
 
         tblClicked = args.getNode();
+
         if (tblClicked) {
             var cellClicked = tblClicked.cellFromPoint(args.getMousePosition());
             if (cellClicked) {  //if (cellClicked && !rowIsBeingEditedNow) {
                 rowClicked = cellClicked.row;
 
-
                 // podswietlenie wiersza
-                turnOnHighlight();
+                turnOnHighlight(tblClicked, rowClicked);
                 rowSelected();
             }
         }
@@ -206,18 +262,15 @@ $(document).ready(function () {
     document.addEventListener('wheel', function (e) {
         e.preventDefault(); // do not use scrollbars
 
-        PivotPoint.Point.x = diagram.pointerPosition.x;
-        PivotPoint.Point.y = diagram.pointerPosition.y;
+        var point = PivotPoint.Point;
+        point.x = diagram.pointerPosition.x;
+        point.y = diagram.pointerPosition.y;
         var zoom = diagram.getZoomFactor();
         zoom -= e.deltaY / 15;
-        if(zoom > 70 && zoom < 200 )
-        {
-            diagram.setZoomFactorPivot(zoom, PivotPoint.Point)
+        if (zoom > 70 && zoom < 200) {
+            diagram.setZoomFactorPivot(zoom, point)
         }
-    }, { passive : false});
-
-
-
+    }, {passive: false});
 
 
     // Prepare popup dialogs
@@ -329,8 +382,8 @@ $(document).ready(function () {
     });
 
 
-    $("#addRow-fieldType").selectmenu("destroy").selectmenu({ style: "dropdown" }); // lista typów danych fix
-    $("#editRow-fieldType").selectmenu("destroy").selectmenu({ style: "dropdown" }); // lista typów danych fix
+    $("#addRow-fieldType").selectmenu("destroy").selectmenu({style: "dropdown"}); // lista typów danych fix
+    $("#editRow-fieldType").selectmenu("destroy").selectmenu({style: "dropdown"}); // lista typów danych fix
 });
 
 function addRowOpen() {
@@ -344,7 +397,7 @@ function addRowOpen() {
 
 function addRow() {
     var table = tblClicked || diagram.getActiveItem();
-    var counter,name,type;
+    var counter, name, type, scrollbarCell;
 
     if (!table || !AbstractionLayer.isInstanceOfType(TableNode, table))
         return;
@@ -355,11 +408,16 @@ function addRow() {
 
     // use the cell indexer to access cells by their column and row
     counter = table.getCell(0, lastRow); // licznik
+    counter.setTag(uniqueTagCell++);
     counter.setText(table.rows.length); // ilosc wierszy w tabeli
     name = table.getCell(1, lastRow); // nazwa
+    name.setTag(uniqueTagCell++);
     name.setText(addRowName[0].value);
     type = table.getCell(2, lastRow);  // typ
+    type.setTag(uniqueTagCell++);
     type.setText(addRowType[0].value);
+    scrollbarCell = table.getCell(3, lastRow); // martwa komórka
+    scrollbarCell.setTag("ignore");
 
     // align text in new cells
     counter.setTextAlignment(Alignment.Center);
@@ -379,7 +437,7 @@ function addRow() {
     type.setTextColor('rgb(255,91,98)');
 
     // dopasowuje tabele do tekstu po dodaniu nowego wiersza - do poprawki
-   // table.resizeToFitText(false, false);
+    // table.resizeToFitText(false, false);
 
     // close the dialog
     addRowDialog.dialog("close");
@@ -398,7 +456,6 @@ function editRowOpen() {
     editRowType.val(table.getCell(2, rowClicked).getText());
     editRowType.selectmenu("refresh");
 
-    rowIsBeingEditedNow = true;
     editRowDialog.dialog("open");
 }
 
@@ -413,7 +470,6 @@ function editRow() {
     table.getCell(2, rowClicked).setText(editRowType[0].value);
 
     // close the dialog
-    rowIsBeingEditedNow = false;
     editRowDialog.dialog("close");
 
     // refresh SQL definition
@@ -436,7 +492,7 @@ function deleteRow() {
     var counter;
     for (var r = 0; r < number_of_rows; ++r) {
         counter = table.getCell(0, r);
-        counter.setText(r+1);
+        counter.setText(r + 1);
     }
 
     // refresh SQL definition
@@ -445,9 +501,10 @@ function deleteRow() {
 
 function createTable() {
     // create a new table with the specified extent
-    var cell;
     var table = diagram.getFactory().createTableNode(
         28 + tableCount * 8, 28 + tableCount * 8, 56, 72);  // kratka 4x4 ( położenie tabeli X, położenie tabeli Y, szerokość tabeli, długość tabeli) (zabezpieczenie przed nachodzeniem na siebie kolejnych tabel)
+    //nadanie tagu
+    table.setTag(uniqueTagTable++);
     //podstawowe ustawienia
     table.redimTable(4, 0);
     table.setScrollable(true);
@@ -558,33 +615,29 @@ function onRedo() {
     generateSQL();
 }
 
-function zoomToFit(){
+function zoomToFit() {
     diagram.zoomToFit();
-    if(diagram.getZoomFactor() > 200)
+    if (diagram.getZoomFactor() > 200)
         diagram.setZoomFactor(200);
-    else{
+    else {
         diagram.setZoomFactor(70);
     }
 }
 
 
-function turnOnHighlight() {
-    highlightedTable = tblClicked;
-    for (var i = 0; i < 3; i++)
-    {
-        var cell = tblClicked.getCell(i, rowClicked);
+function turnOnHighlight(highlightedTable, rowHighlighted) {
+    for (var i = 0; i < 3; i++) {
+        var cell = highlightedTable.getCell(i, rowHighlighted);
         cell.setTextColor("#79ff70");
     }
-    highlightedTable.getCell(0, rowClicked).setFont(new Font("Arial", 3, false, false, true));
-    highlightedTable.getCell(1, rowClicked).setFont(new Font("Verdana", 3, false, false, true));
-    highlightedTable.getCell(2, rowClicked).setFont(new Font("Verdana", 3, false, false, true));
+    highlightedTable.getCell(0, rowHighlighted).setFont(new Font("Arial", 3, false, false, true));
+    highlightedTable.getCell(1, rowHighlighted).setFont(new Font("Verdana", 3, false, false, true));
+    highlightedTable.getCell(2, rowHighlighted).setFont(new Font("Verdana", 3, false, false, true));
 }
 
-function turnOffHighlight(){
-    if(highlightedTable)
-    {
-        for (var c = 0; c < highlightedTable.rows.length; c++)
-        {
+function turnOffHighlight(highlightedTable) {
+    if (highlightedTable) {
+        for (var c = 0; c < highlightedTable.rows.length; c++) {
             highlightedTable.getCell(0, c).setTextColor('rgb(225,225,225)');
             highlightedTable.getCell(1, c).setTextColor('white');
             highlightedTable.getCell(2, c).setTextColor('rgb(255,91,98)');
@@ -596,13 +649,20 @@ function turnOffHighlight(){
     }
 }
 
-function gridSlider(){
+function isThisCellAlreadyHightlight(cell) {
+    if (cell.getTextColor() == "#79ff70")
+        return true;
+    else
+        return false;
+}
 
-    if(gridSliderFlag){
+
+function gridSlider() {
+
+    if (gridSliderFlag) {
         diagram.setShowGrid(false);
         gridSliderFlag = false;
-    }
-    else{
+    } else {
         diagram.setShowGrid(true);
         gridSliderFlag = true;
     }
@@ -610,14 +670,12 @@ function gridSlider(){
 }
 
 
-
-
-
-function rowSelected(){
+function rowSelected() {
     $('#btnEditRow').button("option", "disabled", false);
     $('#btnDeleteRow').button("option", "disabled", false);
 }
-function rowDeselected(){
+
+function rowDeselected() {
     $('#btnEditRow').button("option", "disabled", true);
     $('#btnDeleteRow').button("option", "disabled", true);
 }
