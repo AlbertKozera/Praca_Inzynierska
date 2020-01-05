@@ -137,7 +137,7 @@ $(document).ready(function () {
     });
 
     diagram.addEventListener(Events.clicked, function (sender, args) {
-        turnOffHighlight(tblClicked);
+        //turnOffHighlight(tblClicked);
         tblClicked = null;
         rowClicked = -1;
         rowDeselected();
@@ -150,11 +150,13 @@ $(document).ready(function () {
         var tableNode = diagram.getNodeAt(point);
         if (tableNode) {  // natrafiono na tabelę
             var hoverCell = tableNode.cellFromPoint({x: point.x, y: point.y});
+            if(hoverCell == null)
+                hoverCell = false;
             if (oldHoverTable) { // przejście z jednej tabeli na drugą tabele // bezpośrednio
                 if (tableNode.getTag() != oldHoverTable.getTag()) {
-                    turnOffHighlight(oldHoverTable);
-                    oldHoverTable = null;
-                    oldHoverCell = null;
+                    turnOffHighlight(oldHoverTable, oldHoverCell.row);
+                    oldHoverTable = false;
+                    oldHoverCell = false;
                 }
             }
             if (!oldHoverTable) // zabezpieczenie początkowe
@@ -171,22 +173,27 @@ $(document).ready(function () {
                         }
                     } else if (hoverCell.cell.getTag() != oldHoverCell.cell.getTag()) { // jesli ruszasz myszką i zmieniłeś wiersz w tabeli
                         var hoverRow = hoverCell.row; // przygotuj wiersz do pomalowania
-                        turnOffHighlight(tableNode); // wyłącz podświetlenie ostatniego wiersza na którym była myszka
+                        turnOffHighlight(tableNode, oldHoverCell.row); // wyłącz podświetlenie ostatniego wiersza na którym była myszka
                         turnOnHighlight(tableNode, hoverRow); // podświetl wiersz na którego najechałeś myszką
                         oldHoverCell = hoverCell; // wszystkie operacje wykonano, przypisz do starego wiersza wartość nowego, od teraz to on będzie starym wierszem
                     }
                 } else { // najechanie na scrollbara
-                    turnOffHighlight(tableNode); // wylacz podswietlenie po najechaniu na scrollbara
+                    turnOffHighlight(tableNode, hoverCell.row); // wylacz podswietlenie po najechaniu na scrollbara
                 }
             }
-            else { // najechanie na puste miejsce w tabeli np. nazwe tabeli
-                turnOffHighlight(tableNode); // wylacz podswietlenie po najechaniu na puste miejsce w tabeli
+            else {
+                if(oldHoverCell){  // najechanie z wiersza w tabeli na pustą przestrzeń w tabelce
+                    turnOffHighlight(tableNode, oldHoverCell.row); // wylacz podswietlenie po najechaniu na puste miejsce w tabeli
+                }
+                else{ // najechanie z pustej przestrzeni na pustą przestrzeń w tabelce
+                    var test = 0;
+                }
             }
         } else {  // nie natrafiono na tabelę
             if (oldHoverTable) { // wylacz podswietlenie w starej tabeli jesli najechales na pustą przestrzeń
-                turnOffHighlight(oldHoverTable);
-                oldHoverTable = null;
-                oldHoverCell = null;
+                turnOffHighlight(oldHoverTable, oldHoverCell.row);
+                oldHoverTable = false;
+                oldHoverCell = false;
             }
         }
 
@@ -195,7 +202,7 @@ $(document).ready(function () {
     diagram.addEventListener(Events.nodeClicked, function (sender, args) {
         rowClicked = -1;
         // wyłączenie podświetlenia wiersza
-        turnOffHighlight(tblClicked);
+        //turnOffHighlight(tblClicked);
         rowDeselected();
 
         tblClicked = args.getNode();
@@ -643,18 +650,13 @@ function turnOnHighlight(highlightedTable, rowHighlighted) {
     highlightedTable.getCell(2, rowHighlighted).setFont(new Font("Verdana", 3, false, false, false));
 }
 
-function turnOffHighlight(highlightedTable) {
-    if (highlightedTable) {
-        for (var c = 0; c < highlightedTable.rows.length; c++) {
-            highlightedTable.getCell(0, c).setTextColor('rgb(225,225,225)');
-            highlightedTable.getCell(1, c).setTextColor('white');
-            highlightedTable.getCell(2, c).setTextColor('rgb(255,91,98)');
-            highlightedTable.getCell(0, c).setFont(new Font("Arial", 2.8, false, false, false));
-            highlightedTable.getCell(1, c).setFont(new Font("Verdana", 3, false, false, false));
-            highlightedTable.getCell(2, c).setFont(new Font("Verdana", 3, false, false, false));
-        }
-        highlightedTable = false;
-    }
+function turnOffHighlight(highlightedTable, rowHighlighted) {
+    highlightedTable.getCell(0, rowHighlighted).setTextColor('rgb(225,225,225)');
+    highlightedTable.getCell(1, rowHighlighted).setTextColor('white');
+    highlightedTable.getCell(2, rowHighlighted).setTextColor('rgb(255,91,98)');
+    highlightedTable.getCell(0, rowHighlighted).setFont(new Font("Arial", 2.8, false, false, false));
+    highlightedTable.getCell(1, rowHighlighted).setFont(new Font("Verdana", 3, false, false, false));
+    highlightedTable.getCell(2, rowHighlighted).setFont(new Font("Verdana", 3, false, false, false));
 }
 
 function isThisCellAlreadyHightlight(cell) {
@@ -663,7 +665,6 @@ function isThisCellAlreadyHightlight(cell) {
     else
         return false;
 }
-
 
 function gridSlider() {
 
@@ -676,7 +677,6 @@ function gridSlider() {
     }
 
 }
-
 
 function rowSelected() {
     $('#btnEditRow').button("option", "disabled", false);
