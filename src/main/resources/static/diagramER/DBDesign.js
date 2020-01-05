@@ -23,7 +23,7 @@ var InteractionState = MindFusion.Diagramming.InteractionState;
 var PivotPoint = MindFusion.Drawing;
 var GridStyle = MindFusion.Diagramming.GridStyle;
 var Utils = MindFusion.Diagramming.Utils;
-var testowo = MindFusion.Drawing;
+var DiagramItem = MindFusion.Diagramming.DiagramItem;
 
 var diagram, overview;
 var tableCount = 0, rowClicked = -1;
@@ -488,6 +488,8 @@ function deleteRow() {
     var number_of_rows = table.rows.length;
 
     rowClicked = -1;
+    selectedHighlightedRow = -1;
+    selectedHighlightedTable = -1;
     rowDeselected();
 
     // update the numbering in the table after removing the row
@@ -523,11 +525,12 @@ function createTable() {
     table.setStroke("#000000");
     //aktualizacja scrollbara
     table.scroller.updateLocation();
+    table.scroller.updateContent();
 
     // set the first column to resize with the table
     table.columns[0] = {width: 5, columnStyle: 0};
     table.getColumn(1).columnStyle = ColumnStyle.AutoWidth;
-    table.getColumn(2).columnStyle = ColumnStyle.AutoWidth;
+    table.columns[2] = {width: 17, columnStyle: 0};
     table.columns[3] = {width: 4.9, columnStyle: 0};
     generateSQL();
 }
@@ -624,6 +627,27 @@ function zoomToFit() {
     else {
         diagram.setZoomFactor(70);
     }
+}
+
+function resizeToFitText() {
+    var listOfNodes = diagram.getNodes();
+    for (var i = 0; i < listOfNodes.length; i++) {
+        var table = listOfNodes[i];
+        table.resizeToFitText(false,false);
+        table.columns[3].width = 4.9;
+        table.bounds.width = table.bounds.width + 5;
+
+        if(table.rows.length == 0){
+            table.bounds.width = 52;
+            table.bounds.height = 16;
+            table.updateCanvasElements();
+            table.scroller.updateLocation();
+        }
+        table.updateCanvasElements();
+        table.scroller.updateLocation();
+        table.scroller.updateContent();
+    }
+    diagram.repaint();
 }
 
 function turnOnHighlightSelected(highlightedTable, rowHighlighted) {
