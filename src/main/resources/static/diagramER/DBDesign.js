@@ -39,8 +39,8 @@ var gridSliderFlag = true;
 var oldHoverTable, oldHoverCell;
 var uniqueTagCell = 0;
 var uniqueTagTable = 0;
-var selectedHighlightedRow;
-var selectedHighlightedTable;
+var selectedHighlightedRow = false;
+var selectedHighlightedTable = -1;
 
 $(document).ready(function () {
     // create a Diagram component that wraps the "diagram" canvas
@@ -137,7 +137,7 @@ $(document).ready(function () {
     });
 
     diagram.addEventListener(Events.clicked, function (sender, args) {
-        //turnOffHighlight(tblClicked);
+        turnOffHighlightSelected(selectedHighlightedTable, selectedHighlightedRow);
         tblClicked = null;
         rowClicked = -1;
         rowDeselected();
@@ -202,7 +202,7 @@ $(document).ready(function () {
     diagram.addEventListener(Events.nodeClicked, function (sender, args) {
         rowClicked = -1;
         // wyłączenie podświetlenia wiersza
-        //turnOffHighlight(tblClicked);
+        turnOffHighlightSelected(selectedHighlightedTable, selectedHighlightedRow);
         rowDeselected();
 
         tblClicked = args.getNode();
@@ -633,24 +633,93 @@ function turnOnHighlightSelected(highlightedTable, rowHighlighted) {
     selectedHighlightedTable = highlightedTable;
     for (var i = 0; i < 3; i++) {
         var cell = highlightedTable.getCell(i, rowHighlighted);
-        cell.setTextColor("#00ff12");
+        cell.setTextColor("#1a35ff");
     }
     highlightedTable.getCell(0, rowHighlighted).setFont(new Font("Arial", 2.8, false, false, true));
     highlightedTable.getCell(1, rowHighlighted).setFont(new Font("Verdana", 3, false, false, true));
     highlightedTable.getCell(2, rowHighlighted).setFont(new Font("Verdana", 3, false, false, true));
 }
 
-function turnOnHighlight(highlightedTable, rowHighlighted) {
-    for (var i = 0; i < 3; i++) {
-        var cell = highlightedTable.getCell(i, rowHighlighted);
-        cell.setTextColor("#00eb12");
+function turnOffHighlightSelected(highlightedTable, rowHighlighted) {
+    if((highlightedTable != -1) && (rowHighlighted != -1))
+    {
+        highlightedTable.getCell(0, rowHighlighted).setTextColor('rgb(225,225,225)');
+        highlightedTable.getCell(1, rowHighlighted).setTextColor('white');
+        highlightedTable.getCell(2, rowHighlighted).setTextColor('rgb(255,91,98)');
+        highlightedTable.getCell(0, rowHighlighted).setFont(new Font("Arial", 2.8, false, false, false));
+        highlightedTable.getCell(1, rowHighlighted).setFont(new Font("Verdana", 3, false, false, false));
+        highlightedTable.getCell(2, rowHighlighted).setFont(new Font("Verdana", 3, false, false, false));
+        selectedHighlightedRow = -1;
+        selectedHighlightedTable = -1;
     }
-    highlightedTable.getCell(0, rowHighlighted).setFont(new Font("Arial", 2.8, false, false, false));
-    highlightedTable.getCell(1, rowHighlighted).setFont(new Font("Verdana", 3, false, false, false));
-    highlightedTable.getCell(2, rowHighlighted).setFont(new Font("Verdana", 3, false, false, false));
+}
+
+function turnOnHighlight(highlightedTable, rowHighlighted) {
+    if((selectedHighlightedRow != -1) && (selectedHighlightedTable != -1)){
+        if((rowHighlighted != selectedHighlightedRow)) {
+            for (var i = 0; i < 3; i++) {
+                var cell = highlightedTable.getCell(i, rowHighlighted);
+                cell.setTextColor("#00eb12");
+            }
+            highlightedTable.getCell(0, rowHighlighted).setFont(new Font("Arial", 2.8, false, false, false));
+            highlightedTable.getCell(1, rowHighlighted).setFont(new Font("Verdana", 3, false, false, false));
+            highlightedTable.getCell(2, rowHighlighted).setFont(new Font("Verdana", 3, false, false, false));
+        }
+        else if (highlightedTable.getTag() != selectedHighlightedTable.getTag()){
+            for (var i = 0; i < 3; i++) {
+                var cell = highlightedTable.getCell(i, rowHighlighted);
+                cell.setTextColor("#00eb12");
+            }
+            highlightedTable.getCell(0, rowHighlighted).setFont(new Font("Arial", 2.8, false, false, false));
+            highlightedTable.getCell(1, rowHighlighted).setFont(new Font("Verdana", 3, false, false, false));
+            highlightedTable.getCell(2, rowHighlighted).setFont(new Font("Verdana", 3, false, false, false));
+        }
+    }
+    else { // jesli nie wybrano zadnego wiersza to robisz co chcesz
+        for (var i = 0; i < 3; i++) {
+            var cell = highlightedTable.getCell(i, rowHighlighted);
+            cell.setTextColor("#00eb12");
+        }
+        highlightedTable.getCell(0, rowHighlighted).setFont(new Font("Arial", 2.8, false, false, false));
+        highlightedTable.getCell(1, rowHighlighted).setFont(new Font("Verdana", 3, false, false, false));
+        highlightedTable.getCell(2, rowHighlighted).setFont(new Font("Verdana", 3, false, false, false));
+    }
 }
 
 function turnOffHighlight(highlightedTable, rowHighlighted) {
+
+    if((selectedHighlightedRow != -1) && (selectedHighlightedTable != -1)){
+        if((rowHighlighted != selectedHighlightedRow)) {
+            highlightedTable.getCell(0, rowHighlighted).setTextColor('rgb(225,225,225)');
+            highlightedTable.getCell(1, rowHighlighted).setTextColor('white');
+            highlightedTable.getCell(2, rowHighlighted).setTextColor('rgb(255,91,98)');
+            highlightedTable.getCell(0, rowHighlighted).setFont(new Font("Arial", 2.8, false, false, false));
+            highlightedTable.getCell(1, rowHighlighted).setFont(new Font("Verdana", 3, false, false, false));
+            highlightedTable.getCell(2, rowHighlighted).setFont(new Font("Verdana", 3, false, false, false));
+        }
+        else if (highlightedTable.getTag() != selectedHighlightedTable.getTag()){
+            highlightedTable.getCell(0, rowHighlighted).setTextColor('rgb(225,225,225)');
+            highlightedTable.getCell(1, rowHighlighted).setTextColor('white');
+            highlightedTable.getCell(2, rowHighlighted).setTextColor('rgb(255,91,98)');
+            highlightedTable.getCell(0, rowHighlighted).setFont(new Font("Arial", 2.8, false, false, false));
+            highlightedTable.getCell(1, rowHighlighted).setFont(new Font("Verdana", 3, false, false, false));
+            highlightedTable.getCell(2, rowHighlighted).setFont(new Font("Verdana", 3, false, false, false));
+        }
+    }
+    else { // jesli nie wybrano zadnego wiersza to robisz co chcesz
+        highlightedTable.getCell(0, rowHighlighted).setTextColor('rgb(225,225,225)');
+        highlightedTable.getCell(1, rowHighlighted).setTextColor('white');
+        highlightedTable.getCell(2, rowHighlighted).setTextColor('rgb(255,91,98)');
+        highlightedTable.getCell(0, rowHighlighted).setFont(new Font("Arial", 2.8, false, false, false));
+        highlightedTable.getCell(1, rowHighlighted).setFont(new Font("Verdana", 3, false, false, false));
+        highlightedTable.getCell(2, rowHighlighted).setFont(new Font("Verdana", 3, false, false, false));
+    }
+
+}
+
+
+/*
+function setTextToNormal(table, row, cell0_TextColor,) {
     highlightedTable.getCell(0, rowHighlighted).setTextColor('rgb(225,225,225)');
     highlightedTable.getCell(1, rowHighlighted).setTextColor('white');
     highlightedTable.getCell(2, rowHighlighted).setTextColor('rgb(255,91,98)');
@@ -658,6 +727,14 @@ function turnOffHighlight(highlightedTable, rowHighlighted) {
     highlightedTable.getCell(1, rowHighlighted).setFont(new Font("Verdana", 3, false, false, false));
     highlightedTable.getCell(2, rowHighlighted).setFont(new Font("Verdana", 3, false, false, false));
 }
+*/
+
+
+
+
+
+
+
 
 function isThisCellAlreadyHightlight(cell) {
     if (cell.getTextColor() == "#00eb12")
