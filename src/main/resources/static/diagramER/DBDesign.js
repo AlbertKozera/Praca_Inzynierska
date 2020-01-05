@@ -39,6 +39,8 @@ var gridSliderFlag = true;
 var oldHoverTable, oldHoverCell;
 var uniqueTagCell = 0;
 var uniqueTagTable = 0;
+var selectedHighlightedRow;
+var selectedHighlightedTable;
 
 $(document).ready(function () {
     // create a Diagram component that wraps the "diagram" canvas
@@ -146,47 +148,42 @@ $(document).ready(function () {
         point.x = diagram.pointerPosition.x;
         point.y = diagram.pointerPosition.y;
         var tableNode = diagram.getNodeAt(point);
-        if (tableNode) {                                  // natrafiono na tabelę
-
-            if(oldHoverTable){
-                if(tableNode.getTag() != oldHoverTable.getTag()){
+        if (tableNode) {  // natrafiono na tabelę
+            var hoverCell = tableNode.cellFromPoint({x: point.x, y: point.y});
+            if (oldHoverTable) { // przejście z jednej tabeli na drugą tabele // bezpośrednio
+                if (tableNode.getTag() != oldHoverTable.getTag()) {
                     turnOffHighlight(oldHoverTable);
                     oldHoverTable = null;
                     oldHoverCell = null;
                 }
             }
-
-            var hoverCell = tableNode.cellFromPoint({x: point.x, y: point.y});
-            if (!oldHoverCell)
-                oldHoverCell = hoverCell;
-            if (!oldHoverTable)
+            if (!oldHoverTable) // zabezpieczenie początkowe
                 oldHoverTable = tableNode;
-            if (hoverCell) {
-                if (hoverCell.cell.getTag() != "ignore") {
-                    if ((hoverCell.cell.getTag() == oldHoverCell.cell.getTag()) && (hoverCell.row == oldHoverCell.row)) {
-                        if (isThisCellAlreadyHightlight(hoverCell.cell)){
-                        }
-                            else {
+            if (!oldHoverCell) // zabezpieczenie początkowe
+                oldHoverCell = hoverCell;
+            if (hoverCell) { // najechanie na komorke w tabeli
+                if (hoverCell.cell.getTag() != "ignore") { // najechanie na dowolny fragment tabeli poza kolumną scrollbara
+                    if ((hoverCell.cell.getTag() == oldHoverCell.cell.getTag()) && (hoverCell.row == oldHoverCell.row)) {  // jesli ruszasz myszką ale nie zmieniasz wiersza w tabeli
+                        if (isThisCellAlreadyHightlight(hoverCell.cell)) { // sprawdz czy wiersz na ktorego najechales jest pomalowany
+                        } else { // jesli nie jest to pomaluj go
                             var hoverRow2 = hoverCell.row;
                             turnOnHighlight(tableNode, hoverRow2)
                         }
-                    } else if (hoverCell.cell.getTag() != oldHoverCell.cell.getTag()) {
-                        var hoverRow = hoverCell.row;
-                        var oldHoverRow = oldHoverCell.row;
-                        turnOffHighlight(tableNode);
-
-                        oldHoverCell = hoverCell;
-                        turnOnHighlight(tableNode, hoverRow);
+                    } else if (hoverCell.cell.getTag() != oldHoverCell.cell.getTag()) { // jesli ruszasz myszką i zmieniłeś wiersz w tabeli
+                        var hoverRow = hoverCell.row; // przygotuj wiersz do pomalowania
+                        turnOffHighlight(tableNode); // wyłącz podświetlenie ostatniego wiersza na którym była myszka
+                        turnOnHighlight(tableNode, hoverRow); // podświetl wiersz na którego najechałeś myszką
+                        oldHoverCell = hoverCell; // wszystkie operacje wykonano, przypisz do starego wiersza wartość nowego, od teraz to on będzie starym wierszem
                     }
+                } else { // najechanie na scrollbara
+                    turnOffHighlight(tableNode); // wylacz podswietlenie po najechaniu na scrollbara
                 }
-                else{
-                    turnOffHighlight(tableNode);
-                }
-            } else {
-                turnOffHighlight(tableNode);
             }
-        } else {                                           // nie natrafiono na tabelę
-            if (oldHoverTable) {
+            else { // najechanie na puste miejsce w tabeli np. nazwe tabeli
+                turnOffHighlight(tableNode); // wylacz podswietlenie po najechaniu na puste miejsce w tabeli
+            }
+        } else {  // nie natrafiono na tabelę
+            if (oldHoverTable) { // wylacz podswietlenie w starej tabeli jesli najechales na pustą przestrzeń
                 turnOffHighlight(oldHoverTable);
                 oldHoverTable = null;
                 oldHoverCell = null;
@@ -205,11 +202,11 @@ $(document).ready(function () {
 
         if (tblClicked) {
             var cellClicked = tblClicked.cellFromPoint(args.getMousePosition());
-            if (cellClicked) {  //if (cellClicked && !rowIsBeingEditedNow) {
+            if (cellClicked) {
                 rowClicked = cellClicked.row;
 
                 // podswietlenie wiersza
-                turnOnHighlight(tblClicked, rowClicked);
+                turnOnHighlightSelected(tblClicked, rowClicked);
                 rowSelected();
             }
         }
@@ -624,15 +621,26 @@ function zoomToFit() {
     }
 }
 
+function turnOnHighlightSelected(highlightedTable, rowHighlighted) {
+    selectedHighlightedRow = rowHighlighted;
+    selectedHighlightedTable = highlightedTable;
+    for (var i = 0; i < 3; i++) {
+        var cell = highlightedTable.getCell(i, rowHighlighted);
+        cell.setTextColor("#00ff12");
+    }
+    highlightedTable.getCell(0, rowHighlighted).setFont(new Font("Arial", 2.8, false, false, true));
+    highlightedTable.getCell(1, rowHighlighted).setFont(new Font("Verdana", 3, false, false, true));
+    highlightedTable.getCell(2, rowHighlighted).setFont(new Font("Verdana", 3, false, false, true));
+}
 
 function turnOnHighlight(highlightedTable, rowHighlighted) {
     for (var i = 0; i < 3; i++) {
         var cell = highlightedTable.getCell(i, rowHighlighted);
-        cell.setTextColor("#79ff70");
+        cell.setTextColor("#00eb12");
     }
-    highlightedTable.getCell(0, rowHighlighted).setFont(new Font("Arial", 3, false, false, true));
-    highlightedTable.getCell(1, rowHighlighted).setFont(new Font("Verdana", 3, false, false, true));
-    highlightedTable.getCell(2, rowHighlighted).setFont(new Font("Verdana", 3, false, false, true));
+    highlightedTable.getCell(0, rowHighlighted).setFont(new Font("Arial", 2.8, false, false, false));
+    highlightedTable.getCell(1, rowHighlighted).setFont(new Font("Verdana", 3, false, false, false));
+    highlightedTable.getCell(2, rowHighlighted).setFont(new Font("Verdana", 3, false, false, false));
 }
 
 function turnOffHighlight(highlightedTable) {
@@ -641,7 +649,7 @@ function turnOffHighlight(highlightedTable) {
             highlightedTable.getCell(0, c).setTextColor('rgb(225,225,225)');
             highlightedTable.getCell(1, c).setTextColor('white');
             highlightedTable.getCell(2, c).setTextColor('rgb(255,91,98)');
-            highlightedTable.getCell(0, c).setFont(new Font("Arial", 3, false, false, false));
+            highlightedTable.getCell(0, c).setFont(new Font("Arial", 2.8, false, false, false));
             highlightedTable.getCell(1, c).setFont(new Font("Verdana", 3, false, false, false));
             highlightedTable.getCell(2, c).setFont(new Font("Verdana", 3, false, false, false));
         }
@@ -650,7 +658,7 @@ function turnOffHighlight(highlightedTable) {
 }
 
 function isThisCellAlreadyHightlight(cell) {
-    if (cell.getTextColor() == "#79ff70")
+    if (cell.getTextColor() == "#00eb12")
         return true;
     else
         return false;
