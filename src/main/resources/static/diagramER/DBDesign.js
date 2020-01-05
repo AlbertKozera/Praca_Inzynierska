@@ -1,5 +1,8 @@
 /// <reference path="MindFusion.Diagramming-vsdoc.js" />
 
+
+var copyRuler;
+
 var Diagram = MindFusion.Diagramming.Diagram;
 var TableNode = MindFusion.Diagramming.TableNode;
 var DiagramNode = MindFusion.Diagramming.DiagramNode;
@@ -24,6 +27,7 @@ var PivotPoint = MindFusion.Drawing;
 var GridStyle = MindFusion.Diagramming.GridStyle;
 var Utils = MindFusion.Diagramming.Utils;
 var DiagramItem = MindFusion.Diagramming.DiagramItem;
+var Ruler = MindFusion.Diagramming.Ruler;
 
 var diagram, overview;
 var tableCount = 0, rowClicked = -1;
@@ -36,6 +40,7 @@ var btnAddRow, btnEditRow, btnDeleteRow, btnRenameTable, btnInfo;
 
 var highlightedTable = false;
 var gridSliderFlag = true;
+var rulerSliderFlag = true;
 var oldHoverTable, oldHoverCell;
 var uniqueTagCell = 0;
 var uniqueTagTable = 0;
@@ -59,18 +64,23 @@ $(document).ready(function () {
     // create an Ruler component that wraps the "ruler" div
     var ruler = MindFusion.Diagramming.Ruler.create(document.getElementById("ruler"));
     ruler.setDiagram(diagram);
+    ruler.setBackColor("#151515");
+    ruler.setForeColor("#616161");
+    ruler.setTextColor("#ffffff");
+    ruler.setPointerColor("#dd00d3");
+    ruler.setProjectionColor("#373737");
+    copyRuler = ruler;
 
     // set some Diagram properties.
     diagram.setBehavior(Behavior.LinkTables);
     diagram.setAllowSelfLoops(false);
-    diagram.setBackBrush('rgba(21,21,21,0.87)');
+    diagram.setBackBrush('rgba(27,27,27,0.87)');
     diagram.setLinkHeadShape('Triangle');
     diagram.setLinkHeadShapeSize(4);
     diagram.getSelection().allowMultipleSelection = false;
-    diagram.setGridColor("#141414");
+    diagram.setGridColor("#353535");
     diagram.setGridStyle(GridStyle.Lines);
     diagram.setShadowsStyle(ShadowsStyle.None);
-
 
     diagram.setAllowInplaceEdit(false); // click on field and you can edit this
 
@@ -146,6 +156,8 @@ $(document).ready(function () {
         tblClicked = null;
         rowClicked = -1;
         rowDeselected();
+
+        var agwag = ruler;
     });
 
     content.addEventListener('mousemove', function () {
@@ -723,7 +735,6 @@ function isThisCellAlreadyHightlight(cell) {
 }
 
 function gridSlider() {
-
     if (gridSliderFlag) {
         diagram.setShowGrid(false);
         gridSliderFlag = false;
@@ -731,8 +742,25 @@ function gridSlider() {
         diagram.setShowGrid(true);
         gridSliderFlag = true;
     }
-
 }
+
+function rulerSlider() {
+
+
+    var ruler = copyRuler;
+    if (rulerSliderFlag) {
+        ruler.setHorizontalScaleVisible(false);
+        ruler.setVerticalScaleVisible(false);
+        rulerSliderFlag = false;
+    } else {
+        ruler.setHorizontalScaleVisible(true);
+        ruler.setVerticalScaleVisible(true);
+        rulerSliderFlag = true;
+    }
+}
+
+
+
 
 function rowSelected() {
     $('#btnEditRow').button("option", "disabled", false);
