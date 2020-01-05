@@ -56,6 +56,10 @@ $(document).ready(function () {
         null, null, null, document.getElementById("overview"));
     overview.setDiagram(diagram);
 
+    // create an Ruler component that wraps the "ruler" div
+    var ruler = MindFusion.Diagramming.Ruler.create(document.getElementById("ruler"));
+    ruler.setDiagram(diagram);
+
     // set some Diagram properties.
     diagram.setBehavior(Behavior.LinkTables);
     diagram.setAllowSelfLoops(false);

@@ -16,24 +16,25 @@
 
 	<div id="content" style="position: static; width: 1600px; height: 600px;"  >
 			<!-- The Overview component is bound to the canvas element below -->
-			<div style="position: absolute; right: 120px; width: 200px;
+			<div style="position: absolute; right: 98px; width: 200px;
 				height: 200px; border: 1px solid #ffffff; background-color: #c0c0c0;">
 				<canvas id="overview" width="200" height="200">
 				</canvas>
 			</div>
 		<!-- The Diagram component is bound to the canvas element below -->
-		<div style="position: static; width: 100%; height: 100%; overflow: auto;">
-			<canvas id="diagram" width="2100" height="2100">
-				This page requires a browser that supports HTML 5 Canvas element.
-			</canvas>
+		<div id="ruler" style="position: static; width: 100%; height: 100%;">
+			<div style="position: absolute; width: 1600px; height: 600px; overflow: scroll;">
+				<canvas id="diagram" width="2100" height="2100">
+					This page requires a browser that supports HTML 5 Canvas element.
+				</canvas>
+			</div>
 		</div>
 	</div>
 
 
 
 
-	<div id="controls" style="position: absolute; left: 0;
-		right: 401px;">
+	<div id="controls" style="position: absolute; left: 0; right: 401px; margin-top: 25px;">
 		<button class="fas fa-undo" onclick="onUndo()" style="margin-left: 5px; margin-bottom: 2px; padding-top: 5px; height: 49px;">Cofnij</button>
 		<button class="fas fa-redo" onclick="onRedo()" style="margin-left: 5px; margin-bottom: 2px; padding-top: 5px; height: 49px;">Ponów</button>
 		<button class="fas fa-table" id="btnCreateTable" style="margin-left: 5px; margin-bottom: 2px; padding-top: 5px; height: 49px;">Dodaj tabelę</button>
@@ -47,12 +48,19 @@
 		<button class="fas fa-compress-arrows-alt" onclick="resizeToFitText()" style="margin-left: 5px; padding-top: 5px; height: 49px;">Dopasuj tabele</button>
 		<textarea id="generatedSql" style="height: 120px; width: 100%; bottom: 0px; left: 0px; right: 0px; top: 30px; "></textarea>
 		<div>
-			<div class="slideThree">
+			<div class="gridSlider">
 			    <input type="checkbox" value="None" id="gridSlider" onclick="gridSlider()" name="check" checked />
 			    <label for="gridSlider"></label>
 		    </div>
 			<a class="fas fa-th" style="font-size: 25px; position: absolute; left: 4px"></a>
         </div>
+		<div>
+			<div class="rulerSlider">
+				<input type="checkbox" value="None" id="rulerSlider" onclick="gridSlider()" name="check" checked />
+				<label for="gridSlider"></label>
+			</div>
+			<a class="fas fa-ruler-combined" style="font-size: 25px; position: absolute; left: 4px; margin-top: 31px;"></a>
+		</div>
 
 	</div>
 	<!-- .slideThree -->
