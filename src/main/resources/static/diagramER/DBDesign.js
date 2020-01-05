@@ -64,7 +64,7 @@ $(document).ready(function () {
     // create an Ruler component that wraps the "ruler" div
     var ruler = MindFusion.Diagramming.Ruler.create(document.getElementById("ruler"));
     ruler.setDiagram(diagram);
-    ruler.setBackColor("#151515");
+    ruler.setBackColor("#373737");
     ruler.setForeColor("#616161");
     ruler.setTextColor("#ffffff");
     ruler.setPointerColor("#dd00d3");
@@ -74,11 +74,11 @@ $(document).ready(function () {
     // set some Diagram properties.
     diagram.setBehavior(Behavior.LinkTables);
     diagram.setAllowSelfLoops(false);
-    diagram.setBackBrush('rgba(27,27,27,0.87)');
+    diagram.setBackBrush('rgba(55,55,55,0.87)');
     diagram.setLinkHeadShape('Triangle');
     diagram.setLinkHeadShapeSize(4);
     diagram.getSelection().allowMultipleSelection = false;
-    diagram.setGridColor("#353535");
+    diagram.setGridColor("#232323");
     diagram.setGridStyle(GridStyle.Lines);
     diagram.setShadowsStyle(ShadowsStyle.None);
 
@@ -135,7 +135,7 @@ $(document).ready(function () {
             //obramowanie tabeli
             table.setStrokeDashStyle(DashStyle.Solid);
             table.setStrokeThickness(1.5);
-            table.setCellFrameStyle(CellFrameStyle.Simple);
+            table.setCellFrameStyle(CellFrameStyle.None);
             table.setStroke("#000000");
             //aktualizacja scrollbara
             table.scroller.updateLocation();
@@ -538,7 +538,7 @@ function createTable() {
     //obramowanie tabeli
     table.setStrokeDashStyle(DashStyle.Solid);
     table.setStrokeThickness(1.5);
-    table.setCellFrameStyle(CellFrameStyle.Simple);
+    table.setCellFrameStyle(CellFrameStyle.None);
     table.setStroke("#000000");
     //aktualizacja scrollbara
     table.scroller.updateLocation();
