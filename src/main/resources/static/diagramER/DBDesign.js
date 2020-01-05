@@ -125,11 +125,12 @@ $(document).ready(function () {
             table.setStroke("#000000");
             //aktualizacja scrollbara
             table.scroller.updateLocation();
+            table.scroller.updateContent();
 
             // set the first column to resize with the table
             table.columns[0] = {width: 5, columnStyle: 0};
             table.getColumn(1).columnStyle = ColumnStyle.AutoWidth;
-            table.getColumn(2).columnStyle = ColumnStyle.AutoWidth;
+            table.columns[2] = {width: 17, columnStyle: 0};
             table.columns[3] = {width: 4.9, columnStyle: 0};
 
             generateSQL();
