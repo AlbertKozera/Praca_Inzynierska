@@ -64,7 +64,7 @@ $(document).ready(function () {
     // create an Ruler component that wraps the "ruler" div
     var ruler = MindFusion.Diagramming.Ruler.create(document.getElementById("ruler"));
     ruler.setDiagram(diagram);
-    ruler.setBackColor("#32373d");
+    ruler.setBackColor("#272c32");
     ruler.setForeColor("#616161");
     ruler.setTextColor("rgb(245,125,244)");
     ruler.setPointerColor("#00ff41");
@@ -75,7 +75,7 @@ $(document).ready(function () {
     // set some Diagram properties.
     diagram.setBehavior(Behavior.LinkTables);
     diagram.setAllowSelfLoops(false);
-    diagram.setBackBrush('rgba(50,55,61,0.87)');
+    diagram.setBackBrush('rgba(64,69,75,0.87)');
     diagram.setLinkHeadShape('Triangle');
     diagram.setLinkHeadShapeSize(4);
     diagram.getSelection().allowMultipleSelection = true;
