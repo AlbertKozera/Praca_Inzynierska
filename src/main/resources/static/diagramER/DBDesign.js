@@ -159,7 +159,6 @@ $(document).ready(function () {
         rowClicked = -1;
         rowDeselected();
 
-        var agwag = ruler;
     });
 
     content.addEventListener('mousemove', function () {
