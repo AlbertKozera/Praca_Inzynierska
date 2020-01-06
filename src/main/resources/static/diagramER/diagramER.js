@@ -93,8 +93,8 @@ $(document).ready(function () {
     var tableNodeStyle = new Style();
     tableNodeStyle.setBrush({
         type: 'RadialGradientBrush',
-        color1: 'rgba(21,21,21,0.92)',
-        color2: 'rgb(0,0,0)',
+        color1: 'rgba(54,59,65,0.92)',
+        color2: 'rgb(39,44,50)',
         angle: 30
     });
     //ustawienia tekstu wszystkich tabel
@@ -115,8 +115,8 @@ $(document).ready(function () {
 
     // set table scrollbars
     TableNode.prototype.useScrollBars = true;
-    ScrollBar.prototype.background = "#000000";
-    ScrollBar.prototype.foreground = "rgba(62,62,62,0.87)";
+    ScrollBar.prototype.background = "rgba(33,39,45,0.89)";
+    ScrollBar.prototype.foreground = "rgba(66,71,77,0.87)";
 
 
     // Set diagram event listeners
@@ -133,13 +133,13 @@ $(document).ready(function () {
             //nagłówek tabeli
             table.setText("Table" + tableCount++);
             table.setCaptionFont(new Font("Verdana", 3.5, true, true));
-            table.setCaptionBackBrush("#191919");
+            table.setCaptionBackBrush("#1a1f25");
             table.setCaptionHeight(7.5);
             //obramowanie tabeli
             table.setStrokeDashStyle(DashStyle.Solid);
             table.setStrokeThickness(1.5);
             table.setCellFrameStyle(CellFrameStyle.None);
-            table.setStroke("#000000");
+            table.setStroke("#21272D");
             //aktualizacja scrollbara
             table.scroller.updateLocation();
             table.scroller.updateContent();
@@ -542,13 +542,13 @@ function createTable() {
     //nagłówek tabeli
     table.setText("Table" + tableCount++);
     table.setCaptionFont(new Font("Verdana", 3.5, true, true));
-    table.setCaptionBackBrush("#191919");
+    table.setCaptionBackBrush("#1a1f25");
     table.setCaptionHeight(7.5);
     //obramowanie tabeli
     table.setStrokeDashStyle(DashStyle.Solid);
     table.setStrokeThickness(1.5);
     table.setCellFrameStyle(CellFrameStyle.None);
-    table.setStroke("#000000");
+    table.setStroke("#21272D");
     //aktualizacja scrollbara
     table.scroller.updateLocation();
     table.scroller.updateContent();
