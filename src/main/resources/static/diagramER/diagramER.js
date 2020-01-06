@@ -52,7 +52,7 @@ $(document).ready(function () {
     diagram = MindFusion.AbstractionLayer.createControl(Diagram, null, null, null, $("#diagram")[0]);
     //diagram = Diagram.create(document.getElementById("diagram"));
     //diagram.setBounds(new Rect(0, 0, 600, 207));
-    diagram.setBounds(new Rect(0, 0, 800, 800));
+    diagram.setBounds(new Rect(0, 0, 898, 898));
     diagram.setUndoEnabled(true);
     diagram.setShowGrid(true);
 
@@ -287,7 +287,7 @@ $(document).ready(function () {
         point.y = diagram.pointerPosition.y;
         var zoom = diagram.getZoomFactor();
         zoom -= e.deltaY / 15;
-        if (zoom > 70 && zoom < 200) {
+        if (zoom > 46 && zoom < 200) {
             diagram.setZoomFactorPivot(zoom, point)
         }
     }, {passive: false});

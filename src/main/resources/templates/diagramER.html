@@ -1,113 +1,134 @@
 ﻿<!doctype html>
 <head>
-	<title>MindFusion JsDiagram Sample - Database Design</title>
-	<link href="diagramER/common/jquery-ui.min.css" rel="stylesheet" />
-	<link href="diagramER/common/diagramER.css" rel="stylesheet" />
-	<script type="text/javascript" src="diagramER/common/jquery.min.js"></script>
-	<script type="text/javascript" src="diagramER/common/jquery-ui.min.js"></script>
-	<script type="text/javascript" src="diagramER/common/popupWindow.js"></script>
-
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
-	<link href="https://fonts.googleapis.com/css?family=Courgette&display=swap" rel="stylesheet">
+    <title>MindFusion JsDiagram Sample - Database Design</title>
+    <script src="diagramER/MindFusion_lib/MindFusion.Common.js" type="text/javascript"></script>
+    <script src="diagramER/MindFusion_lib/MindFusion.Diagramming.js" type="text/javascript"></script>
+    <script type="text/javascript" src="diagramER/jQuery/jquery.min.js"></script>
+    <script type="text/javascript" src="diagramER/jQuery/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="diagramER/popupWindow.js"></script>
+    <link href="diagramER/jQuery/jquery-ui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <link href="https://fonts.googleapis.com/css?family=Courgette&display=swap" rel="stylesheet">
+    <link href="diagramER/diagramER.css" rel="stylesheet"/>
 </head>
 <body>
-	<div id="content" style="position: static; width: 1600px; height: 600px;"  >
-			<!-- The Overview component is bound to the canvas element below -->
-			<div style="position: absolute; right: 98px; width: 200px;
-				height: 200px; border: 1px solid #ffffff; background-color: #c0c0c0;">
-				<canvas id="overview" width="200" height="200">
-				</canvas>
-			</div>
-		<!-- The Diagram component is bound to the canvas element below -->
-		<div id="ruler" style="position: static; width: 100%; height: 100%;">
-			<div style="position: absolute; width: 1600px; height: 600px; overflow: scroll;">
-				<canvas id="diagram" width="2100" height="2100">
-					This page requires a browser that supports HTML 5 Canvas element.
-				</canvas>
-			</div>
-		</div>
-
-
-		<div id="addRow-dialog" title="Dodawanie nowego pola">
-			<form>
-				<fieldset>
-					<input type="text" id="addRow-fieldName" placeholder="nazwa..." class="text ui-widget-content ui-corner-all" style="margin-top: 10px; width: 165px; height: 32px; margin-bottom: -1px;" />
-					<select id="addRow-fieldType" style="margin-top: 10px; width: 180px; ">
-						<option>NUMBER</option>
-						<option>CHAR(32)</option>
-						<option>DATE</option>
-						<option>VARCHAR</option>
-						<option>BLOB</option>
-					</select>
-
-				</fieldset>
-			</form>
-		</div>
-
-		<div id="editRow-dialog" title="Edycja pola">
-			<form>
-				<fieldset>
-					<input type="text" id="editRow-fieldName" placeholder="nazwa pola" class="text ui-widget-content ui-corner-all" style="margin-top: 10px; width: 165px; height: 32px; margin-bottom: -1px;" />
-					<select id="editRow-fieldType" style="margin-top: 10px; width: 180px; ">
-						<option>NUMBER</option>
-						<option>CHAR(32)</option>
-						<option>DATE</option>
-						<option>VARCHAR</option>
-						<option>BLOB</option>
-					</select>
-				</fieldset>
-			</form>
-		</div>
-		<div id="renameTable-dialog" title="Zmiana nazwy tabeli">
-			<form>
-				<fieldset>
-					<input type="text" id="renameTableCaption" placeholder="nazwa tabeli" class="text ui-widget-content ui-corner-all" />
-				</fieldset>
-			</form>
-		</div>
-		<div id="info-dialog" title="Connection Info">
-			<p>
-			</p>
-		</div>
-
-
-	</div>
-
-
-
-
-	<div id="controls" style="position: absolute; left: 0; right: 401px; margin-top: 25px;">
-		<button class="fas fa-undo" onclick="onUndo()" style="margin-left: 5px; margin-bottom: 2px; padding-top: 5px; height: 49px;">Cofnij</button>
-		<button class="fas fa-redo" onclick="onRedo()" style="margin-left: 5px; margin-bottom: 2px; padding-top: 5px; height: 49px;">Ponów</button>
-		<button class="fas fa-table" id="btnCreateTable" style="margin-left: 5px; margin-bottom: 2px; padding-top: 5px; height: 49px;">Dodaj tabelę</button>
-		<button class="fas fa-trash-alt" id="btnDeleteTable" style="margin-left: 5px;margin-bottom: 2px; padding-top: 5px; height: 49px;">Usuń tabelę</button>
-		<button class="fas fa-plus" id="btnAddRow" style="margin-left: 5px; margin-bottom: 2px; padding-top: 5px; height: 49px;">Dodaj wiersz</button>
-		<button class="fas fa-minus" id="btnDeleteRow" style="margin-left: 5px; margin-bottom: 2px; padding-top: 5px; height: 49px;">Usuń wiersz</button>
-		<button class="fas fa-edit" id="btnRenameTable" style="margin-left: 5px; margin-bottom: 2px; padding-top: 5px; height: 49px;">Zmień nazwę tabeli</button>
-		<button class="fas fa-pen-square" id="btnEditRow" style="margin-left: 5px; margin-bottom: 2px; padding-top: 5px; height: 49px;">Edytuj wiersz</button>
-		<button class="fas fa-sitemap" id="btnInfo" style="margin-left: 5px; padding-top: 5px; height: 49px;">Connection info</button>
-		<button class="fas fa-search" onclick="zoomToFit()" style="margin-left: 5px; padding-top: 5px; height: 49px;">Dopasuj powiększenie</button>
-		<button class="fas fa-compress-arrows-alt" onclick="resizeToFitText()" style="margin-left: 5px; padding-top: 5px; height: 49px;">Dopasuj tabele</button>
-		<textarea id="generatedSql" style="height: 120px; width: 100%; bottom: 0px; left: 0px; right: 0px; top: 30px; "></textarea>
-		<div>
-			<div class="slider">
-			    <input type="checkbox" value="None" id="gridSlider" onclick="gridSlider()" name="check" checked />
-			    <label for="gridSlider"></label>
-		    </div>
-			<a class="fas fa-th" style="font-size: 25px; position: absolute; left: 4px"></a>
+    <div id="content" style="position: static; width: 1600px; height: 600px;">
+        <!-- The Overview component is bound to the canvas element below -->
+        <div style="position: absolute; right: 98px; width: 200px;
+                    height: 200px; border: 1px solid #ffffff; background-color: #c0c0c0;">
+            <canvas id="overview" width="200" height="200">
+            </canvas>
         </div>
-		<div>
-			<div class="slider" style="margin-top: 31px;">
-				<input type="checkbox" value="None" id="rulerSlider" onclick="rulerSlider()" name="check" checked />
-				<label for="rulerSlider"></label>
-			</div>
-			<a class="fas fa-ruler-combined" style="font-size: 25px; position: absolute; left: 4px; margin-top: 31px;"></a>
-		</div>
+        <!-- The Diagram component is bound to the canvas element below -->
+        <div id="ruler" style="position: static; width: 100%; height: 100%;">
+            <div style="position: absolute; width: 1600px; height: 600px; overflow: scroll;">
+                <canvas id="diagram" width="2100" height="2100">
+                    This page requires a browser that supports HTML 5 Canvas element.
+                </canvas>
+            </div>
+        </div>
 
-	</div>
+        <div id="addRow-dialog" title="Dodawanie nowego pola">
+            <form>
+                <fieldset>
+                    <input type="text" id="addRow-fieldName" placeholder="nazwa..."
+                           class="text ui-widget-content ui-corner-all"
+                           style="margin-top: 10px; width: 165px; height: 32px; margin-bottom: -1px;"/>
+                    <select id="addRow-fieldType" style="margin-top: 10px; width: 180px; ">
+                        <option>NUMBER</option>
+                        <option>CHAR(32)</option>
+                        <option>DATE</option>
+                        <option>VARCHAR</option>
+                        <option>BLOB</option>
+                    </select>
+                </fieldset>
+            </form>
+        </div>
+        <div id="editRow-dialog" title="Edycja pola">
+            <form>
+                <fieldset>
+                    <input type="text" id="editRow-fieldName" placeholder="nazwa pola"
+                           class="text ui-widget-content ui-corner-all"
+                           style="margin-top: 10px; width: 165px; height: 32px; margin-bottom: -1px;"/>
+                    <select id="editRow-fieldType" style="margin-top: 10px; width: 180px; ">
+                        <option>NUMBER</option>
+                        <option>CHAR(32)</option>
+                        <option>DATE</option>
+                        <option>VARCHAR</option>
+                        <option>BLOB</option>
+                    </select>
+                </fieldset>
+            </form>
+        </div>
+        <div id="renameTable-dialog" title="Zmiana nazwy tabeli">
+            <form>
+                <fieldset>
+                    <input type="text" id="renameTableCaption" placeholder="nazwa tabeli"
+                           class="text ui-widget-content ui-corner-all"/>
+                </fieldset>
+            </form>
+        </div>
+        <div id="info-dialog" title="Connection Info">
+            <p>
+            </p>
+        </div>
+    </div>
 
-	<script src="diagramER/MindFusion.Common.js" type="text/javascript"></script>
-	<script src="diagramER/MindFusion.Diagramming.js" type="text/javascript"></script>
-	<script src="diagramER/diagramER.js" type="text/javascript"></script>
+    <div id="controls" style="position: absolute; left: 0; right: 401px; margin-top: 25px;">
+        <button class="fas fa-undo" onclick="onUndo()"
+                style="margin-left: 5px; margin-bottom: 2px; padding-top: 5px; height: 49px;">Cofnij
+        </button>
+        <button class="fas fa-redo" onclick="onRedo()"
+                style="margin-left: 5px; margin-bottom: 2px; padding-top: 5px; height: 49px;">Ponów
+        </button>
+        <button class="fas fa-table" id="btnCreateTable"
+                style="margin-left: 5px; margin-bottom: 2px; padding-top: 5px; height: 49px;">Dodaj tabelę
+        </button>
+        <button class="fas fa-trash-alt" id="btnDeleteTable"
+                style="margin-left: 5px;margin-bottom: 2px; padding-top: 5px; height: 49px;">Usuń tabelę
+        </button>
+        <button class="fas fa-plus" id="btnAddRow"
+                style="margin-left: 5px; margin-bottom: 2px; padding-top: 5px; height: 49px;">Dodaj wiersz
+        </button>
+        <button class="fas fa-minus" id="btnDeleteRow"
+                style="margin-left: 5px; margin-bottom: 2px; padding-top: 5px; height: 49px;">Usuń wiersz
+        </button>
+        <button class="fas fa-edit" id="btnRenameTable"
+                style="margin-left: 5px; margin-bottom: 2px; padding-top: 5px; height: 49px;">Zmień nazwę tabeli
+        </button>
+        <button class="fas fa-pen-square" id="btnEditRow"
+                style="margin-left: 5px; margin-bottom: 2px; padding-top: 5px; height: 49px;">Edytuj wiersz
+        </button>
+        <button class="fas fa-sitemap" id="btnInfo" style="margin-left: 5px; padding-top: 5px; height: 49px;">Connection
+            info
+        </button>
+        <button class="fas fa-search" onclick="zoomToFit()" style="margin-left: 5px; padding-top: 5px; height: 49px;">
+            Dopasuj powiększenie
+        </button>
+        <button class="fas fa-compress-arrows-alt" onclick="resizeToFitText()"
+                style="margin-left: 5px; padding-top: 5px; height: 49px;">Dopasuj tabele
+        </button>
+        <textarea id="generatedSql"
+                  style="height: 120px; width: 100%; bottom: 0px; left: 0px; right: 0px; top: 30px; "></textarea>
+        <div>
+            <div class="slider">
+                <input type="checkbox" value="None" id="gridSlider" onclick="gridSlider()" name="check" checked/>
+                <label for="gridSlider"></label>
+            </div>
+            <a class="fas fa-th" style="font-size: 25px; position: absolute; left: 4px"></a>
+        </div>
+        <div>
+            <div class="slider" style="margin-top: 31px;">
+                <input type="checkbox" value="None" id="rulerSlider" onclick="rulerSlider()" name="check" checked/>
+                <label for="rulerSlider"></label>
+            </div>
+            <a class="fas fa-ruler-combined" style="font-size: 25px; position: absolute; left: 4px; margin-top: 31px;"></a>
+        </div>
+
+    </div>
+
+
+
+    <script src="diagramER/diagramER.js" type="text/javascript"></script>
 </body>
 </html>
