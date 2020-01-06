@@ -1,20 +1,7 @@
 <!doctype html>
-<html lang="en"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Sidebar 09</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-
-    <link href="diagramER/common/jquery-ui.min.css" rel="stylesheet" />
-
-
-
-    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
-    <link rel="stylesheet" href="sidebar/common/style.css">
+    <th:block th:include="fragments/sidebar/headerinc :: head"/>
 </head>
 <body>
 
@@ -66,10 +53,10 @@
     </div>
 </div>
 
-<script src="sidebar/js/jquery.min.js" type="text/javascript"></script>
-<script src="sidebar/js/popper.js" type="text/javascript"></script>
-<script src="sidebar/js/bootstrap.min.js" type="text/javascript"></script>
-<script src="sidebar/js/main.js" type="text/javascript"></script>
+
 
 </body>
+<footer>
+    <th:block th:include="fragments/sidebar/footerinc :: footer"/>
+</footer>
 </html>

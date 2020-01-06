@@ -279,7 +279,7 @@ $(document).ready(function () {
         $('#btnInfo').button("option", "disabled", true);
     });
 
-    content.addEventListener('wheel', function (e) {
+    canvas.addEventListener('wheel', function (e) {
         e.preventDefault(); // do not use scrollbars
 
         var point = PivotPoint.Point;
