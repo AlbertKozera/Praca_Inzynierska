@@ -1,4 +1,4 @@
-(function($) {
+jQuery.noConflict()(function($) {
 
 	"use strict";
 
@@ -16,4 +16,4 @@
       $('#sidebar').toggleClass('active');
   });
 
-})(jQuery);
+});
