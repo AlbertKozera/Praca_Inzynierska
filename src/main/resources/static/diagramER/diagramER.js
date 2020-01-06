@@ -66,8 +66,8 @@ $(document).ready(function () {
     ruler.setDiagram(diagram);
     ruler.setBackColor("#373737");
     ruler.setForeColor("#616161");
-    ruler.setTextColor("#ffffff");
-    ruler.setPointerColor("#dd00d3");
+    ruler.setTextColor("rgb(255,68,65)");
+    ruler.setPointerColor("#00ff41");
     ruler.setProjectionColor("#3a0030");
     copyRuler = ruler;
 
