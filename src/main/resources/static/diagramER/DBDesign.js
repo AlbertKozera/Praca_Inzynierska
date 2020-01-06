@@ -52,7 +52,7 @@ $(document).ready(function () {
     diagram = MindFusion.AbstractionLayer.createControl(Diagram, null, null, null, $("#diagram")[0]);
     //diagram = Diagram.create(document.getElementById("diagram"));
     //diagram.setBounds(new Rect(0, 0, 600, 207));
-    diagram.setBounds(new Rect(0, 0, 600, 400));
+    diagram.setBounds(new Rect(0, 0, 800, 800));
     diagram.setUndoEnabled(true);
     diagram.setShowGrid(true);
 
@@ -78,6 +78,8 @@ $(document).ready(function () {
     diagram.setLinkHeadShape('Triangle');
     diagram.setLinkHeadShapeSize(4);
     diagram.getSelection().allowMultipleSelection = false;
+    diagram.setGridSizeX(5);
+    diagram.setGridSizeY(5);
     diagram.setGridColor("#232323");
     diagram.setGridStyle(GridStyle.Lines);
     diagram.setShadowsStyle(ShadowsStyle.None);
