@@ -35,10 +35,10 @@ public class CreateSchemaController {
         return "/user/tworzenieBazy.html";
     }
 
-    @RequestMapping(value = { "/DBDesign" }, method = RequestMethod.GET)
+    @RequestMapping(value = { "/diagramER" }, method = RequestMethod.GET)
     public ModelAndView dbdesign() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("DBDesign.html"); // resources/templates/login.html
+        modelAndView.setViewName("diagramER.html"); // resources/templates/login.html
         return modelAndView;
     }
 

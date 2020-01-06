@@ -64,27 +64,7 @@ fieldset{
 	display: none;
 }
 
-hr
-{
-	border-width: 0px;
-	height: 1px;
-	background-image: -webkit-linear-gradient(left, rgba(226,228,231,0), rgba(226,228,231,1), rgba(226,228,231,0));
-	background-image: -moz-linear-gradient(left, rgba(226,228,231,0), rgba(226,228,231,1), rgba(226,228,231,0));
-	background-image: -ms-linear-gradient(left, rgba(226,228,231,0), rgba(226,228,231,1), rgba(226,228,231,0));
-	background-image: -o-linear-gradient(left, rgba(226,228,231,0), rgba(226,228,231,1), rgba(226,228,231,0));
-}
-
-
-
-
-
-
-
-
-
-
-
-/* .gridSlider */
+/* slider */
 .slider {
 	width: 80px;
 	height: 26px;
@@ -137,4 +117,4 @@ hr
 .slider input[type=checkbox]:checked + label {
 	left: 43px;
 }
-/* end .gridSlider */
+/* end slider */

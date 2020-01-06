@@ -2,18 +2,15 @@
 <head>
 	<title>MindFusion JsDiagram Sample - Database Design</title>
 	<link href="diagramER/common/jquery-ui.min.css" rel="stylesheet" />
-	<link href="diagramER/common/samples.css" rel="stylesheet" />
+	<link href="diagramER/common/diagramER.css" rel="stylesheet" />
 	<script type="text/javascript" src="diagramER/common/jquery.min.js"></script>
 	<script type="text/javascript" src="diagramER/common/jquery-ui.min.js"></script>
-	<script type="text/javascript" src="diagramER/common/samples.js"></script>
+	<script type="text/javascript" src="diagramER/common/popupWindow.js"></script>
 
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
 	<link href="https://fonts.googleapis.com/css?family=Courgette&display=swap" rel="stylesheet">
 </head>
 <body>
-
-
-
 	<div id="content" style="position: static; width: 1600px; height: 600px;"  >
 			<!-- The Overview component is bound to the canvas element below -->
 			<div style="position: absolute; right: 98px; width: 200px;
@@ -29,6 +26,51 @@
 				</canvas>
 			</div>
 		</div>
+
+
+		<div id="addRow-dialog" title="Dodawanie nowego pola">
+			<form>
+				<fieldset>
+					<input type="text" id="addRow-fieldName" placeholder="nazwa..." class="text ui-widget-content ui-corner-all" style="margin-top: 10px; width: 165px; height: 32px; margin-bottom: -1px;" />
+					<select id="addRow-fieldType" style="margin-top: 10px; width: 180px; ">
+						<option>NUMBER</option>
+						<option>CHAR(32)</option>
+						<option>DATE</option>
+						<option>VARCHAR</option>
+						<option>BLOB</option>
+					</select>
+
+				</fieldset>
+			</form>
+		</div>
+
+		<div id="editRow-dialog" title="Edycja pola">
+			<form>
+				<fieldset>
+					<input type="text" id="editRow-fieldName" placeholder="nazwa pola" class="text ui-widget-content ui-corner-all" style="margin-top: 10px; width: 165px; height: 32px; margin-bottom: -1px;" />
+					<select id="editRow-fieldType" style="margin-top: 10px; width: 180px; ">
+						<option>NUMBER</option>
+						<option>CHAR(32)</option>
+						<option>DATE</option>
+						<option>VARCHAR</option>
+						<option>BLOB</option>
+					</select>
+				</fieldset>
+			</form>
+		</div>
+		<div id="renameTable-dialog" title="Zmiana nazwy tabeli">
+			<form>
+				<fieldset>
+					<input type="text" id="renameTableCaption" placeholder="nazwa tabeli" class="text ui-widget-content ui-corner-all" />
+				</fieldset>
+			</form>
+		</div>
+		<div id="info-dialog" title="Connection Info">
+			<p>
+			</p>
+		</div>
+
+
 	</div>
 
 
@@ -63,52 +105,9 @@
 		</div>
 
 	</div>
-	<!-- .slideThree -->
 
-	<!-- end .slideThree -->
-	<div id="addRow-dialog" title="Dodawanie nowego pola">
-		<form>
-		<fieldset>
-			<input type="text" id="addRow-fieldName" placeholder="nazwa..." class="text ui-widget-content ui-corner-all" style="margin-top: 10px; width: 165px; height: 32px; margin-bottom: -1px;" />
-			<select id="addRow-fieldType" style="margin-top: 10px; width: 180px; ">
-				<option>NUMBER</option>
-				<option>CHAR(32)</option>
-				<option>DATE</option>
-				<option>VARCHAR</option>
-				<option>BLOB</option>
-			</select>
-
-		</fieldset>
-		</form>
-	</div>
-
-	<div id="editRow-dialog" title="Edycja pola">
-		<form>
-		<fieldset>
-			<input type="text" id="editRow-fieldName" placeholder="nazwa pola" class="text ui-widget-content ui-corner-all" style="margin-top: 10px; width: 165px; height: 32px; margin-bottom: -1px;" />
-			<select id="editRow-fieldType" style="margin-top: 10px; width: 180px; ">
-				<option>NUMBER</option>
-				<option>CHAR(32)</option>
-				<option>DATE</option>
-				<option>VARCHAR</option>
-				<option>BLOB</option>
-			</select>
-		</fieldset>
-		</form>
-	</div>
-	<div id="renameTable-dialog" title="Zmiana nazwy tabeli">
-		<form>
-		<fieldset>
-			<input type="text" id="renameTableCaption" placeholder="nazwa tabeli" class="text ui-widget-content ui-corner-all" />
-		</fieldset>
-		</form>
-	</div>
-	<div id="info-dialog" title="Connection Info">
-		<p>
-		</p>
-	</div>
 	<script src="diagramER/MindFusion.Common.js" type="text/javascript"></script>
 	<script src="diagramER/MindFusion.Diagramming.js" type="text/javascript"></script>
-	<script src="diagramER/DBDesign.js" type="text/javascript"></script>
+	<script src="diagramER/diagramER.js" type="text/javascript"></script>
 </body>
 </html>
