@@ -8258,6 +8258,7 @@ h1, h2, h3, h4, h5,
   #sidebar .custom-menu {
     display: inline-block;
     position: absolute;
+    z-index: 9999999;
     top: 20px;
     right: 0;
     margin-right: -35px;
@@ -8278,7 +8279,7 @@ h1, h2, h3, h4, h5,
       height: 30px; }
       #sidebar .custom-menu .btn.btn-primary:after, #sidebar .custom-menu .btn.btn-primary:before {
         position: absolute;
-        top: 2px;
+        top: 7px;
         left: 0;
         right: 0;
         bottom: 0;
@@ -8286,7 +8287,8 @@ h1, h2, h3, h4, h5,
         color: #fff; }
       #sidebar .custom-menu .btn.btn-primary:after {
         content: "\f053";
-        right: 2px; }
+        right: 2px;
+        top: 7px}
 
 .bg-wrap {
   width: 100%;

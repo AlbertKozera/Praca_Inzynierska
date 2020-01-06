@@ -69,6 +69,7 @@ $(document).ready(function () {
     ruler.setTextColor("rgb(245,69,66)");
     ruler.setPointerColor("#00ff41");
     ruler.setProjectionColor("#3a0030");
+    //ruler.scaleSize = 0;
     copyRuler = ruler;
 
     // set some Diagram properties.
@@ -159,6 +160,8 @@ $(document).ready(function () {
         rowClicked = -1;
         rowDeselected();
 
+
+        var ttt = ruler;
     });
 
     canvas.addEventListener('mousemove', function () {
@@ -290,6 +293,11 @@ $(document).ready(function () {
         if (zoom > 46 && zoom < 200) {
             diagram.setZoomFactorPivot(zoom, point)
         }
+        if((Math.round(zoom * 100) / 100) == 40){
+            zoom = 46;
+            diagram.setZoomFactorPivot(zoom, point)
+        }
+
     }, {passive: false});
 
 
