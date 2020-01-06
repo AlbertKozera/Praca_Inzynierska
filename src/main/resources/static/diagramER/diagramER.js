@@ -161,7 +161,7 @@ $(document).ready(function () {
 
     });
 
-    content.addEventListener('mousemove', function () {
+    canvas.addEventListener('mousemove', function () {
         var point = PivotPoint.Point;
         point.x = diagram.pointerPosition.x;
         point.y = diagram.pointerPosition.y;
