@@ -4,14 +4,13 @@
     <th:block th:include="fragments/sidebar/headerinc :: head"/>
 </head>
 <body>
-
 <div class="wrapper d-flex align-items-stretch">
     <nav id="sidebar">
         <div class="custom-menu">
             <button type="button" id="sidebarCollapse" class="btn btn-primary">
             </button>
         </div>
-        <div class="img bg-wrap text-center py-4" style="background-image: url(/static/sidebar/images/bg_1.jpg);">
+        <div class="img bg-wrap text-center py-4" style="background-image: url(sidebar/images/bg_1.jpg);">
             <div class="user-logo">
                 <div class="img" style="background-image: url(/static/sidebar/images/logo.jpg);"></div>
                 <!--<h3 sec:authentication="principal.username"></h3>-->
@@ -43,18 +42,12 @@
                 <a href="#"><span class="fa fa-sign-out-alt mr-3"></span> Wyloguj</a>
             </li>
         </ul>
-
     </nav>
-
     <!-- Page Content  -->
     <div id="content" class="p-4 p-md-5 pt-5">
-
-
+        <!--<th:block th:include="diagramER :: diagram"/>-->
     </div>
 </div>
-
-
-
 </body>
 <footer>
     <th:block th:include="fragments/sidebar/footerinc :: footer"/>

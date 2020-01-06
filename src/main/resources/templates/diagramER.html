@@ -1,10 +1,10 @@
 ﻿<!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
-        <th:block th:include="fragments/diagramER/headerinc :: head"/>
     </head>
-
     <body>
+        <div th:fragment="diagram">
+            <th:block th:include="fragments/diagramER/headerinc :: head"/>
         <div id="justdraw" style="position: static; width: 1600px; height: 600px;">
             <!-- The Overview component is bound to the canvas element below -->
             <div style="position: absolute; right: 98px; width: 200px; height: 200px; border: 1px solid #ffffff; background-color: #c0c0c0;">
@@ -67,7 +67,6 @@
                 </p>
             </div>
         </div>
-
         <div id="controls" style="position: absolute; left: 0; right: 401px; margin-top: 25px;">
             <button class="fas fa-undo" onclick="onUndo()"
                     style="margin-left: 5px; margin-bottom: 2px; padding-top: 5px; height: 49px;">Cofnij
@@ -116,14 +115,16 @@
                     <input type="checkbox" value="None" id="rulerSlider" onclick="rulerSlider()" name="check" checked/>
                     <label for="rulerSlider"></label>
                 </div>
-                <a class="fas fa-ruler-combined" style="font-size: 25px; position: absolute; left: 4px; margin-top: 31px;"></a>
+                <a class="fas fa-ruler-combined"
+                   style="font-size: 25px; position: absolute; left: 4px; margin-top: 31px;"></a>
             </div>
 
         </div>
+            <th:block th:include="fragments/diagramER/footerinc :: footer"/>
+        </div>
     </body>
-
-
     <footer>
-        <th:block th:include="fragments/diagramER/footerinc :: footer"/>
     </footer>
 </html>
+
+

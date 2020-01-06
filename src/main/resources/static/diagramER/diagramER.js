@@ -77,7 +77,7 @@ $(document).ready(function () {
     diagram.setBackBrush('rgba(55,55,55,0.87)');
     diagram.setLinkHeadShape('Triangle');
     diagram.setLinkHeadShapeSize(4);
-    diagram.getSelection().allowMultipleSelection = false;
+    diagram.getSelection().allowMultipleSelection = true;
     diagram.setGridSizeX(5);
     diagram.setGridSizeY(5);
     diagram.setGridColor("#232323");

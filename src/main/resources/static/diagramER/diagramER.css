@@ -33,15 +33,6 @@ input
 	outline: none;
 }
 
-::selection
-{
-	background-color: #cfcfcf;
-}
-
-::-moz-selection
-{
-	background-color: #cfcfcf;
-}
 
 ::placeholder {
 	color: #adadad;

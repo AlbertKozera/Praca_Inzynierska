@@ -46,6 +46,12 @@ public class CreateSchemaController {
         return modelAndView;
     }
 
+
+    @GetMapping("/test")
+    public String test() {
+        return "/test";
+    }
+
 }
 
 
