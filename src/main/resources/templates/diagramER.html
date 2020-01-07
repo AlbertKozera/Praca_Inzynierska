@@ -1,68 +1,55 @@
 ﻿<!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-    <head>
-    </head>
-    <body>
-        <div th:fragment="diagram">
-            <th:block th:include="fragments/diagramER/headerinc :: head"/>
-        <div id="justdraw" style="position: static; width: 1600px; height: 600px;">
-            <!-- The Overview component is bound to the canvas element below -->
-            <div style="position: absolute; right: 98px; width: 200px; height: 200px; border: 1px solid #ffffff; background-color: #c0c0c0; top: 700px;">
-                <canvas id="overview" width="200" height="200">
+<head>
+</head>
+<body>
+<div th:fragment="diagram">
+    <th:block th:include="fragments/diagramER/headerinc :: head"/>
+
+
+    <!-- The Overview component is bound to the canvas element below -->
+    <div id="justdraw" style="position: relative; width: 100%; height: 730px;">
+        <!-- The Diagram component is bound to the canvas element below -->
+        <div id="ruler" style="position: static; width: 100%; height: 100%;">
+            <div id="canvas" style="position: relative; width: 100%; height: 730px; overflow: scroll ">
+                <canvas id="diagram" width="2100" height="2100">
+                    This page requires a browser that supports HTML 5 Canvas element.
                 </canvas>
             </div>
-
-            <!-- The Diagram component is bound to the canvas element below -->
-            <div id="ruler" style="position: static; width: 100%; height: 100%;">
-                <div id="canvas" style="position: absolute; width: 1580px; height: 580px; margin-top: 0; margin-left: 0; overflow: scroll">
-                    <canvas id="diagram" width="2100" height="2100">
-                        This page requires a browser that supports HTML 5 Canvas element.
-                    </canvas>
-                </div>
-            </div>
-
-            <div id="addRow-dialog" title="Dodawanie nowego pola">
-                <form>
-                    <fieldset>
-                        <input type="text" id="addRow-fieldName" placeholder="nazwa..." class="text ui-widget-content ui-corner-all"/>
-                        <select id="addRow-fieldType">
-                            <option>NUMBER</option>
-                            <option>CHAR(32)</option>
-                            <option>DATE</option>
-                            <option>VARCHAR</option>
-                            <option>BLOB</option>
-                        </select>
-                    </fieldset>
-                </form>
-            </div>
-            <div id="editRow-dialog" title="Edycja pola">
-                <form>
-                    <fieldset>
-                        <input type="text" id="editRow-fieldName" placeholder="nazwa pola" class="text ui-widget-content ui-corner-all"/>
-                        <select id="editRow-fieldType">
-                            <option>NUMBER</option>
-                            <option>CHAR(32)</option>
-                            <option>DATE</option>
-                            <option>VARCHAR</option>
-                            <option>BLOB</option>
-                        </select>
-                    </fieldset>
-                </form>
-            </div>
-            <div id="renameTable-dialog" title="Zmiana nazwy tabeli">
-                <form>
-                    <fieldset>
-                        <input type="text" id="renameTableCaption" placeholder="nazwa tabeli" class="text ui-widget-content ui-corner-all"/>
-                    </fieldset>
-                </form>
-            </div>
-            <div id="info-dialog" title="Connection Info">
-                <p>
-                </p>
-            </div>
-
         </div>
-        <div id="controls" style="position: absolute; left: 0; right: 401px; margin-top: 25px;">
+    </div>
+
+
+    <div id="justdrawOptions" style="position: relative;">
+        <div style="position: relative; width: 200px; height: 200px; border: 1px solid #ffffff; background-color: #c0c0c0; float: left; z-index: 10">
+            <canvas id="overview" width="200" height="200">
+            </canvas>
+        </div>
+
+        <textarea id="generatedSql"
+                  style="height: 200px; width: 400px; position: relative; float: right;"></textarea>
+
+        <div id="sliders" style="position: relative; float: left; margin-top: 140px">
+            <div>
+                <div class="slider">
+                    <input type="checkbox" value="None" id="gridSlider" onclick="gridSlider()" name="check" checked/>
+                    <label for="gridSlider"></label>
+                </div>
+                <a class="fas fa-th" style="font-size: 25px; position: absolute; left: 4px"></a>
+            </div>
+            <div>
+                <div class="slider" style="margin-top: 31px;">
+                    <input type="checkbox" value="None" id="rulerSlider" onclick="rulerSlider()" name="check" checked/>
+                    <label for="rulerSlider"></label>
+                </div>
+                <a class="fas fa-ruler-combined"
+                   style="font-size: 25px; position: absolute; left: 4px; margin-top: 31px;"></a>
+            </div>
+        </div>
+
+
+
+        <div id="controls" style="position: relative; height: 150px;">
             <button class="fas fa-undo" onclick="onUndo()"
                     style="margin-left: 5px; margin-bottom: 2px; padding-top: 5px; height: 49px;">Cofnij
             </button>
@@ -96,30 +83,70 @@
             <button class="fas fa-compress-arrows-alt" onclick="resizeToFitText()"
                     style="margin-left: 5px; padding-top: 5px; height: 49px;">Dopasuj tabele
             </button>
-            <textarea id="generatedSql"
-                      style="height: 120px; width: 100%; bottom: 0px; left: 0px; right: 0px; top: 30px; "></textarea>
-            <div>
-                <div class="slider">
-                    <input type="checkbox" value="None" id="gridSlider" onclick="gridSlider()" name="check" checked/>
-                    <label for="gridSlider"></label>
-                </div>
-                <a class="fas fa-th" style="font-size: 25px; position: absolute; left: 4px"></a>
-            </div>
-            <div>
-                <div class="slider" style="margin-top: 31px;">
-                    <input type="checkbox" value="None" id="rulerSlider" onclick="rulerSlider()" name="check" checked/>
-                    <label for="rulerSlider"></label>
-                </div>
-                <a class="fas fa-ruler-combined"
-                   style="font-size: 25px; position: absolute; left: 4px; margin-top: 31px;"></a>
-            </div>
+        </div>
+    </div>
 
-        </div>
-            <th:block th:include="fragments/diagramER/footerinc :: footer"/>
-        </div>
-    </body>
-    <footer>
-    </footer>
+
+
+
+
+
+
+
+
+
+
+
+    <div id="addRow-dialog" title="Dodawanie nowego pola">
+        <form>
+            <fieldset>
+                <input type="text" id="addRow-fieldName" placeholder="nazwa..."
+                       class="text ui-widget-content ui-corner-all"/>
+                <select id="addRow-fieldType">
+                    <option>NUMBER</option>
+                    <option>CHAR(32)</option>
+                    <option>DATE</option>
+                    <option>VARCHAR</option>
+                    <option>BLOB</option>
+                </select>
+            </fieldset>
+        </form>
+    </div>
+    <div id="editRow-dialog" title="Edycja pola">
+        <form>
+            <fieldset>
+                <input type="text" id="editRow-fieldName" placeholder="nazwa pola"
+                       class="text ui-widget-content ui-corner-all"/>
+                <select id="editRow-fieldType">
+                    <option>NUMBER</option>
+                    <option>CHAR(32)</option>
+                    <option>DATE</option>
+                    <option>VARCHAR</option>
+                    <option>BLOB</option>
+                </select>
+            </fieldset>
+        </form>
+    </div>
+    <div id="renameTable-dialog" title="Zmiana nazwy tabeli">
+        <form>
+            <fieldset>
+                <input type="text" id="renameTableCaption" placeholder="nazwa tabeli"
+                       class="text ui-widget-content ui-corner-all"/>
+            </fieldset>
+        </form>
+    </div>
+    <div id="info-dialog" title="Connection Info">
+        <p>
+        </p>
+    </div>
+
+
+
+    <th:block th:include="fragments/diagramER/footerinc :: footer"/>
+</div>
+</body>
+<footer>
+</footer>
 </html>
 
 

@@ -414,6 +414,7 @@ $(document).ready(function () {
     $("#editRow-fieldType").selectmenu("destroy").selectmenu({style: "dropdown"}); // lista typów danych fix
 });
 
+
 function addRowOpen() {
     var table = tblClicked || diagram.getActiveItem();
 

@@ -12,15 +12,15 @@
         </div>
         <div class="img bg-wrap text-center py-4" style="background-image: url(sidebar/images/bg_1.jpg);">
             <div class="user-logo">
-                <div class="img" style="background-image: url(/static/sidebar/images/logo.jpg);"></div>
+                <div class="img" style="background-image: url(sidebar/images/logo.jpg);"></div>
                 <!--<h3 sec:authentication="principal.username"></h3>-->
             </div>
         </div>
         <ul class="list-unstyled components mb-5">
-            <li>
+            <li class="active">
                 <a href="#"><span class="fa fa-pencil-alt mr-3"></span> just draw!</a>
             </li>
-            <li class="active">
+            <li>
                 <a href="#"><span class="fa fa-database mr-3"></span> Menedżer baz danych</a>
             </li>
             <li>
@@ -44,7 +44,7 @@
         </ul>
     </nav>
     <!-- Page Content  -->
-    <div id="content" style="position: relative;">
+    <div id="content" style="position: relative; background-color: #272c32; overflow-y: hidden">
         <th:block th:include="diagramER :: diagram"/>
     </div>
 </div>

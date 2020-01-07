@@ -456,8 +456,8 @@ input.ui-button::-moz-focus-inner, button.ui-button::-moz-focus-inner {
 }
 
 .ui-widget-content {
-    border: 1px solid #fff;
-    background: #000000;
+/*    border: 1px solid #fff;*/
+    background: #21272D;
     color: #adadad
 }
 
@@ -466,8 +466,8 @@ input.ui-button::-moz-focus-inner, button.ui-button::-moz-focus-inner {
 }
 
 .ui-widget-header {
-    border: 1px solid #ddd;
-    background: #000000;
+   /* border: 1px solid #ddd;*/
+    background: #171c21;
     color: #fff;
     font-weight: bold
 }
@@ -477,8 +477,9 @@ input.ui-button::-moz-focus-inner, button.ui-button::-moz-focus-inner {
 }
 
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
-    border: 1px solid #ffffff;
-    background: #000000;
+/*    border: 1px solid #ffffff;*/
+    border: 0;
+    background: #313942;
     font-weight: normal;
     color: #ffffff
 }
