@@ -770,6 +770,15 @@ function rulerSlider() {
 }
 
 
+function refreshCanvas() {
+    setTimeout(function () {
+        if(copyRuler.getHorizontalScaleVisible() == true){
+            copyRuler.setHorizontalScaleVisible(true);
+            copyRuler.setVerticalScaleVisible(true);
+        }
+        diagram.repaint();
+    }, 300);
+}
 
 
 function rowSelected() {
