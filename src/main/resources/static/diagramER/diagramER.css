@@ -53,6 +53,33 @@ fieldset{
 }
 
 
+/* width */
+::-webkit-scrollbar {
+	background: #272C32;
+}
+
+/* corner */
+::-webkit-scrollbar-corner{
+	background: #272C32;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	display: none;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: #555;
+}
+
+
+
 #addRow-dialog{
 	display: none;
 }
