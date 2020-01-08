@@ -66,7 +66,7 @@ $(document).ready(function () {
     ruler.setDiagram(diagram);
     ruler.setBackColor("#272c32");
     ruler.setForeColor("#616161");
-    ruler.setTextColor("rgb(245,125,244)");
+    ruler.setTextColor("rgb(194,84,254)");
     ruler.setPointerColor("#00ff41");
     ruler.setProjectionColor("#3a0030");
     //ruler.scaleSize = 0;
