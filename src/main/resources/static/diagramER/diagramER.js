@@ -306,7 +306,7 @@ $(document).ready(function () {
         autoOpen: false,
         resizable: false,
         height: 'auto',
-        width: 250,
+        width: 270,
         modal: true,
         buttons: {
             "OK": addRow,
@@ -537,7 +537,7 @@ function createTable() {
     //nadanie tagu
     table.setTag(uniqueTagTable++);
     //podstawowe ustawienia
-    table.redimTable(4, 0);
+    table.redimTable(6, 0);
     table.setScrollable(true);
     table.setConnectionStyle(ConnectionStyle.Rows);
     //nagłówek tabeli
@@ -548,7 +548,7 @@ function createTable() {
     //obramowanie tabeli
     table.setStrokeDashStyle(DashStyle.Solid);
     table.setStrokeThickness(1.5);
-    table.setCellFrameStyle(CellFrameStyle.None);
+    table.setCellFrameStyle(CellFrameStyle.Simple);
     table.setStroke("#21272D");
     //aktualizacja scrollbara
     table.scroller.updateLocation();
@@ -558,7 +558,9 @@ function createTable() {
     table.columns[0] = {width: 5, columnStyle: 0};
     table.getColumn(1).columnStyle = ColumnStyle.AutoWidth;
     table.columns[2] = {width: 17, columnStyle: 0};
-    table.columns[3] = {width: 4.9, columnStyle: 0};
+    table.columns[3] = {width: 10, columnStyle: 0};
+    table.columns[4] = {width: 10, columnStyle: 0};
+    table.columns[5] = {width: 4.9, columnStyle: 0};
     generateSQL();
 }
 

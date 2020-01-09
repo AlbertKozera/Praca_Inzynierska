@@ -52,34 +52,6 @@ fieldset{
 	overflow: scroll;
 }
 
-
-/* width */
-::-webkit-scrollbar {
-	background: #272C32;
-}
-
-/* corner */
-::-webkit-scrollbar-corner{
-	background: #272C32;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-	display: none;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-	background: #888;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-	background: #555;
-}
-
-
-
 #addRow-dialog{
 	display: none;
 }
@@ -96,6 +68,7 @@ fieldset{
 	margin-top: 10px;
 	margin-bottom: 1px;
 	border: 1px solid #40464c;
+	float: left;
 }
 
 #editRow-fieldName{
@@ -109,6 +82,7 @@ fieldset{
 #addRow-fieldType{
 	width: 180px;
 	margin-top: 10px;
+
 }
 
 #editRow-fieldType{
@@ -119,6 +93,55 @@ fieldset{
 #renameTableCaption{
 	border: 1px solid #40464c;
 }
+
+#divPK{
+	position: absolute;
+	width: 54px;
+	left: 210px;
+}
+
+#PK{
+	position: relative;
+	width: 25px;
+	height: 17px;
+	left: -10px;
+	top: 16px;
+}
+
+#labelPK{
+	position: relative;
+	height: 1px;
+	font-size: 16px;
+	top: 13px;
+	left: -12px;
+}
+
+#divNN{
+	position: absolute;
+	width: 54px;
+	left: 210px;
+	top: 39px;
+}
+
+#NN{
+	position: relative;
+	width: 25px;
+	height: 17px;
+	left: -9px;
+	top: 16px;
+}
+
+#labelNN{
+	position: relative;
+	height: 1px;
+	font-size: 16px;
+	top: 13px;
+	left: -11px;
+}
+
+
+
+
 
 /* slider */
 .slider {
@@ -174,3 +197,28 @@ fieldset{
 	left: 43px;
 }
 /* end slider */
+
+/* width */
+::-webkit-scrollbar {
+	background: #272C32;
+}
+
+/* corner */
+::-webkit-scrollbar-corner{
+	background: #272C32;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	display: none;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: #555;
+}

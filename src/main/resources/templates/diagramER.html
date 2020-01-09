@@ -44,16 +44,6 @@
                 </div>
                 <a class="fas fa-ruler-combined fa-rotate-90"
                    style="font-size: 25px; position: absolute; left: 4px; margin-top: 31px; color: rgb(194,84,254)"></a>
-                <script>
-                    $(document).ready(function(){
-                        $("#rulerSlider").click(function(){
-                            $("#canvas").toggleClass("intro");
-                        });
-
-                    });
-                </script>
-
-
             </div>
         </div>
 
@@ -119,6 +109,14 @@
                     <option>VARCHAR</option>
                     <option>BLOB</option>
                 </select>
+                <div id="divPK">
+                <input type="checkbox" id="PK">
+                <label id="labelPK" for="PK">PK</label>
+                </div>
+                <div id="divNN">
+                    <input type="checkbox" id="NN">
+                    <label id="labelNN" for="NN">NN</label>
+                </div>
             </fieldset>
         </form>
     </div>
