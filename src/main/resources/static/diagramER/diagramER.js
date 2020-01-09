@@ -32,7 +32,7 @@ var Ruler = MindFusion.Diagramming.Ruler;
 var diagram, overview;
 var tableCount = 0, rowClicked = -1;
 var tblClicked = null, currentLink = null;
-var addRowDialog = null, addRowForm = null, addRowName = null, addRowType = null;
+var addRowDialog = null, addRowForm = null, addRowName = null, addRowType = null, addRowPK = null, addRowNN = null;
 var editRowDialog = null, editRowForm = null, editRowName = null, editRowType = null;
 var renameTableDialog = null, renameTableForm = null, renameTableCaption = null;
 var infoDialog = null, infoText = null;
@@ -325,6 +325,8 @@ $(document).ready(function () {
     });
     addRowName = $("#addRow-fieldName");
     addRowType = $("#addRow-fieldType");
+    addRowPK = $("#addRowPK");
+    addRowNN = $("#addRowNN");
 
 
     editRowDialog = $("#editRow-dialog").dialog({
@@ -434,6 +436,9 @@ function addRow() {
     table.addRow();
 
     var lastRow = table.cells.rows - 1;
+
+   // var pk = addRowPK[0].checked;
+   // var nn = addRowNN[0].checked;
 
     // use the cell indexer to access cells by their column and row
     counter = table.getCell(0, lastRow); // licznik
