@@ -32,7 +32,7 @@ var Ruler = MindFusion.Diagramming.Ruler;
 var diagram, overview;
 var tableCount = 0, rowClicked = -1;
 var tblClicked = null, currentLink = null;
-var addRowDialog = null, addRowForm = null, addRowName = null, addRowType = null, addRowPK = null, addRowNN = null;
+var addRowDialog = null, addRowForm = null, addRowName = null, addRowType = null, addRowPK = null, addRowNN = null, editRowPK = null, editRowNN = null;
 var editRowDialog = null, editRowForm = null, editRowName = null, editRowType = null;
 var renameTableDialog = null, renameTableForm = null, renameTableCaption = null;
 var infoDialog = null, infoText = null;
@@ -351,6 +351,8 @@ $(document).ready(function () {
     });
     editRowName = $("#editRow-fieldName");
     editRowType = $("#editRow-fieldType");
+    editRowPK = $("#editRowPK");
+    editRowNN = $("#editRowNN");
 
     renameTableDialog = $("#renameTable-dialog").dialog({
         autoOpen: false,
@@ -496,7 +498,21 @@ function editRowOpen() {
 
     editRowName.val(table.getCell(1, rowClicked).getText());
     editRowType.val(table.getCell(2, rowClicked).getText());
+    if(table.getCell(3, rowClicked).getText() == "true"){
+        editRowPK.attr("checked", true);
+    }
+    else
+        editRowPK.attr("checked", false);
+    if(table.getCell(4, rowClicked).getText() == "NOT NULL"){
+        editRowNN.attr("checked", true);
+    }
+    else
+        editRowNN.attr("checked", false);
+
+
+
     editRowType.selectmenu("refresh");
+
 
     editRowDialog.dialog("open");
 }
@@ -510,6 +526,11 @@ function editRow() {
     // use the cell indexer to access cells by their column and row
     table.getCell(1, rowClicked).setText(editRowName[0].value);
     table.getCell(2, rowClicked).setText(editRowType[0].value);
+    table.getCell(3, rowClicked).setText(editRowPK[0].checked);
+    if(editRowNN[0].checked == true)
+        table.getCell(4, rowClicked).setText("NOT NULL");
+    else
+        table.getCell(4, rowClicked).setText("");
 
     // close the dialog
     editRowDialog.dialog("close");
@@ -571,8 +592,8 @@ function createTable() {
     table.columns[0] = {width: 5, columnStyle: 0};
     table.getColumn(1).columnStyle = ColumnStyle.AutoWidth;
     table.columns[2] = {width: 17, columnStyle: 0};
-    table.columns[3] = {width: 15, columnStyle: 0};
-    table.columns[4] = {width: 25, columnStyle: 0};
+    table.columns[3] = {width: 0, columnStyle: 0};
+    table.columns[4] = {width: 0, columnStyle: 0};
     table.columns[5] = {width: 4.9, columnStyle: 0};
     generateSQL();
 }
