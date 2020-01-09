@@ -159,9 +159,6 @@ $(document).ready(function () {
         tblClicked = null;
         rowClicked = -1;
         rowDeselected();
-
-
-        var ttt = ruler;
     });
 
     canvas.addEventListener('mousemove', function () {
@@ -659,7 +656,7 @@ function generateSQL() {
 
     // enumerate all tables in the current diagram
     ArrayList.forEach(diagram.nodes, function (table) {
-        text += "CREATE TABLE " + table.getText() + "\r\n(";
+        text += "CREATE TABLE " + table.getText() + " (\n";
 
         // enumerate all rows of a table
         for (var r = 0; r < table.cells.rows; ++r) {
@@ -668,8 +665,32 @@ function generateSQL() {
             if (r < table.cells.rows - 1)
                 text += ",\r\n";
         }
-        text += "\r\n);\r\n\r\n";
+        text += "\r\n);\r\n";
     });
+
+    var flag = true;
+    ArrayList.forEach(diagram.nodes, function (table) {
+        for (var r = 0; r < table.cells.rows; ++r) {
+            if(table.getCell(3, r).getText() == "true" && flag) // sprawdz czy wiersz to primary key
+            {
+                text += "\nALTER TABLE " + table.getText() + "\n";
+                text += "ADD CONSTRAINT " + table.getText() + "_PK " + "PRIMARY KEY " + "(";
+                flag = false;
+            }
+            if(table.getCell(3, r).getText() == "true" && !flag) // sprawdz czy wiersz to primary key
+            {
+                text += table.getCell(1, r).getText();
+                if (r < table.cells.rows - 1)
+                    text += ", ";
+            }
+        }
+        if(!flag){
+            text += ");";
+            flag = true;
+        }
+
+    });
+
     $('#generatedSql')[0].innerHTML = text;
 }
 
