@@ -28,6 +28,7 @@ var GridStyle = MindFusion.Diagramming.GridStyle;
 var Utils = MindFusion.Diagramming.Utils;
 var DiagramItem = MindFusion.Diagramming.DiagramItem;
 var Ruler = MindFusion.Diagramming.Ruler;
+var HandlesStyle = MindFusion.Diagramming;
 
 var diagram, overview;
 var tableCount = 0, rowClicked = -1;
@@ -143,6 +144,8 @@ $(document).ready(function () {
             //aktualizacja scrollbara
             table.scroller.updateLocation();
             table.scroller.updateContent();
+            //ustawienie haków
+            table.setHandlesStyle(2);
 
             // set the first column to resize with the table
             table.columns[0] = {width: 5, columnStyle: 0};
@@ -161,6 +164,8 @@ $(document).ready(function () {
         tblClicked = null;
         rowClicked = -1;
         rowDeselected();
+
+
     });
 
     canvas.addEventListener('mousemove', function () {
@@ -588,6 +593,9 @@ function createTable() {
     //aktualizacja scrollbara
     table.scroller.updateLocation();
     table.scroller.updateContent();
+    //ustawienie haków
+    table.setHandlesStyle(2);
+
 
     // set the first column to resize with the table
     table.columns[0] = {width: 5, columnStyle: 0};
