@@ -127,7 +127,7 @@ $(document).ready(function () {
             //nadanie tagu
             table.setTag(uniqueTagTable++);
             //podstawowe ustawienia
-            table.redimTable(4, 0);
+            table.redimTable(6, 0);
             table.setScrollable(true);
             table.setConnectionStyle(ConnectionStyle.Rows);
             //nagłówek tabeli
@@ -138,7 +138,7 @@ $(document).ready(function () {
             //obramowanie tabeli
             table.setStrokeDashStyle(DashStyle.Solid);
             table.setStrokeThickness(1.5);
-            table.setCellFrameStyle(CellFrameStyle.None);
+            table.setCellFrameStyle(CellFrameStyle.Simple);
             table.setStroke("#21272D");
             //aktualizacja scrollbara
             table.scroller.updateLocation();
@@ -148,7 +148,9 @@ $(document).ready(function () {
             table.columns[0] = {width: 5, columnStyle: 0};
             table.getColumn(1).columnStyle = ColumnStyle.AutoWidth;
             table.columns[2] = {width: 17, columnStyle: 0};
-            table.columns[3] = {width: 4.9, columnStyle: 0};
+            table.columns[3] = {width: 0, columnStyle: 0};
+            table.columns[4] = {width: 0, columnStyle: 0};
+            table.columns[5] = {width: 4.9, columnStyle: 0};
 
             generateSQL();
         }
@@ -472,6 +474,8 @@ function addRow() {
     counter.setFont(new Font("Arial", 2.8, false, false));
     name.setFont(new Font("Verdana", 3, false, false));
     type.setFont(new Font("Verdana", 3, false, false));
+    pk.setFont(new Font("Verdana", 0, false, false));
+    nn.setFont(new Font("Verdana", 0, false, false));
 
     // setTextColor to specific column
     counter.setTextColor('rgb(220,220,220)');
@@ -719,6 +723,8 @@ function resizeToFitText() {
         var table = listOfNodes[i];
         table.resizeToFitText(false,false);
         table.columns[3].width = 4.9;
+        table.columns[4].width = 0;
+        table.columns[5].width = 0;
         table.bounds.width = table.bounds.width + 5;
 
         if(table.rows.length == 0){
