@@ -428,7 +428,7 @@ function addRowOpen() {
 
 function addRow() {
     var table = tblClicked || diagram.getActiveItem();
-    var counter, name, type, scrollbarCell;
+    var counter, name, type, pk, nn, scrollbarCell;
 
     if (!table || !AbstractionLayer.isInstanceOfType(TableNode, table))
         return;
@@ -450,7 +450,15 @@ function addRow() {
     type = table.getCell(2, lastRow);  // typ
     type.setTag(uniqueTagCell++);
     type.setText(addRowType[0].value);
-    scrollbarCell = table.getCell(3, lastRow); // martwa komórka
+
+    pk = table.getCell(3, lastRow); // pk
+    pk.setText(addRowPK[0].checked);
+
+    nn = table.getCell(4, lastRow); // nn
+    if(addRowNN[0].checked == true)
+    nn.setText("NOT NULL");
+
+    scrollbarCell = table.getCell(5, lastRow); // martwa komórka
     scrollbarCell.setTag("ignore");
 
     // align text in new cells
@@ -563,8 +571,8 @@ function createTable() {
     table.columns[0] = {width: 5, columnStyle: 0};
     table.getColumn(1).columnStyle = ColumnStyle.AutoWidth;
     table.columns[2] = {width: 17, columnStyle: 0};
-    table.columns[3] = {width: 10, columnStyle: 0};
-    table.columns[4] = {width: 10, columnStyle: 0};
+    table.columns[3] = {width: 15, columnStyle: 0};
+    table.columns[4] = {width: 25, columnStyle: 0};
     table.columns[5] = {width: 4.9, columnStyle: 0};
     generateSQL();
 }
@@ -635,7 +643,7 @@ function generateSQL() {
         // enumerate all rows of a table
         for (var r = 0; r < table.cells.rows; ++r) {
             // get text of cells in current row
-            text += "\t" + table.getCell(1, r).getText() + " " + table.getCell(2, r).getText();
+            text += "\t" + table.getCell(1, r).getText() + " " + table.getCell(2, r).getText() + " " + table.getCell(4, r).getText();
             if (r < table.cells.rows - 1)
                 text += ",\r\n";
         }
