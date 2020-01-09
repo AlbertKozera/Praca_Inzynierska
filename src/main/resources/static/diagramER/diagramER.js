@@ -331,7 +331,7 @@ $(document).ready(function () {
         autoOpen: false,
         resizable: false,
         height: 'auto',
-        width: 250,
+        width: 270,
         modal: true,
         buttons: {
             "OK": editRow,

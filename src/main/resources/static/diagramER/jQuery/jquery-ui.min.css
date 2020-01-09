@@ -450,6 +450,7 @@ input.ui-button::-moz-focus-inner, button.ui-button::-moz-focus-inner {
 }
 
 .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
+    float: left;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 1em;
     color: white

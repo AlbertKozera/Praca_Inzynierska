@@ -91,16 +91,19 @@ fieldset{
 }
 
 #renameTableCaption{
+	position: relative;
+	left: 45px;
 	border: 1px solid #40464c;
 }
 
-#divPK{
+.divPK{
 	position: absolute;
 	width: 54px;
+	top: 9px;
 	left: 210px;
 }
 
-#PK{
+.PK{
 	position: relative;
 	width: 25px;
 	height: 17px;
@@ -108,22 +111,22 @@ fieldset{
 	top: 16px;
 }
 
-#labelPK{
+.labelPK{
 	position: relative;
 	height: 1px;
 	font-size: 16px;
-	top: 13px;
+	top: 11px;
 	left: -12px;
 }
 
-#divNN{
+.divNN{
 	position: absolute;
 	width: 54px;
-	left: 210px;
-	top: 39px;
+	left: 209px;
+	top: 41px;
 }
 
-#NN{
+.NN{
 	position: relative;
 	width: 25px;
 	height: 17px;
@@ -131,12 +134,12 @@ fieldset{
 	top: 16px;
 }
 
-#labelNN{
+.labelNN{
 	position: relative;
 	height: 1px;
 	font-size: 16px;
-	top: 13px;
-	left: -11px;
+	top: 11px;
+	left: -10px;
 }
 
 
