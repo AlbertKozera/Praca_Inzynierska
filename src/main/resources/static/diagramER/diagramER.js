@@ -128,7 +128,7 @@ $(document).ready(function () {
             //nadanie tagu
             table.setTag(uniqueTagTable++);
             //podstawowe ustawienia
-            table.redimTable(6, 0);
+            table.redimTable(7, 0);
             table.setScrollable(true);
             table.setConnectionStyle(ConnectionStyle.Rows);
             //nagłówek tabeli
@@ -147,14 +147,15 @@ $(document).ready(function () {
             //ustawienie haków
             table.setHandlesStyle(2);
 
+
             // set the first column to resize with the table
             table.columns[0] = {width: 5, columnStyle: 0};
             table.getColumn(1).columnStyle = ColumnStyle.AutoWidth;
             table.columns[2] = {width: 17, columnStyle: 0};
             table.columns[3] = {width: 0, columnStyle: 0};
             table.columns[4] = {width: 0, columnStyle: 0};
-            table.columns[5] = {width: 4.9, columnStyle: 0};
-
+            table.columns[5] = {width: 0, columnStyle: 0};
+            table.columns[6] = {width: 4.9, columnStyle: 0};
             generateSQL();
         }
     });
@@ -436,7 +437,7 @@ function addRowOpen() {
 
 function addRow() {
     var table = tblClicked || diagram.getActiveItem();
-    var counter, name, type, pk, nn, scrollbarCell;
+    var counter, name, type, pk, uk, nn, scrollbarCell;
 
     if (!table || !AbstractionLayer.isInstanceOfType(TableNode, table))
         return;
@@ -458,15 +459,15 @@ function addRow() {
     type = table.getCell(2, lastRow);  // typ
     type.setTag(uniqueTagCell++);
     type.setText(addRowType[0].value);
-
     pk = table.getCell(3, lastRow); // pk
     pk.setText(addRowPK[0].checked);
-
-    nn = table.getCell(4, lastRow); // nn
+    uk = table.getCell(4, lastRow); // uk
+    uk.setText(addRowUK[0].checked);
+    nn = table.getCell(5, lastRow); // nn
     if(addRowNN[0].checked == true)
     nn.setText("NOT NULL");
 
-    scrollbarCell = table.getCell(5, lastRow); // martwa komórka
+    scrollbarCell = table.getCell(6, lastRow); // martwa komórka
     scrollbarCell.setTag("ignore");
 
     // align text in new cells
@@ -482,7 +483,9 @@ function addRow() {
     name.setFont(new Font("Verdana", 3, false, false));
     type.setFont(new Font("Verdana", 3, false, false));
     pk.setFont(new Font("Verdana", 0, false, false));
+    uk.setFont(new Font("Verdana", 0, false, false));
     nn.setFont(new Font("Verdana", 0, false, false));
+
 
     // setTextColor to specific column
     counter.setTextColor('rgb(220,220,220)');
@@ -511,7 +514,12 @@ function editRowOpen() {
     }
     else
         editRowPK.attr("checked", false);
-    if(table.getCell(4, rowClicked).getText() == "NOT NULL"){
+    if(table.getCell(4, rowClicked).getText() == "true"){
+        editRowUK.attr("checked", true);
+    }
+    else
+        editRowUK.attr("checked", false);
+    if(table.getCell(5, rowClicked).getText() == "NOT NULL"){
         editRowNN.attr("checked", true);
     }
     else
@@ -535,10 +543,11 @@ function editRow() {
     table.getCell(1, rowClicked).setText(editRowName[0].value);
     table.getCell(2, rowClicked).setText(editRowType[0].value);
     table.getCell(3, rowClicked).setText(editRowPK[0].checked);
+    table.getCell(4, rowClicked).setText(editRowUK[0].checked);
     if(editRowNN[0].checked == true)
-        table.getCell(4, rowClicked).setText("NOT NULL");
+        table.getCell(5, rowClicked).setText("NOT NULL");
     else
-        table.getCell(4, rowClicked).setText("");
+        table.getCell(5, rowClicked).setText("");
 
     // close the dialog
     editRowDialog.dialog("close");
@@ -579,7 +588,7 @@ function createTable() {
     //nadanie tagu
     table.setTag(uniqueTagTable++);
     //podstawowe ustawienia
-    table.redimTable(6, 0);
+    table.redimTable(7, 0);
     table.setScrollable(true);
     table.setConnectionStyle(ConnectionStyle.Rows);
     //nagłówek tabeli
@@ -605,7 +614,8 @@ function createTable() {
     table.columns[2] = {width: 17, columnStyle: 0};
     table.columns[3] = {width: 0, columnStyle: 0};
     table.columns[4] = {width: 0, columnStyle: 0};
-    table.columns[5] = {width: 4.9, columnStyle: 0};
+    table.columns[5] = {width: 0, columnStyle: 0};
+    table.columns[6] = {width: 4.9, columnStyle: 0};
     generateSQL();
 }
 
@@ -675,7 +685,7 @@ function generateSQL() {
         // enumerate all rows of a table
         for (var r = 0; r < table.cells.rows; ++r) {
             // get text of cells in current row
-            text += "\t" + table.getCell(1, r).getText() + " " + table.getCell(2, r).getText() + " " + table.getCell(4, r).getText();
+            text += "\t" + table.getCell(1, r).getText() + " " + table.getCell(2, r).getText() + " " + table.getCell(5, r).getText();
             if (r < table.cells.rows - 1)
                 text += ",\r\n";
         }
@@ -683,6 +693,7 @@ function generateSQL() {
     });
 
     var flag = true;
+    var iterator = 0;
     ArrayList.forEach(diagram.nodes, function (table) {
         for (var r = 0; r < table.cells.rows; ++r) {
             if(table.getCell(3, r).getText() == "true" && flag) // sprawdz czy wiersz to primary key
@@ -693,9 +704,10 @@ function generateSQL() {
             }
             if(table.getCell(3, r).getText() == "true" && !flag) // sprawdz czy wiersz to primary key
             {
-                text += table.getCell(1, r).getText();
-                if (r < table.cells.rows - 1)
+                iterator++;
+                if (iterator > 1)
                     text += ", ";
+                text += table.getCell(1, r).getText();
             }
         }
         if(!flag){
@@ -732,10 +744,11 @@ function resizeToFitText() {
     for (var i = 0; i < listOfNodes.length; i++) {
         var table = listOfNodes[i];
         table.resizeToFitText(false,false);
-        table.columns[3].width = 4.9;
+        table.columns[3].width = 0;
         table.columns[4].width = 0;
         table.columns[5].width = 0;
-        table.bounds.width = table.bounds.width + 5;
+        table.columns[6].width = 4.9;
+        table.bounds.width = table.bounds.width - 15;
 
         if(table.rows.length == 0){
             table.bounds.width = 52;
