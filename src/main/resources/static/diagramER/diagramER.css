@@ -98,49 +98,42 @@ fieldset{
 
 .divPK{
 	position: absolute;
-	width: 54px;
-	top: 9px;
-	left: 210px;
+	width: 49px;
+	top: 21px;
+	left: 208px;
+	color: #daeb00;
 }
 
-.PK{
-	position: relative;
-	width: 25px;
-	height: 17px;
-	left: -10px;
-	top: 16px;
-}
-
-.labelPK{
-	position: relative;
-	height: 1px;
-	font-size: 16px;
-	top: 11px;
-	left: -12px;
+.divUK{
+	position: absolute;
+	width: 49px;
+	left: 208px;
+	top: 41px;
 }
 
 .divNN{
 	position: absolute;
-	width: 54px;
-	left: 209px;
-	top: 41px;
+	width: 49px;
+	left: 208px;
+	top: 61px;
 }
 
-.NN{
+.checkbox_PK_UK_NN{
 	position: relative;
-	width: 25px;
+	width: 15px;
 	height: 17px;
-	left: -9px;
-	top: 16px;
 }
 
-.labelNN{
+.label_PK_UK_NN{
 	position: relative;
 	height: 1px;
-	font-size: 16px;
-	top: 11px;
-	left: -10px;
+	font-size: 12px;
+	left: -5px;
+	top: -4px;
 }
+
+
+
 
 
 

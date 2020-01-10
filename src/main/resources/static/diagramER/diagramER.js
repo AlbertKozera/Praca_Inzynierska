@@ -33,7 +33,7 @@ var HandlesStyle = MindFusion.Diagramming;
 var diagram, overview;
 var tableCount = 0, rowClicked = -1;
 var tblClicked = null, currentLink = null;
-var addRowDialog = null, addRowForm = null, addRowName = null, addRowType = null, addRowPK = null, addRowNN = null, editRowPK = null, editRowNN = null;
+var addRowDialog = null, addRowForm = null, addRowName = null, addRowType = null, addRowPK = null, addRowUK = null, addRowNN = null, editRowPK = null, editRowUK = null, editRowNN = null;
 var editRowDialog = null, editRowForm = null, editRowName = null, editRowType = null;
 var renameTableDialog = null, renameTableForm = null, renameTableCaption = null;
 var infoDialog = null, infoText = null;
@@ -77,7 +77,7 @@ $(document).ready(function () {
     diagram.setBehavior(Behavior.LinkTables);
     diagram.setAllowSelfLoops(false);
     diagram.setBackBrush('rgba(64,69,75,0.87)');
-    diagram.setLinkHeadShape('Triangle');
+    diagram.setLinkHeadShape('Arrow');
     diagram.setLinkHeadShapeSize(4);
     diagram.getSelection().allowMultipleSelection = true;
     diagram.setGridSizeX(5);
@@ -330,6 +330,7 @@ $(document).ready(function () {
     addRowName = $("#addRow-fieldName");
     addRowType = $("#addRow-fieldType");
     addRowPK = $("#addRowPK");
+    addRowUK = $("#addRowUK");
     addRowNN = $("#addRowNN");
 
 
@@ -356,6 +357,7 @@ $(document).ready(function () {
     editRowName = $("#editRow-fieldName");
     editRowType = $("#editRow-fieldType");
     editRowPK = $("#editRowPK");
+    editRowUK = $("#editRowUK");
     editRowNN = $("#editRowNN");
 
     renameTableDialog = $("#renameTable-dialog").dialog({
