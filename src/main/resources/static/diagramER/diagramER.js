@@ -692,33 +692,76 @@ function generateSQL() {
         text += "\r\n);\r\n";
     });
 
-    var flag = true;
-    var iterator = 0;
+    var flag_PK = true;
     ArrayList.forEach(diagram.nodes, function (table) {
         for (var r = 0; r < table.cells.rows; ++r) {
-            if(table.getCell(3, r).getText() == "true" && flag) // sprawdz czy wiersz to primary key
+            if(table.getCell(3, r).getText() == "true" && flag_PK) // sprawdz czy wiersz to primary key
             {
                 text += "\nALTER TABLE " + table.getText() + "\n";
                 text += "ADD CONSTRAINT " + table.getText() + "_PK " + "PRIMARY KEY " + "(";
-                flag = false;
+                flag_PK = false;
             }
-            if(table.getCell(3, r).getText() == "true" && !flag) // sprawdz czy wiersz to primary key
+            if(table.getCell(3, r).getText() == "true" && !flag_PK) // sprawdz czy wiersz to primary key
             {
-                iterator++;
-                if (iterator > 1)
-                    text += ", ";
                 text += table.getCell(1, r).getText();
+                if (isThereMoreThanOne(table,3) > 1 && r < counterOfPrimaryAndUniqueKeys(table, 3))
+                    text += ", ";
             }
         }
-        if(!flag){
+        if(!flag_PK){
             text += ");";
-            flag = true;
+            flag_PK = true;
         }
-
     });
+
+    var flag_UK = true;
+    var iterator_numbersUK = 0;
+    ArrayList.forEach(diagram.nodes, function (table) {
+        for (var r = 0; r < table.cells.rows; ++r) {
+            if(table.getCell(4, r).getText() == "true" && flag_UK) // sprawdz czy wiersz to unique key
+            {
+                text += "\nALTER TABLE " + table.getText() + "\n";
+                text += "ADD CONSTRAINT " + table.getText() + "_UK" + ++iterator_numbersUK + " UNIQUE " + "(";
+                flag_UK = false;
+            }
+            if(table.getCell(4, r).getText() == "true" && !flag_UK) // sprawdz czy wiersz to unique key
+            {
+                text += table.getCell(1, r).getText();
+                if (isThereMoreThanOne(table,4) > 1 && r < counterOfPrimaryAndUniqueKeys(table, 4))
+                    text += ", ";
+            }
+        }
+        if(!flag_UK){
+            text += ");";
+            flag_UK = true;
+        }
+    });
+
 
     $('#generatedSql')[0].innerHTML = text;
 }
+
+function isThereMoreThanOne(table, cell) {
+    var i=0;
+    for (var r = 0; r < table.cells.rows; ++r) {
+        if(table.getCell(cell, r).getText() == "true"){
+            i++;
+        }
+    }
+    return i;
+}
+function counterOfPrimaryAndUniqueKeys(table, cell) {
+    var lastRow = 0;
+    for (var r = 0; r < table.cells.rows; ++r) {
+        if(table.getCell(cell, r).getText() == "true"){
+            lastRow = r;
+        }
+    }
+    return lastRow;
+}
+
+
+
 
 function onUndo() {
     diagram.undo();
