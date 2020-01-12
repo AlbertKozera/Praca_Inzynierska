@@ -34,7 +34,8 @@ var Shape = MindFusion.Diagramming.Shape;
 var diagram, overview;
 var tableCount = 0, rowClicked = -1;
 var tblClicked = null, currentLink = null;
-var addRowDialog = null, addRowForm = null, addRowName = null, addRowType = null, addRowPK = null, addRowUK = null, addRowNN = null, editRowPK = null, editRowUK = null, editRowNN = null;
+var addRowDialog = null, addRowForm = null, addRowName = null, addRowType = null, addRowPK = null, addRowUK = null,
+    addRowNN = null, editRowPK = null, editRowUK = null, editRowNN = null;
 var editRowDialog = null, editRowForm = null, editRowName = null, editRowType = null;
 var renameTableDialog = null, renameTableForm = null, renameTableCaption = null;
 var infoDialog = null, infoText = null;
@@ -50,8 +51,9 @@ var selectedHighlightedRow = false;
 var selectedHighlightedTable = -1;
 var youCanNotConnectNormalPool = false;
 var link_youCanNotConnectNormalPool = null;
-var oneToOne = new Shape({ outline: '', decoration: 'M13,110 L87,110 M13,80 L87,80', id: 'OneToOne' });
-var noShape = new Shape({ outline: '', decoration: 'M0,0 L0,0', id: 'NoShape' });
+var iterator_numbersFK = 0;
+var oneToOne = new Shape({outline: '', decoration: 'M13,110 L87,110 M13,80 L87,80', id: 'OneToOne'});
+var noShape = new Shape({outline: '', decoration: 'M0,0 L0,0', id: 'NoShape'});
 
 $(document).ready(function () {
     // create a Diagram component that wraps the "diagram" canvas
@@ -179,7 +181,7 @@ $(document).ready(function () {
     });
 
     canvas.addEventListener('mousemove', function () {
-        if(youCanNotConnectNormalPool){
+        if (youCanNotConnectNormalPool) {
             youCanNotConnectNormalPool = false;
             diagram.removeItem(link_youCanNotConnectNormalPool);
         }
@@ -279,15 +281,13 @@ $(document).ready(function () {
 
     diagram.addEventListener(Events.linkClicked, function (sender, args) {
         var linkClicked = args.getLink();
-
-/*
-DefaultFlow
-PointerArrow
-Reversed
-RevWithLine
-Slash
-        */
-
+        /*
+        DefaultFlow
+        PointerArrow
+        Reversed
+        RevWithLine
+        Slash
+                */
     });
 
     diagram.addEventListener(Events.linkDoubleClicked, function (sender, args) {
@@ -299,15 +299,12 @@ Slash
     });
 
     diagram.addEventListener(Events.linkCreating, function (sender, args) {
-        if (args.link.originConnection.row == -1)
-        {
+        if (args.link.originConnection.row == -1) {
             args.setCancel(true);
             args.cancelDrag();
             return;
-        }
-        else if (args.link.targetConnection != null)
-        {
-            if(args.link.targetConnection.row == -1){
+        } else if (args.link.targetConnection != null) {
+            if (args.link.targetConnection.row == -1) {
                 args.setCancel(true);
             }
         }
@@ -316,14 +313,10 @@ Slash
 
     diagram.addEventListener(Events.linkCreated, function (sender, args) {
         var linkCreated = args.getLink();
-
         var tableDestination = linkCreated.getDestination();
         var tableOrigin = linkCreated.getOrigin();
         var rowDestination = linkCreated.getDestinationIndex();
         var rowOrigin = linkCreated.getOriginIndex();
-
-
-
         if (
             ((tableDestination.getCell(3, rowDestination).getText() == "true") || (tableDestination.getCell(4, rowDestination).getText() == "true"))
             &&
@@ -333,27 +326,17 @@ Slash
             linkCreated.setHeadShape('OneToOne');
         }
         else if (
-            ((tableDestination.getCell(3, rowDestination).getText() == "false") && (tableDestination.getCell(4, rowDestination).getText() == "false"))
-            &&
-            ((tableOrigin.getCell(3, rowOrigin).getText() == "true") || (tableOrigin.getCell(4, rowOrigin).getText() == "true"))
-        ) {
-            linkCreated.setBaseShape('OneToOne');
-            linkCreated.setHeadShape('RevWithLine');
-        }
-        else if (
             ((tableDestination.getCell(3, rowDestination).getText() == "true") || (tableDestination.getCell(4, rowDestination).getText() == "true"))
             &&
             ((tableOrigin.getCell(3, rowOrigin).getText() == "false") && (tableOrigin.getCell(4, rowOrigin).getText() == "false"))
         ) {
             linkCreated.setBaseShape('RevWithLine');
             linkCreated.setHeadShape('OneToOne');
-        }
-        else{
+        } else {
             youCanNotConnectNormalPool = true;
             link_youCanNotConnectNormalPool = linkCreated;
         }
-
-
+        generateSQL();
     });
 
     diagram.addEventListener(Events.nodeSelected, function (sender, args) {
@@ -378,7 +361,6 @@ Slash
 
     canvas.addEventListener('wheel', function (e) {
         e.preventDefault(); // do not use scrollbars
-
         var point = PivotPoint.Point;
         point.x = diagram.pointerPosition.x;
         point.y = diagram.pointerPosition.y;
@@ -387,11 +369,10 @@ Slash
         if (zoom > 67.2 && zoom < 200) {
             diagram.setZoomFactorPivot(zoom, point)
         }
-        if(zoom < 67.2){
+        if (zoom < 67.2) {
             zoom = 72;
             diagram.setZoomFactorPivot(zoom, point)
         }
-
     }, {passive: false});
 
 
@@ -535,9 +516,6 @@ function addRow() {
 
     var lastRow = table.cells.rows - 1;
 
-   // var pk = addRowPK[0].checked;
-   // var nn = addRowNN[0].checked;
-
     // use the cell indexer to access cells by their column and row
     counter = table.getCell(0, lastRow); // licznik
     counter.setTag(uniqueTagCell++);
@@ -553,8 +531,8 @@ function addRow() {
     uk = table.getCell(4, lastRow); // uk
     uk.setText(addRowUK[0].checked);
     nn = table.getCell(5, lastRow); // nn
-    if(addRowNN[0].checked == true)
-    nn.setText("NOT NULL");
+    if (addRowNN[0].checked == true)
+        nn.setText("NOT NULL");
 
     scrollbarCell = table.getCell(6, lastRow); // martwa komórka
     scrollbarCell.setTag("ignore");
@@ -575,13 +553,9 @@ function addRow() {
     uk.setFont(new Font("Verdana", 0, false, false));
     nn.setFont(new Font("Verdana", 0, false, false));
 
-
     // setTextColor to specific column
     counter.setTextColor('rgb(220,220,220)');
     type.setTextColor('rgb(255,91,98)');
-
-    // dopasowuje tabele do tekstu po dodaniu nowego wiersza - do poprawki
-    // table.resizeToFitText(false, false);
 
     // close the dialog
     addRowDialog.dialog("close");
@@ -598,22 +572,18 @@ function editRowOpen() {
 
     editRowName.val(table.getCell(1, rowClicked).getText());
     editRowType.val(table.getCell(2, rowClicked).getText());
-    if(table.getCell(3, rowClicked).getText() == "true"){
+    if (table.getCell(3, rowClicked).getText() == "true") {
         editRowPK.attr("checked", true);
-    }
-    else
+    } else
         editRowPK.attr("checked", false);
-    if(table.getCell(4, rowClicked).getText() == "true"){
+    if (table.getCell(4, rowClicked).getText() == "true") {
         editRowUK.attr("checked", true);
-    }
-    else
+    } else
         editRowUK.attr("checked", false);
-    if(table.getCell(5, rowClicked).getText() == "NOT NULL"){
+    if (table.getCell(5, rowClicked).getText() == "NOT NULL") {
         editRowNN.attr("checked", true);
-    }
-    else
+    } else
         editRowNN.attr("checked", false);
-
 
 
     editRowType.selectmenu("refresh");
@@ -633,7 +603,7 @@ function editRow() {
     table.getCell(2, rowClicked).setText(editRowType[0].value);
     table.getCell(3, rowClicked).setText(editRowPK[0].checked);
     table.getCell(4, rowClicked).setText(editRowUK[0].checked);
-    if(editRowNN[0].checked == true)
+    if (editRowNN[0].checked == true)
         table.getCell(5, rowClicked).setText("NOT NULL");
     else
         table.getCell(5, rowClicked).setText("");
@@ -774,7 +744,9 @@ function generateSQL() {
         // enumerate all rows of a table
         for (var r = 0; r < table.cells.rows; ++r) {
             // get text of cells in current row
-            text += "\t" + table.getCell(1, r).getText() + " " + table.getCell(2, r).getText() + " " + table.getCell(5, r).getText();
+            text += "\t" + table.getCell(1, r).getText() + " " + table.getCell(2, r).getText();
+            if((table.getCell(5, r).getText()) == "NOT NULL")
+                text += " NOT NULL";
             if (r < table.cells.rows - 1)
                 text += ",\r\n";
         }
@@ -784,20 +756,20 @@ function generateSQL() {
     var flag_PK = true;
     ArrayList.forEach(diagram.nodes, function (table) {
         for (var r = 0; r < table.cells.rows; ++r) {
-            if(table.getCell(3, r).getText() == "true" && flag_PK) // sprawdz czy wiersz to primary key
+            if (table.getCell(3, r).getText() == "true" && flag_PK) // sprawdz czy wiersz to primary key
             {
-                text += "\nALTER TABLE " + table.getText() + "\n";
-                text += "ADD CONSTRAINT " + table.getText() + "_PK " + "PRIMARY KEY " + "(";
+                text += "\nALTER TABLE " + table.getText();
+                text += " ADD CONSTRAINT " + table.getText() + "_PK " + "PRIMARY KEY " + "(";
                 flag_PK = false;
             }
-            if(table.getCell(3, r).getText() == "true" && !flag_PK) // sprawdz czy wiersz to primary key
+            if (table.getCell(3, r).getText() == "true" && !flag_PK) // sprawdz czy wiersz to primary key
             {
                 text += table.getCell(1, r).getText();
-                if (isThereMoreThanOne(table,3) > 1 && r < counterOfPrimaryAndUniqueKeys(table, 3))
+                if (isThereMoreThanOne(table, 3) > 1 && r < counterOfPrimaryAndUniqueKeys(table, 3))
                     text += ", ";
             }
         }
-        if(!flag_PK){
+        if (!flag_PK) {
             text += ");";
             flag_PK = true;
         }
@@ -807,23 +779,95 @@ function generateSQL() {
     var iterator_numbersUK = 0;
     ArrayList.forEach(diagram.nodes, function (table) {
         for (var r = 0; r < table.cells.rows; ++r) {
-            if(table.getCell(4, r).getText() == "true" && flag_UK) // sprawdz czy wiersz to unique key
+            if (table.getCell(4, r).getText() == "true" && flag_UK) // sprawdz czy wiersz to unique key
             {
-                text += "\nALTER TABLE " + table.getText() + "\n";
-                text += "ADD CONSTRAINT " + table.getText() + "_UK" + ++iterator_numbersUK + " UNIQUE " + "(";
+                text += "\nALTER TABLE " + table.getText();
+                text += " ADD CONSTRAINT " + table.getText() + "_UK" + ++iterator_numbersUK + " UNIQUE " + "(";
                 flag_UK = false;
             }
-            if(table.getCell(4, r).getText() == "true" && !flag_UK) // sprawdz czy wiersz to unique key
+            if (table.getCell(4, r).getText() == "true" && !flag_UK) // sprawdz czy wiersz to unique key
             {
                 text += table.getCell(1, r).getText();
-                if (isThereMoreThanOne(table,4) > 1 && r < counterOfPrimaryAndUniqueKeys(table, 4))
+                if (isThereMoreThanOne(table, 4) > 1 && r < counterOfPrimaryAndUniqueKeys(table, 4))
                     text += ", ";
             }
         }
-        if(!flag_UK){
+        if (!flag_UK) {
             text += ");";
             flag_UK = true;
         }
+    });
+
+
+
+    ArrayList.forEach(diagram.links, function (link) {
+            var origin = false, destination = false;
+            var tableDestination = link.getDestination();
+            var tableOrigin = link.getOrigin();
+            var rowDestination = link.getDestinationIndex();
+            var rowOrigin = link.getOriginIndex();
+
+            text += "\nALTER TABLE " + tableOrigin.getText();
+            text += " ADD CONSTRAINT " + tableOrigin.getText() + "_FK" + ++iterator_numbersFK;
+            text += " FOREIGN KEY " + "(";
+            flag_FK = false;
+
+            if ((tableOrigin.getCell(3, rowOrigin).getText() == "true") && (!origin)) {
+                var i = 0;
+                for (var r = 0; r < tableOrigin.cells.rows; ++r) {
+                    if (tableOrigin.getCell(3, r).getText() == "true") {
+                        i++;
+                        if (i > 1)
+                            text += ", ";
+                        text += tableOrigin.getCell(1, r).getText();
+                    }
+                }
+                origin = true;
+            }
+            else if ((tableOrigin.getCell(4, rowOrigin).getText() == "true") && (!origin)) {
+                var i = 0;
+                for (var r = 0; r < tableOrigin.cells.rows; ++r) {
+                    if (tableOrigin.getCell(4, r).getText() == "true") {
+                        i++;
+                        if (i > 1)
+                            text += ", ";
+                        text += tableOrigin.getCell(1, r).getText();
+                    }
+                }
+                origin = true;
+            }
+            else if (!origin){
+                text += tableOrigin.getCell(1, rowOrigin).getText();
+                origin = true;
+            }
+            text += ")" + "\n";
+            text += "\tREFERENCES " + tableDestination.getText() + " (";
+            if ((tableDestination.getCell(3, rowDestination).getText() == "true") && (!destination)) {
+                var i = 0;
+                for (var r = 0; r < tableDestination.cells.rows; ++r) {
+                    if (tableDestination.getCell(3, r).getText() == "true") {
+                        i++;
+                        if (i > 1)
+                            text += ", ";
+                        text += tableDestination.getCell(1, r).getText();
+                    }
+                }
+                destination = true;
+            }
+            if ((tableDestination.getCell(4, rowDestination).getText() == "true") && (!destination)) {
+                var i = 0;
+                for (var r = 0; r < tableDestination.cells.rows; ++r) {
+                    if (tableDestination.getCell(4, r).getText() == "true") {
+                        i++;
+                        if (i > 1)
+                            text += ", ";
+                        text += tableDestination.getCell(1, r).getText();
+                    }
+                }
+                destination = true;
+            }
+            text += ");";
+
     });
 
 
@@ -831,25 +875,24 @@ function generateSQL() {
 }
 
 function isThereMoreThanOne(table, cell) {
-    var i=0;
+    var i = 0;
     for (var r = 0; r < table.cells.rows; ++r) {
-        if(table.getCell(cell, r).getText() == "true"){
+        if (table.getCell(cell, r).getText() == "true") {
             i++;
         }
     }
     return i;
 }
+
 function counterOfPrimaryAndUniqueKeys(table, cell) {
     var lastRow = 0;
     for (var r = 0; r < table.cells.rows; ++r) {
-        if(table.getCell(cell, r).getText() == "true"){
+        if (table.getCell(cell, r).getText() == "true") {
             lastRow = r;
         }
     }
     return lastRow;
 }
-
-
 
 
 function onUndo() {
@@ -875,14 +918,14 @@ function resizeToFitText() {
     var listOfNodes = diagram.getNodes();
     for (var i = 0; i < listOfNodes.length; i++) {
         var table = listOfNodes[i];
-        table.resizeToFitText(false,false);
+        table.resizeToFitText(false, false);
         table.columns[3].width = 0;
         table.columns[4].width = 0;
         table.columns[5].width = 0;
         table.columns[6].width = 4.9;
         table.bounds.width = table.bounds.width - 15;
 
-        if(table.rows.length == 0){
+        if (table.rows.length == 0) {
             table.bounds.width = 52;
             table.bounds.height = 16;
             table.updateCanvasElements();
@@ -900,14 +943,14 @@ function resizeToFitText() {
     diagram.repaint();
 }
 
-function resizeToFitLinks(){
+function resizeToFitLinks() {
     diagram.routeAllLinks();
 }
 
 function turnOnHighlightSelected(highlightedTable, rowHighlighted) {
     selectedHighlightedRow = rowHighlighted;
     selectedHighlightedTable = highlightedTable;
-    setTextToHighlighted(highlightedTable, rowHighlighted,"#00ff46",true);
+    setTextToHighlighted(highlightedTable, rowHighlighted, "#00ff46", true);
 }
 
 function turnOffHighlightSelected(highlightedTable, rowHighlighted) {
@@ -999,7 +1042,7 @@ function rulerSlider() {
 
 function refreshCanvas() {
     setTimeout(function () {
-        if(copyRuler.getHorizontalScaleVisible() == true){
+        if (copyRuler.getHorizontalScaleVisible() == true) {
             copyRuler.setHorizontalScaleVisible(true);
             copyRuler.setVerticalScaleVisible(true);
         }
