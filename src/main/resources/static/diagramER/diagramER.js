@@ -29,6 +29,7 @@ var Utils = MindFusion.Diagramming.Utils;
 var DiagramItem = MindFusion.Diagramming.DiagramItem;
 var Ruler = MindFusion.Diagramming.Ruler;
 var HandlesStyle = MindFusion.Diagramming;
+var Shape = MindFusion.Diagramming.Shape;
 
 var diagram, overview;
 var tableCount = 0, rowClicked = -1;
@@ -47,6 +48,10 @@ var uniqueTagCell = 0;
 var uniqueTagTable = 0;
 var selectedHighlightedRow = false;
 var selectedHighlightedTable = -1;
+var youCanNotConnectNormalPool = false;
+var link_youCanNotConnectNormalPool = null;
+var oneToOne = new Shape({ outline: '', decoration: 'M13,110 L87,110 M13,80 L87,80', id: 'OneToOne' });
+var noShape = new Shape({ outline: '', decoration: 'M0,0 L0,0', id: 'NoShape' });
 
 $(document).ready(function () {
     // create a Diagram component that wraps the "diagram" canvas
@@ -77,8 +82,6 @@ $(document).ready(function () {
     diagram.setBehavior(Behavior.LinkTables);
     diagram.setAllowSelfLoops(false);
     diagram.setBackBrush('rgba(64,69,75,0.87)');
-    diagram.setLinkHeadShape('Arrow');
-    diagram.setLinkHeadShapeSize(4);
     diagram.getSelection().allowMultipleSelection = true;
     diagram.setGridSizeX(5);
     diagram.setGridSizeY(5);
@@ -104,10 +107,12 @@ $(document).ready(function () {
     tableNodeStyle.setFontSize(4);
     tableNodeStyle.setTextColor("#ffffff");
 
-
     var linkStyle = new Style();
-    linkStyle.setBrush({type: 'SolidBrush', color: 'rgb(0,0,0)'});
-    linkStyle.setStroke('rgb(192, 192, 192)');
+    linkStyle.setStroke('rgb(255,255,255)');
+    diagram.setLinkHeadShape('NoShape');
+    diagram.setLinkBaseShape('NoShape');
+    diagram.setLinkHeadShapeSize(3);
+    diagram.setLinkBaseShapeSize(3);
 
     theme.styles['std:TableNode'] = tableNodeStyle;
     theme.styles['std:DiagramLink'] = linkStyle;
@@ -169,7 +174,16 @@ $(document).ready(function () {
 
     });
 
+    diagram.addEventListener(Events.nodeDeleted, function (sender, args) {
+        generateSQL();
+    });
+
     canvas.addEventListener('mousemove', function () {
+        if(youCanNotConnectNormalPool){
+            youCanNotConnectNormalPool = false;
+            diagram.removeItem(link_youCanNotConnectNormalPool);
+        }
+
         var point = PivotPoint.Point;
         point.x = diagram.pointerPosition.x;
         point.y = diagram.pointerPosition.y;
@@ -263,8 +277,83 @@ $(document).ready(function () {
         }
     });
 
+    diagram.addEventListener(Events.linkClicked, function (sender, args) {
+        var linkClicked = args.getLink();
+
+/*
+DefaultFlow
+PointerArrow
+Reversed
+RevWithLine
+Slash
+        */
+
+    });
+
     diagram.addEventListener(Events.linkDoubleClicked, function (sender, args) {
         infoOpen();
+    });
+
+    diagram.addEventListener(Events.linkDeleted, function (sender, args) {
+        generateSQL();
+    });
+
+    diagram.addEventListener(Events.linkCreating, function (sender, args) {
+        if (args.link.originConnection.row == -1)
+        {
+            args.setCancel(true);
+            args.cancelDrag();
+            return;
+        }
+        else if (args.link.targetConnection != null)
+        {
+            if(args.link.targetConnection.row == -1){
+                args.setCancel(true);
+            }
+        }
+    });
+
+
+    diagram.addEventListener(Events.linkCreated, function (sender, args) {
+        var linkCreated = args.getLink();
+
+        var tableDestination = linkCreated.getDestination();
+        var tableOrigin = linkCreated.getOrigin();
+        var rowDestination = linkCreated.getDestinationIndex();
+        var rowOrigin = linkCreated.getOriginIndex();
+
+
+
+        if (
+            ((tableDestination.getCell(3, rowDestination).getText() == "true") || (tableDestination.getCell(4, rowDestination).getText() == "true"))
+            &&
+            ((tableOrigin.getCell(3, rowOrigin).getText() == "true") || (tableOrigin.getCell(4, rowOrigin).getText() == "true"))
+        ) {
+            linkCreated.setBaseShape('OneToOne');
+            linkCreated.setHeadShape('OneToOne');
+        }
+        else if (
+            ((tableDestination.getCell(3, rowDestination).getText() == "false") && (tableDestination.getCell(4, rowDestination).getText() == "false"))
+            &&
+            ((tableOrigin.getCell(3, rowOrigin).getText() == "true") || (tableOrigin.getCell(4, rowOrigin).getText() == "true"))
+        ) {
+            linkCreated.setBaseShape('OneToOne');
+            linkCreated.setHeadShape('RevWithLine');
+        }
+        else if (
+            ((tableDestination.getCell(3, rowDestination).getText() == "true") || (tableDestination.getCell(4, rowDestination).getText() == "true"))
+            &&
+            ((tableOrigin.getCell(3, rowOrigin).getText() == "false") && (tableOrigin.getCell(4, rowOrigin).getText() == "false"))
+        ) {
+            linkCreated.setBaseShape('RevWithLine');
+            linkCreated.setHeadShape('OneToOne');
+        }
+        else{
+            youCanNotConnectNormalPool = true;
+            link_youCanNotConnectNormalPool = linkCreated;
+        }
+
+
     });
 
     diagram.addEventListener(Events.nodeSelected, function (sender, args) {
@@ -803,7 +892,16 @@ function resizeToFitText() {
         table.scroller.updateLocation();
         table.scroller.updateContent();
     }
+    ArrayList.forEach(diagram.links, function (link) {
+        for (var l = 0; l < diagram.links.length; ++l) {
+            link.fixRowConnections();
+        }
+    });
     diagram.repaint();
+}
+
+function resizeToFitLinks(){
+    diagram.routeAllLinks();
 }
 
 function turnOnHighlightSelected(highlightedTable, rowHighlighted) {
