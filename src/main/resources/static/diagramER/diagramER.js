@@ -51,7 +51,6 @@ var selectedHighlightedRow = false;
 var selectedHighlightedTable = -1;
 var youCanNotConnectNormalPool = false;
 var link_youCanNotConnectNormalPool = null;
-var iterator_numbersFK = 0;
 var oneToOne = new Shape({outline: '', decoration: 'M13,110 L87,110 M13,80 L87,80', id: 'OneToOne'});
 var noShape = new Shape({outline: '', decoration: 'M0,0 L0,0', id: 'NoShape'});
 
@@ -815,7 +814,7 @@ function infoOpen() {
         origin = true;
     }
     else if (!origin){
-        text += tableOrigin.getCell(1, rowOrigin).getText();
+        text += regex(tableOrigin.getCell(1, rowOrigin).getText());
         origin = true;
     }
     text += ")" + "\n";
@@ -845,7 +844,7 @@ function generateSQL() {
         // enumerate all rows of a table
         for (var r = 0; r < table.cells.rows; ++r) {
             // get text of cells in current row
-            text += "\t" + table.getCell(1, r).getText() + " " + table.getCell(2, r).getText();
+            text += "\t" + regex(table.getCell(1, r).getText()) + " " + table.getCell(2, r).getText();
             if((table.getCell(5, r).getText()) == "NOT NULL")
                 text += " NOT NULL";
             if (r < table.cells.rows - 1)
@@ -866,7 +865,7 @@ function generateSQL() {
             }
             if (table.getCell(3, r).getText() == "true" && !flag_PK)
             {
-                text += table.getCell(1, r).getText();
+                text += regex(table.getCell(1, r).getText());
                 if (isThereMoreThanOne(table, 3) > 1 && r < counterOfPrimaryAndUniqueKeys(table, 3))
                     text += ", ";
             }
@@ -890,7 +889,7 @@ function generateSQL() {
             }
             if (table.getCell(4, r).getText() == "true" && !flag_UK) // sprawdz czy wiersz to unique key
             {
-                text += table.getCell(1, r).getText();
+                text += regex(table.getCell(1, r).getText());
                 if (isThereMoreThanOne(table, 4) > 1 && r < counterOfPrimaryAndUniqueKeys(table, 4))
                     text += ", ";
             }
@@ -902,6 +901,7 @@ function generateSQL() {
     });
 
     // alter table Foreign Key
+    var iterator_numbersFK = 0;
     ArrayList.forEach(diagram.links, function (link) {
             var origin = false, destination = false;
             var tableDestination = link.getDestination();
@@ -922,7 +922,7 @@ function generateSQL() {
                 origin = true;
             }
             else if (!origin){
-                text += tableOrigin.getCell(1, rowOrigin).getText();
+                text += regex(tableOrigin.getCell(1, rowOrigin).getText());
                 origin = true;
             }
             text += ")" + "\n";
@@ -962,7 +962,7 @@ function addFieldToGeneratedText(primaryOrUnique, table, text){
             i++;
             if (i > 1)
                 text += ", ";
-            text += table.getCell(1, r).getText();
+            text += regex(table.getCell(1, r).getText());
         }
     }
     return text;
