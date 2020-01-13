@@ -457,7 +457,7 @@ $(document).ready(function () {
         autoOpen: false,
         resizable: false,
         height: 'auto',
-        width: 250,
+        width: 440,
         modal: true,
         buttons: {
             "OK": function () {
@@ -725,11 +725,41 @@ function infoOpen() {
     if (!link || !AbstractionLayer.isInstanceOfType(DiagramLink, link))
         return;
 
-    var dest = link.getDestination();
-    var orgn = link.getOrigin();
-    infoText[0].innerHTML = "Linking \ntable " + orgn.getText() + ", row " +
-        link.getOriginIndex() + " to\n table " + dest.getText() +
-        ", row " + link.getDestinationIndex();
+    var origin = false, destination = false;
+    var tableDestination = link.getDestination();
+    var tableOrigin = link.getOrigin();
+    var rowDestination = link.getDestinationIndex();
+    var rowOrigin = link.getOriginIndex();
+
+    var text = '';
+    text += "ALTER TABLE " + tableOrigin.getText();
+    text += " ADD CONSTRAINT " + tableOrigin.getText() + "_FK";
+    text += " FOREIGN KEY " + "(";
+    if ((tableOrigin.getCell(3, rowOrigin).getText() == "true") && (!origin)) {
+        text = addFieldToGeneratedText(3, tableOrigin, text);
+        origin = true;
+    }
+    else if ((tableOrigin.getCell(4, rowOrigin).getText() == "true") && (!origin)) {
+        text = addFieldToGeneratedText(4, tableOrigin, text);
+        origin = true;
+    }
+    else if (!origin){
+        text += tableOrigin.getCell(1, rowOrigin).getText();
+        origin = true;
+    }
+    text += ")" + "\n";
+    text += "REFERENCES " + tableDestination.getText() + " (";
+    if ((tableDestination.getCell(3, rowDestination).getText() == "true") && (!destination)) {
+        text = addFieldToGeneratedText(3, tableDestination, text);
+        destination = true;
+    }
+    if ((tableDestination.getCell(4, rowDestination).getText() == "true") && (!destination)) {
+        text = addFieldToGeneratedText(4, tableDestination, text);
+        destination = true;
+    }
+    text += ");";
+
+    $('#generatedSqlFK')[0].innerHTML = text;
 
     infoDialog.dialog("open");
 }
@@ -753,16 +783,17 @@ function generateSQL() {
         text += "\r\n);\r\n";
     });
 
+    // alter table Primary Key
     var flag_PK = true;
     ArrayList.forEach(diagram.nodes, function (table) {
         for (var r = 0; r < table.cells.rows; ++r) {
-            if (table.getCell(3, r).getText() == "true" && flag_PK) // sprawdz czy wiersz to primary key
+            if (table.getCell(3, r).getText() == "true" && flag_PK)
             {
                 text += "\nALTER TABLE " + table.getText();
                 text += " ADD CONSTRAINT " + table.getText() + "_PK " + "PRIMARY KEY " + "(";
                 flag_PK = false;
             }
-            if (table.getCell(3, r).getText() == "true" && !flag_PK) // sprawdz czy wiersz to primary key
+            if (table.getCell(3, r).getText() == "true" && !flag_PK)
             {
                 text += table.getCell(1, r).getText();
                 if (isThereMoreThanOne(table, 3) > 1 && r < counterOfPrimaryAndUniqueKeys(table, 3))
@@ -775,6 +806,7 @@ function generateSQL() {
         }
     });
 
+    // alter table Unique Key
     var flag_UK = true;
     var iterator_numbersUK = 0;
     ArrayList.forEach(diagram.nodes, function (table) {
@@ -798,8 +830,7 @@ function generateSQL() {
         }
     });
 
-
-
+    // alter table Foreign Key
     ArrayList.forEach(diagram.links, function (link) {
             var origin = false, destination = false;
             var tableDestination = link.getDestination();
@@ -810,30 +841,13 @@ function generateSQL() {
             text += "\nALTER TABLE " + tableOrigin.getText();
             text += " ADD CONSTRAINT " + tableOrigin.getText() + "_FK" + ++iterator_numbersFK;
             text += " FOREIGN KEY " + "(";
-            flag_FK = false;
 
             if ((tableOrigin.getCell(3, rowOrigin).getText() == "true") && (!origin)) {
-                var i = 0;
-                for (var r = 0; r < tableOrigin.cells.rows; ++r) {
-                    if (tableOrigin.getCell(3, r).getText() == "true") {
-                        i++;
-                        if (i > 1)
-                            text += ", ";
-                        text += tableOrigin.getCell(1, r).getText();
-                    }
-                }
+                text = addFieldToGeneratedText(3, tableOrigin, text);
                 origin = true;
             }
             else if ((tableOrigin.getCell(4, rowOrigin).getText() == "true") && (!origin)) {
-                var i = 0;
-                for (var r = 0; r < tableOrigin.cells.rows; ++r) {
-                    if (tableOrigin.getCell(4, r).getText() == "true") {
-                        i++;
-                        if (i > 1)
-                            text += ", ";
-                        text += tableOrigin.getCell(1, r).getText();
-                    }
-                }
+                text = addFieldToGeneratedText(4, tableOrigin, text);
                 origin = true;
             }
             else if (!origin){
@@ -841,29 +855,13 @@ function generateSQL() {
                 origin = true;
             }
             text += ")" + "\n";
-            text += "\tREFERENCES " + tableDestination.getText() + " (";
+            text += "REFERENCES " + tableDestination.getText() + " (";
             if ((tableDestination.getCell(3, rowDestination).getText() == "true") && (!destination)) {
-                var i = 0;
-                for (var r = 0; r < tableDestination.cells.rows; ++r) {
-                    if (tableDestination.getCell(3, r).getText() == "true") {
-                        i++;
-                        if (i > 1)
-                            text += ", ";
-                        text += tableDestination.getCell(1, r).getText();
-                    }
-                }
+                text = addFieldToGeneratedText(3, tableDestination, text);
                 destination = true;
             }
             if ((tableDestination.getCell(4, rowDestination).getText() == "true") && (!destination)) {
-                var i = 0;
-                for (var r = 0; r < tableDestination.cells.rows; ++r) {
-                    if (tableDestination.getCell(4, r).getText() == "true") {
-                        i++;
-                        if (i > 1)
-                            text += ", ";
-                        text += tableDestination.getCell(1, r).getText();
-                    }
-                }
+                text = addFieldToGeneratedText(4, tableDestination, text);
                 destination = true;
             }
             text += ");";
@@ -872,6 +870,20 @@ function generateSQL() {
 
 
     $('#generatedSql')[0].innerHTML = text;
+}
+
+
+function addFieldToGeneratedText(primaryOrUnique, table, text){
+    var i = 0;
+    for (var r = 0; r < table.cells.rows; ++r) {
+        if (table.getCell(primaryOrUnique, r).getText() == "true") {
+            i++;
+            if (i > 1)
+                text += ", ";
+            text += table.getCell(1, r).getText();
+        }
+    }
+    return text;
 }
 
 function isThereMoreThanOne(table, cell) {
