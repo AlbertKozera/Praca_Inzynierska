@@ -294,7 +294,22 @@ $(document).ready(function () {
         infoOpen();
     });
 
+    diagram.addEventListener(Events.linkDeleting, function (sender, args) {
+
+    });
+
     diagram.addEventListener(Events.linkDeleted, function (sender, args) {
+        var tableOrigin = args.link.getOrigin();
+        var rowOrigin = args.link.getOriginIndex();
+        var getcel = tableOrigin.getCell(1, rowOrigin);
+
+        if(tableOrigin.getCell(3, rowOrigin).getText() == "true")
+            getcel.setText("🔑 " + regex(getcel.getText()));
+        else if(tableOrigin.getCell(4, rowOrigin).getText() == "true")
+            getcel.setText(regex(getcel.getText()) + " 🔹");
+        else
+            getcel.setText(regex(getcel.getText()));
+
         generateSQL();
     });
 
@@ -324,6 +339,11 @@ $(document).ready(function () {
         ) {
             linkCreated.setBaseShape('OneToOne');
             linkCreated.setHeadShape('OneToOne');
+            var fk = tableOrigin.getCell(1, rowOrigin).getText();
+            if(tableOrigin.getCell(3, rowOrigin).getText() == "true")
+                tableOrigin.getCell(1, rowOrigin).setText("🗝" + fk);
+            else
+                tableOrigin.getCell(1, rowOrigin).setText("🗝 " + fk);
         }
         else if (
             ((tableDestination.getCell(3, rowDestination).getText() == "true") || (tableDestination.getCell(4, rowDestination).getText() == "true"))
@@ -332,9 +352,13 @@ $(document).ready(function () {
         ) {
             linkCreated.setBaseShape('RevWithLine');
             linkCreated.setHeadShape('OneToOne');
+            var fk = tableOrigin.getCell(1, rowOrigin).getText();
+            tableOrigin.getCell(1, rowOrigin).setText("🗝 " + fk);
         } else {
             youCanNotConnectNormalPool = true;
             link_youCanNotConnectNormalPool = linkCreated;
+            var fk = tableOrigin.getCell(1, rowOrigin).getText();
+            tableOrigin.getCell(1, rowOrigin).setText("🗝 " + fk);
         }
         generateSQL();
     });
@@ -533,9 +557,13 @@ function addRow() {
     nn = table.getCell(5, lastRow); // nn
     if (addRowNN[0].checked == true)
         nn.setText("NOT NULL");
-
     scrollbarCell = table.getCell(6, lastRow); // martwa komórka
     scrollbarCell.setTag("ignore");
+
+    if(pk.getText() == "true")
+        name.setText("🔑 " + addRowName[0].value)
+    if(uk.getText() == "true")
+        name.setText(addRowName[0].value + " 🔹")
 
     // align text in new cells
     counter.setTextAlignment(Alignment.Center);
@@ -570,7 +598,7 @@ function editRowOpen() {
     if (!table || !AbstractionLayer.isInstanceOfType(TableNode, table) || rowClicked < 0)
         return;
 
-    editRowName.val(table.getCell(1, rowClicked).getText());
+    editRowName.val(regex(table.getCell(1, rowClicked).getText()));
     editRowType.val(table.getCell(2, rowClicked).getText());
     if (table.getCell(3, rowClicked).getText() == "true") {
         editRowPK.attr("checked", true);
@@ -603,10 +631,53 @@ function editRow() {
     table.getCell(2, rowClicked).setText(editRowType[0].value);
     table.getCell(3, rowClicked).setText(editRowPK[0].checked);
     table.getCell(4, rowClicked).setText(editRowUK[0].checked);
-    if (editRowNN[0].checked == true)
+    if(editRowNN[0].checked == true)
         table.getCell(5, rowClicked).setText("NOT NULL");
     else
         table.getCell(5, rowClicked).setText("");
+
+
+
+
+
+    var getcel = table.getCell(1, rowClicked);
+    var PK_state = editRowPK[0].checked, UK_state = editRowUK[0].checked;
+
+
+
+    
+    
+    if((PK_state == true) && (isThisFieldIsForeignKey(getcel.getText())))
+        getcel.setText("🗝🔑 " + regex(getcel.getText()));
+    else if((PK_state == true) && !(isThisFieldIsForeignKey(getcel.getText())))
+        getcel.setText("🔑 " + regex(getcel.getText()));
+    else if((PK_state == false) && (isThisFieldIsForeignKey(getcel.getText())))
+        getcel.setText("🗝 " + regex(getcel.getText()));
+    else
+        getcel.setText(regex(getcel.getText()));
+
+
+
+    if((UK_state == true) && (isThisFieldIsForeignKey(getcel.getText())))
+        getcel.setText("🗝 " + regex(getcel.getText()) + " 🔹");
+    else if((UK_state == true) && !(isThisFieldIsForeignKey(getcel.getText())))
+        getcel.setText(regex(getcel.getText()) + " 🔹");
+    else if((UK_state == false) && (PK_state == false) && (isThisFieldIsForeignKey(getcel.getText())))
+        getcel.setText("🗝 " + regex(getcel.getText()));
+    else if((UK_state == false) && (PK_state == false) && !(isThisFieldIsForeignKey(getcel.getText())))
+        getcel.setText(regex(getcel.getText()));
+    
+
+
+
+
+
+
+
+
+
+
+
 
     // close the dialog
     editRowDialog.dialog("close");
@@ -872,6 +943,17 @@ function generateSQL() {
     $('#generatedSql')[0].innerHTML = text;
 }
 
+function isThisFieldIsForeignKey(str) {
+    if(str.search("🗝") > -1)
+        return true
+    else
+        false
+}
+
+function regex(text) {
+    textRegex = text.match(/[A-Za-z0-9]+/g);
+    return textRegex;
+}
 
 function addFieldToGeneratedText(primaryOrUnique, table, text){
     var i = 0;
