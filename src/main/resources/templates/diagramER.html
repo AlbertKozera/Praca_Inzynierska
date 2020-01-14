@@ -6,7 +6,6 @@
 <div th:fragment="diagram">
     <th:block th:include="fragments/diagramER/headerinc :: head"/>
 
-
     <!-- The Overview component is bound to the canvas element below -->
     <div id="justdraw">
         <!-- The Diagram component is bound to the canvas element below -->
@@ -19,123 +18,42 @@
         </div>
     </div>
 
-
     <div id="justdrawOptions">
         <div id="overview_div">
             <canvas id="overview" width="165" height="165">
             </canvas>
         </div>
 
-
-        <div id="sliders" style="position: relative;
-    float: right;
-    bottom: 742px;
-    right: 122px;
-    z-index: 11;
-    margin-right: 18px;">
+        <div id="sliders">
             <div>
                 <div class="slider">
                     <input type="checkbox" value="None" id="gridSlider" onclick="gridSlider()" name="check" checked/>
                     <label for="gridSlider"></label>
                 </div>
-                <a class="fas fa-th" style="font-size: 25px; position: absolute; left: 4px; color: #000000"></a>
+                <a id="fa_th" class="fas fa-th"></a>
             </div>
             <div>
                 <div class="slider" style="margin-top: 31px;">
                     <input type="checkbox" value="None" id="rulerSlider" onclick="rulerSlider()" name="check" checked/>
                     <label for="rulerSlider"></label>
                 </div>
-                <a class="fas fa-ruler-combined fa-rotate-90"
-                   style="font-size: 25px; position: absolute; left: 4px; margin-top: 31px; color: rgb(194,84,254)"></a>
+                <a id="fa_ruler_combined" class="fas fa-ruler-combined fa-rotate-90"></a>
             </div>
         </div>
 
-        <div id="controls" style="position: relative; height: 167px; width: 488px; float: left;">
-            <fieldset style = "background: #1a1f25;
-    border-top: 2px solid;
-    border-bottom: 2px solid;
-    border-left: 1px solid;
-    border-right: 2px solid;
-    height: 167px;
-    width: 489px;
-    border-color: #373d44;">
-            <button class="fas fa-undo" onclick="onUndo()"
-                    style="    margin-left: 4px;
-    margin-top: 4px;
-    padding-top: 6px;
-    height: 49px;
-    width: 80px;">Cofnij
-            </button>
-            <button class="fas fa-table" id="btnCreateTable"
-                    style="margin-left: 3px;
-    margin-top: 4px;
-    padding-top: 6px;
-    height: 49px;
-    width: 120px;">Dodaj tabelę
-            </button>
-            <button class="fas fa-trash-alt" id="btnDeleteTable"
-                    style="    margin-left: 2px;
-    margin-top: 4px;
-    padding-top: 6px;
-    height: 49px;
-    width: 120px;">Usuń tabelę
-            </button>
-            <button class="fas fa-edit" id="btnRenameTable"
-                    style="margin-left: 3px;
-    margin-top: 4px;
-    padding-top: 6px;
-    height: 49px;
-    width: 145px;">Zmień nazwę tabeli
-            </button>
-            <button class="fas fa-redo" onclick="onRedo()"
-                    style="    margin-left: 4px;
-    margin-top: 4px;
-    padding-top: 6px;
-    height: 49px;
-    width: 80px;">Ponów
-            </button>
-            <button class="fas fa-plus" id="btnAddRow"
-                    style="margin-left: 3px;
-    margin-top: 4px;
-    padding-top: 6px;
-    height: 49px;
-    width: 120px;">Dodaj wiersz
-            </button>
-            <button class="fas fa-minus" id="btnDeleteRow"
-                    style="margin-left: 2px;
-    margin-top: 4px;
-    padding-top: 6px;
-    height: 49px;
-    width: 120px;">Usuń wiersz
-            </button>
-            <button class="fas fa-pen-square" id="btnEditRow"
-                    style="margin-left: 3px;
-    margin-top: 4px;
-    padding-top: 6px;
-    height: 49px;
-    width: 145px;">Edytuj wiersz
-            </button>
-            <button class="fas fa-search" onclick="zoomToFit()" style="    margin-left: 4px;
-    margin-top: 4px;
-    padding-top: 6px;
-    height: 49px;
-    width: 161px;">
-                Dopasuj powiększenie
-            </button>
-            <button class="fas fa-compress-arrows-alt" onclick="resizeToFitText()"
-                    style="    margin-left: 3px;
-    margin-top: 4px;
-    padding-top: 6px;
-    height: 49px;
-    width: 154px;">Dopasuj tabele
-            </button>
-            <button class="fas fa-sitemap" onclick="resizeToFitLinks()"
-                    style="margin-left: 2px;
-    margin-top: 4px;
-    padding-top: 6px;
-    height: 49px;
-    width: 154px;">Dopasuj połączenia
-            </button>
+        <div id="controls">
+                <fieldset id="controls_fieldset">
+                <button id="fa_undo" class="fas fa-undo" onclick="onUndo()">Cofnij</button>
+                <button class="fas fa-table" id="btnCreateTable">Dodaj tabelę</button>
+                <button class="fas fa-trash-alt" id="btnDeleteTable">Usuń tabelę</button>
+                <button class="fas fa-edit" id="btnRenameTable">Zmień nazwę tabeli</button>
+                <button id="fa_redo" class="fas fa-redo" onclick="onRedo()">Ponów</button>
+                <button class="fas fa-plus" id="btnAddRow">Dodaj wiersz</button>
+                <button class="fas fa-minus" id="btnDeleteRow">Usuń wiersz</button>
+                <button class="fas fa-pen-square" id="btnEditRow">Edytuj wiersz</button>
+                <button id="fa_search" class="fas fa-search" onclick="zoomToFit()">Dopasuj powiększenie</button>
+                <button id="fa_compress_arrows_alt" class="fas fa-compress-arrows-alt" onclick="resizeToFitText()">Dopasuj tabele</button>
+                <button id="fa_sitemap" class="fas fa-sitemap" onclick="resizeToFitLinks()">Dopasuj połączenia</button>
             </fieldset>
         </div>
 
@@ -163,31 +81,9 @@
                 </button>
             </div>
         </div>
- <textarea id="generatedSql" readonly
-                              style="    height: 167px;
-        width: 601px;
-        position: absolute;
-        background: #1a1f25;
-        float: left;
-        z-index: 2;
-        resize: none;
-        color: white;
-        border: 2px solid;
-        border-left: 0;
-        border-color: #373d44;"></textarea>
-        </div>
 
-
-
-
-
-
-
-
-
-
-
-
+        <textarea id="generatedSql" readonly></textarea>
+    </div>
 
     <div id="addRow-dialog" title="Dodawanie nowego pola">
         <form>
@@ -216,6 +112,7 @@
             </fieldset>
         </form>
     </div>
+
     <div id="editRow-dialog" title="Edycja pola">
         <form>
             <fieldset>
@@ -243,6 +140,7 @@
             </fieldset>
         </form>
     </div>
+
     <div id="renameTable-dialog" title="Zmiana nazwy tabeli">
         <form>
             <fieldset>
@@ -251,11 +149,10 @@
             </fieldset>
         </form>
     </div>
+
     <div id="info-dialog" title="Informacje o połączeniu">
-        <textarea id="generatedSqlFK" readonly style="height: 81px; width: 406px; resize: none; color: white; border-color: #373d44; background: #1a1f25;"></textarea>
+        <textarea id="generatedSqlFK" readonly></textarea>
     </div>
-
-
 
     <th:block th:include="fragments/diagramER/footerinc :: footer"/>
 </div>
