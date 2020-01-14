@@ -1,12 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
     <head>
         <meta charset="UTF-8">
     </head>
     <body>
 
+    <div sec:authorize="isAuthenticated()">
+        bla bla
+    </div>
 
-
+        <div sec:authorize="isAnonymous()">
+            awawf
+        </div>
 
 
     </body>

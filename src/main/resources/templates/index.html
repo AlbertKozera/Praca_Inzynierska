@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <th:block th:include="fragments/sidebar/headerinc :: head"/>
 </head>
@@ -14,12 +14,17 @@
         <div class="img bg-wrap text-center py-4" style="background-image: url(sidebar/images/bg_1.jpg);">
             <div class="user-logo">
                 <div class="img" style="background-image: url(sidebar/images/logo.jpg);"></div>
-                <!--<h3 sec:authentication="principal.username"></h3>-->
+                <div sec:authorize="isAuthenticated()">
+                    <h3 sec:authentication="principal.username"></h3>
+                </div>
+                <div sec:authorize="isAnonymous()">
+                    <h3>Anonymous</h3>
+                </div>
             </div>
         </div>
         <ul class="list-unstyled components mb-5">
             <li class="active">
-                <a href="#"><span class="fa fa-pencil-alt mr-3"></span> just draw!</a>
+                <a href="#"><span class="fa fa-pencil-alt mr-3"></span> Rysuj diagram</a>
             </li>
             <li>
                 <a href="#"><span class="fa fa-database mr-3"></span> Menedżer baz danych</a>

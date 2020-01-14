@@ -128,7 +128,7 @@ fieldset{
 	margin-top: 4px;
 	padding-top: 6px;
 	height: 49px;
-	width: 120px;
+	width: 119px;
 }
 
 #btnDeleteTable{
@@ -136,7 +136,7 @@ fieldset{
 	margin-top: 4px;
 	padding-top: 6px;
 	height: 49px;
-	width: 120px;
+	width: 119px;
 }
 
 #btnRenameTable{
@@ -144,7 +144,7 @@ fieldset{
 	margin-top: 4px;
 	padding-top: 6px;
 	height: 49px;
-	width: 145px;
+	width: 147px;
 }
 
 #fa_redo{
@@ -160,7 +160,7 @@ fieldset{
 	margin-top: 4px;
 	padding-top: 6px;
 	height: 49px;
-	width: 120px;
+	width: 119px;
 }
 
 #btnDeleteRow{
@@ -168,7 +168,7 @@ fieldset{
 	margin-top: 4px;
 	padding-top: 6px;
 	height: 49px;
-	width: 120px;
+	width: 119px;
 }
 
 #btnEditRow{
@@ -176,7 +176,7 @@ fieldset{
 	margin-top: 4px;
 	padding-top: 6px;
 	height: 49px;
-	width: 145px;
+	width: 147px;
 }
 
 #fa_search{
@@ -184,7 +184,7 @@ fieldset{
 	margin-top: 4px;
 	padding-top: 6px;
 	height: 49px;
-	width: 161px;
+	width: 163px;
 }
 
 #fa_compress_arrows_alt{
@@ -192,7 +192,7 @@ fieldset{
 	margin-top: 4px;
 	padding-top: 6px;
 	height: 49px;
-	width: 154px;
+	width: 153px;
 }
 
 #fa_sitemap{
@@ -200,18 +200,8 @@ fieldset{
 	margin-top: 4px;
 	padding-top: 6px;
 	height: 49px;
-	width: 154px;
+	width: 153px;
 }
-
-
-
-
-
-
-
-
-
-
 
 #generatedSql{
 	height: 167px;
@@ -223,11 +213,8 @@ fieldset{
 	resize: none;
 	color: white;
 	border: 2px solid;
-	border-left: 0;
 	border-color: #373d44;
 }
-
-
 
 #addRow-dialog{
 	display: none;
@@ -354,7 +341,8 @@ fieldset{
 	height: 57px;
 	border-radius: 0;
 	border: 2px solid;
-	border-left: 0px;
+	border-left: 0;
+	border-right: 0;
 	border-color: #5f6a77;
 }
 

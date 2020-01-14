@@ -1165,4 +1165,3 @@ function exportAsPNG(id){
         diagram.setShowGrid(true);
 }
 
-
