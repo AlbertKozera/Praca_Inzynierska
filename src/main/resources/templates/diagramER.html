@@ -73,11 +73,13 @@
                 </button>
             </div>
             <div id="options_3_div">
-                <input class="options_input" type="text" placeholder="Nazwa obrazka [PNG]" />
-                <button class="options_button">
-                    <i class="fas fa-image"></i><br />
-                    Zapisz
-                </button>
+                <input id="filename" class="options_input" type="text" placeholder="Nazwa obrazka [PNG]" />
+                    <a id="download" download="diagram.png">
+                        <button class="options_button" onclick="exportAsPNG('download')">
+                            <i class="fas fa-image"></i><br />
+                            Pobierz
+                        </button>
+                    </a>
             </div>
         </div>
 

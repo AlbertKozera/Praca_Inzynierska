@@ -945,7 +945,7 @@ function isThisFieldIsForeignKey(str) {
 }
 
 function regex(text) {
-    textRegex = text.match(/[A-Za-z0-9]+/g);
+    textRegex = text.match(/[A-Za-z0-9_]+/g);
     return textRegex;
 }
 
@@ -1145,5 +1145,14 @@ function rowDeselected() {
     $('#btnDeleteRow').button("option", "disabled", true);
 }
 
+function exportAsPNG(id){
+    diagram.setShowGrid(false);
+    if($('#filename').val() != "")
+        document.getElementById(id).setAttribute("download", $('#filename').val() +".png");
+    var download = document.getElementById("download");
+    var image = document.getElementById("diagram").toDataURL("image/png").replace("image/png", "image/octet-stream");
+    download.setAttribute("href", image);
+    diagram.setShowGrid(true);
+}
 
 
