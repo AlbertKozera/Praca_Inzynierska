@@ -34,21 +34,42 @@ fieldset{
 #justdraw{
 	position: relative;
 	width: 100%;
-	height: 730px;
+	height: 770px;
 	overflow-y: hidden
+}
+
+#justdrawOptions{
+	position: relative;
+}
+
+#overview_div{
+	position: relative;
+	width: 167px;
+	height: 167px;
+	border: 1px solid #373d44;
+	background-color: #c0c0c0;
+	float: left;
+	z-index: 10;
+}
+
+#ruler{
+	position: relative;
+	width: 100%;
+	height: 100%;
+	overflow-y: hidden;
 }
 
 #canvas{
 	position: relative;
 	width: calc(100% - 20px);
-	height: 710px;
+	height: 750px;
 	overflow: scroll;
 }
 
 #canvas.gridOFF{
 	position: relative;
 	width: 100%;
-	height: 730px;
+	height: 770px;
 	overflow: scroll;
 }
 
@@ -132,6 +153,54 @@ fieldset{
 	top: -4px;
 }
 
+.options_div{
+	position: relative;
+	float: left;
+	height: 165px;
+}
+
+#options_1_div{
+	position: relative;
+	left: 1px;
+}
+
+#options_2_div{
+	position: relative;
+	left: 1px;
+	bottom: 2px;
+}
+
+#options_3_div{
+	position: relative;
+	left: 1px;
+	bottom: 4px;
+}
+
+.options_input{
+	float: left;
+	background: #1a1f25;
+	color: #c253fe;
+	width: 250px;
+	height: 57px;
+	font-size: 18px;
+	text-align: center;
+	border: 2px solid;
+	border-left: 0px;
+	border-right: 0px;
+	border-color: #373d44;
+	padding: 0;
+}
+
+
+.options_button{
+	float: left;
+	width: 113px;
+	height: 57px;
+	border-radius: 0;
+	border: 2px solid;
+	border-left: 0px;
+	border-color: #5f6a77;
+}
 
 
 

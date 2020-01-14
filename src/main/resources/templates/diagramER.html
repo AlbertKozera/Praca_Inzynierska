@@ -10,7 +10,7 @@
     <!-- The Overview component is bound to the canvas element below -->
     <div id="justdraw">
         <!-- The Diagram component is bound to the canvas element below -->
-        <div id="ruler" style="position: relative; width: 100%; height: 100%; overflow-y: hidden;">
+        <div id="ruler">
             <div id="canvas">
                 <canvas id="diagram" width="2100" height="2100">
                     This page requires a browser that supports HTML 5 Canvas element.
@@ -20,21 +20,19 @@
     </div>
 
 
-    <div id="justdrawOptions" style="position: relative;">
-        <div style="position: relative;
-    width: 167px;
-    height: 167px;
-    border: 1px solid #373d44;
-    background-color: #c0c0c0;
-    float: left;
-    z-index: 10;">
+    <div id="justdrawOptions">
+        <div id="overview_div">
             <canvas id="overview" width="165" height="165">
             </canvas>
         </div>
 
 
-
-        <div id="sliders" style="position: relative; float: right; bottom: 702px; z-index: 11; left: 677px; margin-right: 18px">
+        <div id="sliders" style="position: relative;
+    float: right;
+    bottom: 742px;
+    right: 122px;
+    z-index: 11;
+    margin-right: 18px;">
             <div>
                 <div class="slider">
                     <input type="checkbox" value="None" id="gridSlider" onclick="gridSlider()" name="check" checked/>
@@ -52,10 +50,7 @@
             </div>
         </div>
 
-        <div id="controls" style="position: relative;
-    height: 150px;
-    width: 488px;
-    float: left;">
+        <div id="controls" style="position: relative; height: 167px; width: 488px; float: left;">
             <fieldset style = "background: #1a1f25;
     border-top: 2px solid;
     border-bottom: 2px solid;
@@ -143,18 +138,45 @@
             </button>
             </fieldset>
         </div>
-        <textarea id="generatedSql" readonly
-                  style="    height: 150px;
-    width: 568px;
-    position: relative;
-    background: #1a1f25;
-    float: right;
-    z-index: 2;
-    resize: none;
-    color: white;
-    border: 2px solid;
-    border-color: #373d44;"></textarea>
-    </div>
+
+        <div  class="options_div">
+            <div id="options_1_div">
+                <input class="options_input" type="text" placeholder="Nazwa bazy danych" />
+                <button class="options_button">
+                    <i class="fas fa-database"></i>
+                    <i class="fas fa-bolt fa-xs"></i><br />
+                    Generuj
+                </button>
+            </div>
+            <div id="options_2_div">
+                <input class="options_input" type="text" placeholder="Nazwa diagramu ER" />
+                <button class="options_button">
+                    <i class="fas fa-save"></i><br />
+                    Zapisz
+                </button>
+            </div>
+            <div id="options_3_div">
+                <input class="options_input" type="text" placeholder="Nazwa obrazka [PNG]" />
+                <button class="options_button">
+                    <i class="fas fa-image"></i><br />
+                    Zapisz
+                </button>
+            </div>
+        </div>
+ <textarea id="generatedSql" readonly
+                              style="    height: 167px;
+        width: 601px;
+        position: absolute;
+        background: #1a1f25;
+        float: left;
+        z-index: 2;
+        resize: none;
+        color: white;
+        border: 2px solid;
+        border-left: 0;
+        border-color: #373d44;"></textarea>
+        </div>
+
 
 
 
