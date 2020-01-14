@@ -52,6 +52,11 @@ public class CreateSchemaController {
         return "/test";
     }
 
+    @GetMapping("/admin")
+    public String admin() {
+        return "/admin/admin";
+    }
+
 }
 
 

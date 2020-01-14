@@ -36,13 +36,6 @@ public class AuthenticationController {
 		return modelAndView;
 	}
 
-	@RequestMapping(value = "/user/User", method = RequestMethod.GET)
-	public ModelAndView home() {
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("/user/user.html"); // resources/templates/user/User.html
-		return modelAndView;
-	}
-
 	@RequestMapping(value = "/admin/Admin", method = RequestMethod.GET)
 	public ModelAndView adminHome() {
 		ModelAndView modelAndView = new ModelAndView();
