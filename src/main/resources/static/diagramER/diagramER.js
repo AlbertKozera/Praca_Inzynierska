@@ -829,6 +829,8 @@ function infoOpen() {
 function generateSQL() {
     var text = '';
 
+    text = "CREATE USER \"" + $('#database_name').val() + "\" IDENTIFIED BY \"null\";\n\n";
+
     // enumerate all tables in the current diagram
     ArrayList.forEach(diagram.nodes, function (table) {
         text += "CREATE TABLE " + table.getText() + " (\n";
@@ -980,7 +982,6 @@ function counterOfPrimaryAndUniqueKeys(table, cell) {
     return lastRow;
 }
 
-
 function onUndo() {
     diagram.undo();
     generateSQL();
@@ -1092,7 +1093,6 @@ function setTextToHighlighted(table, row, textColor, underline) {
     table.getCell(2, row).setFont(new Font("Verdana", 3, false, false, underline));
 }
 
-
 function isThisCellAlreadyHightlight(cell) {
     if (cell.getTextColor() == "#00cd45")
         return true;
@@ -1125,7 +1125,6 @@ function rulerSlider() {
     }
 }
 
-
 function refreshCanvas() {
     setTimeout(function () {
         if (copyRuler.getHorizontalScaleVisible() == true) {
@@ -1135,7 +1134,6 @@ function refreshCanvas() {
         diagram.repaint();
     }, 300);
 }
-
 
 function rowSelected() {
     $('#btnEditRow').button("option", "disabled", false);
