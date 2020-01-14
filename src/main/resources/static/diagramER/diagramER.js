@@ -1146,13 +1146,23 @@ function rowDeselected() {
 }
 
 function exportAsPNG(id){
-    diagram.setShowGrid(false);
+    var flag;
+    if(diagram.getShowGrid()){
+        diagram.setShowGrid(false);
+        flag = true;
+    }
+    else{
+        flag = false;
+    }
+
     if($('#filename').val() != "")
         document.getElementById(id).setAttribute("download", $('#filename').val() +".png");
     var download = document.getElementById("download");
     var image = document.getElementById("diagram").toDataURL("image/png").replace("image/png", "image/octet-stream");
     download.setAttribute("href", image);
-    diagram.setShowGrid(true);
+
+    if(flag)
+        diagram.setShowGrid(true);
 }
 
 
