@@ -21,23 +21,20 @@
 
 
     <div id="justdrawOptions" style="position: relative;">
-        <div style="position: relative; width: 200px; height: 200px; border: 1px solid #ffffff; background-color: #c0c0c0; float: left; z-index: 10">
-            <canvas id="overview" width="200" height="200">
+        <div style="position: relative;
+    width: 167px;
+    height: 167px;
+    border: 1px solid #373d44;
+    background-color: #c0c0c0;
+    float: left;
+    z-index: 10;">
+            <canvas id="overview" width="165" height="165">
             </canvas>
         </div>
 
-        <textarea id="generatedSql" readonly
-                  style="    height: 200px;
-    width: 800px;
-    position: relative;
-    background: #1a1f25;
-    float: right;
-    z-index: 2;
-    resize: none;
-    color: white;
-    border-color: #373d44;"></textarea>
 
-        <div id="sliders" style="position: relative; float: right; bottom: 702px; z-index: 11; left: 275px; margin-right: 18px">
+
+        <div id="sliders" style="position: relative; float: right; bottom: 702px; z-index: 11; left: 677px; margin-right: 18px">
             <div>
                 <div class="slider">
                     <input type="checkbox" value="None" id="gridSlider" onclick="gridSlider()" name="check" checked/>
@@ -55,43 +52,108 @@
             </div>
         </div>
 
-
-
-        <div id="controls" style="position: relative; height: 150px;">
+        <div id="controls" style="position: relative;
+    height: 150px;
+    width: 488px;
+    float: left;">
+            <fieldset style = "background: #1a1f25;
+    border-top: 2px solid;
+    border-bottom: 2px solid;
+    border-left: 1px solid;
+    border-right: 2px solid;
+    height: 167px;
+    width: 489px;
+    border-color: #373d44;">
             <button class="fas fa-undo" onclick="onUndo()"
-                    style="margin-left: 5px; margin-bottom: 2px; padding-top: 5px; height: 49px;">Cofnij
-            </button>
-            <button class="fas fa-redo" onclick="onRedo()"
-                    style="margin-left: 5px; margin-bottom: 2px; padding-top: 5px; height: 49px;">Ponów
+                    style="    margin-left: 4px;
+    margin-top: 4px;
+    padding-top: 6px;
+    height: 49px;
+    width: 80px;">Cofnij
             </button>
             <button class="fas fa-table" id="btnCreateTable"
-                    style="margin-left: 5px; margin-bottom: 2px; padding-top: 5px; height: 49px;">Dodaj tabelę
+                    style="margin-left: 3px;
+    margin-top: 4px;
+    padding-top: 6px;
+    height: 49px;
+    width: 120px;">Dodaj tabelę
             </button>
             <button class="fas fa-trash-alt" id="btnDeleteTable"
-                    style="margin-left: 5px;margin-bottom: 2px; padding-top: 5px; height: 49px;">Usuń tabelę
-            </button>
-            <button class="fas fa-plus" id="btnAddRow"
-                    style="margin-left: 5px; margin-bottom: 2px; padding-top: 5px; height: 49px;">Dodaj wiersz
-            </button>
-            <button class="fas fa-minus" id="btnDeleteRow"
-                    style="margin-left: 5px; margin-bottom: 2px; padding-top: 5px; height: 49px;">Usuń wiersz
+                    style="    margin-left: 2px;
+    margin-top: 4px;
+    padding-top: 6px;
+    height: 49px;
+    width: 120px;">Usuń tabelę
             </button>
             <button class="fas fa-edit" id="btnRenameTable"
-                    style="margin-left: 5px; margin-bottom: 2px; padding-top: 5px; height: 49px;">Zmień nazwę tabeli
+                    style="margin-left: 3px;
+    margin-top: 4px;
+    padding-top: 6px;
+    height: 49px;
+    width: 145px;">Zmień nazwę tabeli
+            </button>
+            <button class="fas fa-redo" onclick="onRedo()"
+                    style="    margin-left: 4px;
+    margin-top: 4px;
+    padding-top: 6px;
+    height: 49px;
+    width: 80px;">Ponów
+            </button>
+            <button class="fas fa-plus" id="btnAddRow"
+                    style="margin-left: 3px;
+    margin-top: 4px;
+    padding-top: 6px;
+    height: 49px;
+    width: 120px;">Dodaj wiersz
+            </button>
+            <button class="fas fa-minus" id="btnDeleteRow"
+                    style="margin-left: 2px;
+    margin-top: 4px;
+    padding-top: 6px;
+    height: 49px;
+    width: 120px;">Usuń wiersz
             </button>
             <button class="fas fa-pen-square" id="btnEditRow"
-                    style="margin-left: 5px; margin-bottom: 2px; padding-top: 5px; height: 49px;">Edytuj wiersz
+                    style="margin-left: 3px;
+    margin-top: 4px;
+    padding-top: 6px;
+    height: 49px;
+    width: 145px;">Edytuj wiersz
             </button>
-            <button class="fas fa-search" onclick="zoomToFit()" style="margin-left: 5px; padding-top: 5px; height: 49px;">
+            <button class="fas fa-search" onclick="zoomToFit()" style="    margin-left: 4px;
+    margin-top: 4px;
+    padding-top: 6px;
+    height: 49px;
+    width: 161px;">
                 Dopasuj powiększenie
             </button>
             <button class="fas fa-compress-arrows-alt" onclick="resizeToFitText()"
-                    style="margin-left: 5px; padding-top: 5px; height: 49px;">Dopasuj tabele
+                    style="    margin-left: 3px;
+    margin-top: 4px;
+    padding-top: 6px;
+    height: 49px;
+    width: 154px;">Dopasuj tabele
             </button>
             <button class="fas fa-sitemap" onclick="resizeToFitLinks()"
-                    style="margin-left: 5px; padding-top: 5px; height: 49px;">Dopasuj połączenia
+                    style="margin-left: 2px;
+    margin-top: 4px;
+    padding-top: 6px;
+    height: 49px;
+    width: 154px;">Dopasuj połączenia
             </button>
+            </fieldset>
         </div>
+        <textarea id="generatedSql" readonly
+                  style="    height: 150px;
+    width: 568px;
+    position: relative;
+    background: #1a1f25;
+    float: right;
+    z-index: 2;
+    resize: none;
+    color: white;
+    border: 2px solid;
+    border-color: #373d44;"></textarea>
     </div>
 
 

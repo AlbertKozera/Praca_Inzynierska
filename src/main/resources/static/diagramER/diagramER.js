@@ -145,7 +145,7 @@ $(document).ready(function () {
             //obramowanie tabeli
             table.setStrokeDashStyle(DashStyle.Solid);
             table.setStrokeThickness(1.5);
-            table.setCellFrameStyle(CellFrameStyle.Simple);
+            table.setCellFrameStyle(CellFrameStyle.None);
             table.setStroke("#21272D");
             //aktualizacja scrollbara
             table.scroller.updateLocation();
@@ -625,6 +625,8 @@ function editRow() {
     if (!table || !AbstractionLayer.isInstanceOfType(TableNode, table) || rowClicked < 0)
         return;
 
+    var getcel = table.getCell(1, rowClicked);
+    var textcel = table.getCell(1, rowClicked).getText();
     // use the cell indexer to access cells by their column and row
     table.getCell(1, rowClicked).setText(editRowName[0].value);
     table.getCell(2, rowClicked).setText(editRowType[0].value);
@@ -636,34 +638,24 @@ function editRow() {
         table.getCell(5, rowClicked).setText("");
 
 
-
-
-
-    var getcel = table.getCell(1, rowClicked);
     var PK_state = editRowPK[0].checked, UK_state = editRowUK[0].checked;
 
-
-
-    
-    
-    if((PK_state == true) && (isThisFieldIsForeignKey(getcel.getText())))
+    if((PK_state == true) && (isThisFieldIsForeignKey(textcel)))
         getcel.setText("🗝🔑 " + regex(getcel.getText()));
-    else if((PK_state == true) && !(isThisFieldIsForeignKey(getcel.getText())))
+    else if((PK_state == true) && !(isThisFieldIsForeignKey(textcel)))
         getcel.setText("🔑 " + regex(getcel.getText()));
-    else if((PK_state == false) && (isThisFieldIsForeignKey(getcel.getText())))
+    else if((PK_state == false) && (isThisFieldIsForeignKey(textcel)))
         getcel.setText("🗝 " + regex(getcel.getText()));
     else
         getcel.setText(regex(getcel.getText()));
 
-
-
-    if((UK_state == true) && (isThisFieldIsForeignKey(getcel.getText())))
+    if((UK_state == true) && (isThisFieldIsForeignKey(textcel)))
         getcel.setText("🗝 " + regex(getcel.getText()) + " 🔹");
-    else if((UK_state == true) && !(isThisFieldIsForeignKey(getcel.getText())))
+    else if((UK_state == true) && !(isThisFieldIsForeignKey(textcel)))
         getcel.setText(regex(getcel.getText()) + " 🔹");
-    else if((UK_state == false) && (PK_state == false) && (isThisFieldIsForeignKey(getcel.getText())))
+    else if((UK_state == false) && (PK_state == false) && (isThisFieldIsForeignKey(textcel)))
         getcel.setText("🗝 " + regex(getcel.getText()));
-    else if((UK_state == false) && (PK_state == false) && !(isThisFieldIsForeignKey(getcel.getText())))
+    else if((UK_state == false) && (PK_state == false) && !(isThisFieldIsForeignKey(textcel)))
         getcel.setText(regex(getcel.getText()));
     
 
@@ -728,7 +720,7 @@ function createTable() {
     //obramowanie tabeli
     table.setStrokeDashStyle(DashStyle.Solid);
     table.setStrokeThickness(1.5);
-    table.setCellFrameStyle(CellFrameStyle.Simple);
+    table.setCellFrameStyle(CellFrameStyle.None);
     table.setStroke("#21272D");
     //aktualizacja scrollbara
     table.scroller.updateLocation();
@@ -945,9 +937,9 @@ function generateSQL() {
 
 function isThisFieldIsForeignKey(str) {
     if(str.search("🗝") > -1)
-        return true
+        return true;
     else
-        false
+        return false;
 }
 
 function regex(text) {
