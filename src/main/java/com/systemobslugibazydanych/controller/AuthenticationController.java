@@ -27,7 +27,7 @@ public class AuthenticationController {
 		return "/login";
 	}
 
-	@PostMapping(value="admin/register")
+	@PostMapping(value="/admin/register")
 	public ModelAndView registerUser(@Valid Customer customer, BindingResult bindingResult, ModelMap modelMap) {
 		ModelAndView modelAndView = new ModelAndView();
 		// Check for the validations

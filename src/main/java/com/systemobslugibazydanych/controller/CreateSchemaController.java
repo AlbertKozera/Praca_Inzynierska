@@ -44,6 +44,13 @@ public class CreateSchemaController {
         return "/test";
     }
 
+    @GetMapping("/register")
+    public String register(Model model) {
+        Customer user = new Customer();
+        model.addAttribute("user", user);
+        return "/admin/register";
+    }
+
     @GetMapping("/admin")
     public String admin(Model model) {
         Customer user = new Customer();

@@ -18,13 +18,13 @@
             </div>
         </div>
         <ul class="list-unstyled components mb-5">
-            <li class="active">
+            <li >
                 <a href="#"><span class="fa fa-pencil-alt mr-3"></span> Użytkownicy</a>
             </li>
-            <li class="active">
+            <li id = "brad" class="active">
                 <a href="#"><span class="fa fa-pencil-alt mr-3"></span> Dodaj użytkownika</a>
             </li>
-            <li class="active">
+            <li >
                 <a href="#"><span class="fa fa-pencil-alt mr-3"></span> Usuń użytkownika</a>
             </li>
             <li>
@@ -34,7 +34,7 @@
     </nav>
     <!-- Page Content  -->
     <div id="content" style="position: relative; background-color: #272c32; overflow: hidden">
-        <div th:replace="admin/register.html :: registerUser"></div>
+            <div th:replace="admin/register.html :: registerUser"></div>
     </div>
 </div>
 </body>
