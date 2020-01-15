@@ -32,16 +32,16 @@ public class AuthenticationController {
 		ModelAndView modelAndView = new ModelAndView();
 		// Check for the validations
 		if(bindingResult.hasErrors()) {
-			modelAndView.addObject("successMessage", "Please correct the errors in form!");
+			modelAndView.addObject("successMessage", "Formularz zawiera błędy!");
 			modelMap.addAttribute("bindingResult", bindingResult);
 		}
 		else if(customerService.isCustomerAlreadyPresent(customer)){
-			modelAndView.addObject("successMessage", "user already exists!");			
+			modelAndView.addObject("successMessage", "Taki użytkownik już istnieje!");
 		}
 		// we will save the user if, no binding errors
 		else {
 			customerService.saveCustomer(customer);
-			modelAndView.addObject("successMessage", "User is registered successfully!");
+			modelAndView.addObject("successMessage", "Użytkownik został zarejestrowany pomyślnie!");
 		}
 		modelAndView.addObject("user", new Customer());
 		modelAndView.setViewName("/admin/admin");
