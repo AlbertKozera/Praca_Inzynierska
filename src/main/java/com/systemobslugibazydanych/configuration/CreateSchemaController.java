@@ -1,4 +1,5 @@
 package com.systemobslugibazydanych.configuration;
+import com.systemobslugibazydanych.entity.Customer;
 import com.systemobslugibazydanych.entity.DatabaseTable;
 import com.systemobslugibazydanych.repository.DatabaseTableRepository;
 import com.systemobslugibazydanych.service.DatabaseTableService;
@@ -23,7 +24,6 @@ public class CreateSchemaController {
         databaseTableService.nazwametody(databaseTable);
         return "redirect:/user";
     }
-
 
     @RequestMapping(path = { "/user" })
     public String showNewDatabase(Model model){
@@ -53,7 +53,9 @@ public class CreateSchemaController {
     }
 
     @GetMapping("/admin")
-    public String admin() {
+    public String admin(Model model) {
+        Customer user = new Customer();
+        model.addAttribute("user", user);
         return "/admin/admin";
     }
 

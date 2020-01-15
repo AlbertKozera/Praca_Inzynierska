@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,15 +28,6 @@ public class AuthenticationController {
 		return modelAndView;
 	}
 
-	@RequestMapping(value = "/register", method = RequestMethod.GET)
-	public ModelAndView register() {
-		ModelAndView modelAndView = new ModelAndView();
-		Customer user = new Customer();
-		modelAndView.addObject("user", user);
-		modelAndView.setViewName("register.html"); // resources/templates/register.html
-		return modelAndView;
-	}
-
 	@RequestMapping(value = "/admin/Admin", method = RequestMethod.GET)
 	public ModelAndView adminHome() {
 		ModelAndView modelAndView = new ModelAndView();
@@ -43,7 +35,7 @@ public class AuthenticationController {
 		return modelAndView;
 	}
 
-	@RequestMapping(value="/register", method=RequestMethod.POST)
+	@PostMapping(value="admin/register")
 	public ModelAndView registerUser(@Valid Customer customer, BindingResult bindingResult, ModelMap modelMap) {
 		ModelAndView modelAndView = new ModelAndView();
 		// Check for the validations
@@ -60,7 +52,7 @@ public class AuthenticationController {
 			modelAndView.addObject("successMessage", "User is registered successfully!");
 		}
 		modelAndView.addObject("user", new Customer());
-		modelAndView.setViewName("register");
+		modelAndView.setViewName("/admin/admin.html");
 		return modelAndView;
 	}
 }
