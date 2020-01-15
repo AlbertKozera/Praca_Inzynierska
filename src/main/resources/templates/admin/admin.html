@@ -7,13 +7,13 @@
 <div class="wrapper d-flex align-items-stretch">
     <nav id="sidebar">
         <div class="custom-menu">
-            <button type="button" id="sidebarCollapse" class="btn btn-primary" onclick="refreshCanvas()">
+            <button type="button" id="sidebarCollapse" class="btn btn-primary">
             </button>
         </div>
 
-        <div class="img bg-wrap text-center py-4" style="background-image: url(static/sidebar/images/bg_1.jpg);">
+        <div class="img bg-wrap text-center py-4" style="background-image: url(/static/sidebar/images/bg_1.jpg);">
             <div class="user-logo">
-                <div class="img" style="background-image: url(static/sidebar/images/logo.jpg);"></div>
+                <div class="img" style="background-image: url(/static/sidebar/images/logo.jpg);"></div>
                 <h3 sec:authentication="principal.username"></h3>
             </div>
         </div>
@@ -34,7 +34,7 @@
     </nav>
     <!-- Page Content  -->
     <div id="content" style="position: relative; background-color: #272c32; overflow: hidden">
-        <th:block th:include="admin/register.html :: registerUser"/>
+        <div th:replace="admin/register.html :: registerUser"></div>
     </div>
 </div>
 </body>
