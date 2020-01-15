@@ -1,4 +1,4 @@
-package com.systemobslugibazydanych.configuration;
+package com.systemobslugibazydanych.controller;
 import com.systemobslugibazydanych.entity.Customer;
 import com.systemobslugibazydanych.entity.DatabaseTable;
 import com.systemobslugibazydanych.repository.DatabaseTableRepository;
@@ -32,20 +32,12 @@ public class CreateSchemaController {
         return "/user/tworzenieBazy.html";
     }
 
-    @RequestMapping(value = { "/diagramER" }, method = RequestMethod.GET)
-    public ModelAndView dbdesign() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("diagramER.html"); // resources/templates/login.html
-        return modelAndView;
-    }
-
     @RequestMapping(value = { "/index" }, method = RequestMethod.GET)
     public ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("index.html"); // resources/templates/login.html
         return modelAndView;
     }
-
 
     @GetMapping("/test")
     public String test() {

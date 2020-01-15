@@ -11,6 +11,6 @@ public class StartController {
     @RequestMapping(value = "/")
     public String start(HttpServletRequest request){
         System.out.println(request.getServletPath());
-        return "login";
+        return "index";
     }
 }
