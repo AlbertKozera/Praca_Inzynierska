@@ -6,6 +6,7 @@ import com.systemobslugibazydanych.entity.Customer;
 import com.systemobslugibazydanych.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,32 +29,12 @@ public class AuthenticationController {
 		return modelAndView;
 	}
 
-	@RequestMapping(value = "/admin/Admin", method = RequestMethod.GET)
-	public ModelAndView adminHome() {
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("admin/admin.html"); // resources/templates/admin/Admin.html
-		return modelAndView;
-	}
-
-	@PostMapping(value="admin/register")
-	public ModelAndView registerUser(@Valid Customer customer, BindingResult bindingResult, ModelMap modelMap) {
-		ModelAndView modelAndView = new ModelAndView();
-		// Check for the validations
-		if(bindingResult.hasErrors()) {
-			modelAndView.addObject("successMessage", "Please correct the errors in form!");
-			modelMap.addAttribute("bindingResult", bindingResult);
-		}
-		else if(customerService.isCustomerAlreadyPresent(customer)){
-			modelAndView.addObject("successMessage", "user already exists!");			
-		}
-		// we will save the user if, no binding errors
-		else {
-			customerService.saveCustomer(customer);
-			modelAndView.addObject("successMessage", "User is registered successfully!");
-		}
-		modelAndView.addObject("user", new Customer());
-		modelAndView.setViewName("/admin/admin.html");
-		return modelAndView;
+	@PostMapping(value="/admin/register")
+	public String registerUser(Model model, Customer customer) {
+		customerService.saveCustomer(customer);
+		Customer user = new Customer();
+		model.addAttribute("user", user);
+		return "redirect:/admin";
 	}
 }
 

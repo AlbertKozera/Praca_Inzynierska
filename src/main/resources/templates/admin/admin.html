@@ -2,12 +2,15 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <th:block th:include="fragments/sidebar/headerinc :: head"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div class="wrapper d-flex align-items-stretch">
     <nav id="sidebar">
         <div class="custom-menu">
-            <button type="button" id="sidebarCollapse" class="btn btn-primary" onclick="refreshCanvas()">
+            <button type="button" id="sidebarCollapse" class="btn btn-primary">
             </button>
         </div>
 
@@ -36,7 +39,7 @@
 </div>
 </body>
 <footer>
-    <th:block th:include="fragments/sidebar/footerinc :: footer"/>
+    <div th:replace="fragments/sidebar/footerinc :: footer"></div>
 </footer>
 
 </html>
