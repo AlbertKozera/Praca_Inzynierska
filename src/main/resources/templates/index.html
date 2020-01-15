@@ -23,30 +23,40 @@
             </div>
         </div>
         <ul class="list-unstyled components mb-5">
-            <li class="active">
-                <a href="#"><span class="fa fa-pencil-alt mr-3"></span> Rysuj diagram</a>
-            </li>
-            <li>
-                <a href="#"><span class="fa fa-database mr-3"></span> Menedżer baz danych</a>
-            </li>
-            <li>
-                <a href="#"><span class="fa fa-project-diagram mr-3"></span> Menedżer diagramów ER</a>
-            </li>
-            <li>
-                <a href="#"><span class="fa fa-folder-open mr-3"></span> Katalog diagramów ER</a>
-            </li>
-            <li>
-                <a href="#"><span class="fa fa-terminal mr-3"></span> Interpreter SQL</a>
-            </li>
-            <li>
-                <a href="#"><span class="fa fa-user mr-3"></span> Profil</a>
-            </li>
-            <li>
-                <a href="#"><span class="fa fa-question-circle mr-3"></span> FAQ</a>
-            </li>
-            <li>
-                <a href="#"><span class="fa fa-sign-out-alt mr-3"></span> Wyloguj</a>
-            </li>
+                <li class="active">
+                    <a href="#"><span class="fa fa-pencil-alt mr-3"></span> Rysuj diagram</a>
+                </li>
+            <div sec:authorize="isAuthenticated()">
+                <li>
+                    <a href="#"><span class="fa fa-database mr-3"></span> Menedżer baz danych</a>
+                </li>
+                <li>
+                    <a href="#"><span class="fa fa-project-diagram mr-3"></span> Menedżer diagramów ER</a>
+                </li>
+                <li>
+                    <a href="#"><span class="fa fa-folder-open mr-3"></span> Katalog diagramów ER</a>
+                </li>
+                <li>
+                    <a href="#"><span class="fa fa-terminal mr-3"></span> Interpreter SQL</a>
+                </li>
+                <li>
+                    <a href="#"><span class="fa fa-user mr-3"></span> Profil</a>
+                </li>
+            </div>
+                <li>
+                    <a href="#"><span class="fa fa-question-circle mr-3"></span> FAQ</a>
+                </li>
+            <div sec:authorize="isAnonymous()">
+                <li>
+                    <a th:href="@{/login}"><span class="fas fa-sign-in-alt mr-3"></span> Zaloguj</a>
+                </li>
+            </div>
+            <div sec:authorize="isAuthenticated()">
+                <li>
+                    <a th:href="@{/logout}"><span class="fa fa-sign-out-alt mr-3"></span> Wyloguj</a>
+                </li>
+            </div>
+
         </ul>
     </nav>
     <!-- Page Content  -->

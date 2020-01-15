@@ -1,5 +1,5 @@
 ﻿<!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
 </head>
 <body>
@@ -57,29 +57,42 @@
         </div>
 
         <div  class="options_div">
-            <div id="options_1_div">
-                <input id="database_name" class="options_input" type="text" placeholder="Nazwa bazy danych..." oninput="generateSQL()"/>
-                <button class="options_button">
-                    <i class="fas fa-database"></i>
-                    <i class="fas fa-bolt fa-xs"></i><br />
-                    Generuj
-                </button>
+            <div sec:authorize="isAuthenticated()">
+                <div id="options_1_div">
+                    <input id="database_name" class="options_input" type="text" placeholder="Nazwa bazy danych..." oninput="generateSQL()"/>
+                    <button class="options_button">
+                        <i class="fas fa-database"></i>
+                        <i class="fas fa-bolt fa-xs"></i><br />
+                        Generuj
+                    </button>
+                </div>
+                <div id="options_2_div">
+                    <input class="options_input" type="text" placeholder="Nazwa diagramu ER..." />
+                    <button class="options_button">
+                        <i class="fas fa-save"></i><br />
+                        Zapisz
+                    </button>
+                </div>
+                <div id="options_3_div">
+                    <input id="filename" class="options_input" type="text" placeholder="Nazwa pliku..." />
+                        <a id="download" download="diagram.png">
+                            <button class="options_button" onclick="exportAsPNG('download')">
+                                <i class="fas fa-image"></i><br />
+                                Pobierz
+                            </button>
+                        </a>
+                </div>
             </div>
-            <div id="options_2_div">
-                <input class="options_input" type="text" placeholder="Nazwa diagramu ER..." />
-                <button class="options_button">
-                    <i class="fas fa-save"></i><br />
-                    Zapisz
-                </button>
-            </div>
-            <div id="options_3_div">
-                <input id="filename" class="options_input" type="text" placeholder="Nazwa pliku..." />
+            <div sec:authorize="isAnonymous()">
+                <div id="options_3_div" style="bottom: -110px;">
+                    <input id="filename" class="options_input" type="text" placeholder="Nazwa pliku..." />
                     <a id="download" download="diagram.png">
                         <button class="options_button" onclick="exportAsPNG('download')">
                             <i class="fas fa-image"></i><br />
                             Pobierz
                         </button>
                     </a>
+                </div>
             </div>
         </div>
 

@@ -29,7 +29,7 @@ public class CreateSchemaController {
     public String showNewDatabase(Model model){
         DatabaseTable databaseTable = new DatabaseTable();
         model.addAttribute("databaseTable", databaseTable);
-        return "/user/tworzenieBazy.html";
+        return "/index";
     }
 
     @RequestMapping(value = { "/index" }, method = RequestMethod.GET)
