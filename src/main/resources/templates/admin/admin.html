@@ -11,9 +11,9 @@
             </button>
         </div>
 
-        <div class="img bg-wrap text-center py-4" style="background-image: url(sidebar/images/bg_1.jpg);">
+        <div class="img bg-wrap text-center py-4" style="background-image: url(static/sidebar/images/bg_1.jpg);">
             <div class="user-logo">
-                <div class="img" style="background-image: url(sidebar/images/logo.jpg);"></div>
+                <div class="img" style="background-image: url(static/sidebar/images/logo.jpg);"></div>
                 <h3 sec:authentication="principal.username"></h3>
             </div>
         </div>
@@ -31,7 +31,7 @@
     </nav>
     <!-- Page Content  -->
     <div id="content" style="position: relative; background-color: #272c32; overflow: hidden">
-        <div th:replace="admin/register.html :: registerUser"></div>
+        <th:block th:include="admin/register.html :: registerUser"/>
     </div>
 </div>
 </body>

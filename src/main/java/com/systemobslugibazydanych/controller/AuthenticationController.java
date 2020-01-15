@@ -28,13 +28,6 @@ public class AuthenticationController {
 		return modelAndView;
 	}
 
-	@RequestMapping(value = "/admin/Admin", method = RequestMethod.GET)
-	public ModelAndView adminHome() {
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("admin/admin.html"); // resources/templates/admin/Admin.html
-		return modelAndView;
-	}
-
 	@PostMapping(value="admin/register")
 	public ModelAndView registerUser(@Valid Customer customer, BindingResult bindingResult, ModelMap modelMap) {
 		ModelAndView modelAndView = new ModelAndView();
@@ -52,7 +45,7 @@ public class AuthenticationController {
 			modelAndView.addObject("successMessage", "User is registered successfully!");
 		}
 		modelAndView.addObject("user", new Customer());
-		modelAndView.setViewName("/admin/admin.html");
+		modelAndView.setViewName("/admin/admin");
 		return modelAndView;
 	}
 }
