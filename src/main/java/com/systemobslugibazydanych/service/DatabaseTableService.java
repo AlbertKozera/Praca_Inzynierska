@@ -37,7 +37,7 @@ public class DatabaseTableService {
         return String.valueOf(content);
     }
 
-    public DatabaseTable nazwametody(DatabaseTable databaseTable){
+    public void nazwametody(String[] split){
 
 
 /*        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -66,16 +66,22 @@ public class DatabaseTableService {
 
 
 
-        SessionFactory hibernateFactory = someService.getHibernateFactory();
+       SessionFactory hibernateFactory = someService.getHibernateFactory();
         Session session = hibernateFactory.openSession();
-        String query1 = null;
+       /*  String query1 = null;
         try {
             query1 = new String(Files.readAllBytes(Paths.get(ClassLoader.getSystemResource("test.sql").toURI())));
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
         String finalQuery = query1;
-        session.doWork(connection -> connection.prepareStatement(finalQuery).execute());
+        session.doWork(connection -> connection.prepareStatement(finalQuery).execute());*/
+
+
+        for (int i = 0; i < split.length; i++) {
+            String query = split[i];
+            session.doWork(connection -> connection.prepareStatement(query).execute());
+        }
         session.close();
 
 
@@ -88,9 +94,9 @@ public class DatabaseTableService {
 
 
 
-
+/*
         databaseTable = databaseTableRepository.save(databaseTable);
-        return databaseTable;
+        return databaseTable;*/
     }
 }
 

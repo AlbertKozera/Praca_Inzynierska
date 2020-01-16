@@ -2,11 +2,9 @@ package com.systemobslugibazydanych.entity;
 
 import java.util.List;
 import java.util.Set;
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-
 import org.hibernate.validator.constraints.Length;
 
 @Entity

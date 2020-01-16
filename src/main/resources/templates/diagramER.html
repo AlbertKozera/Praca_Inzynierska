@@ -59,12 +59,20 @@
         <div  class="options_div">
             <div sec:authorize="isAuthenticated()">
                 <div id="options_1_div">
+
+
+<!--                    <form th:action="@{/user/saveNameOfDatabase}" th:object="${databaseTable}" method="post">
+                        <td>Nazwa bazy danych</td>
+                        <input type="text"  th:field="*{name}" />x
+                        <input type="submit" class="btn btn-primary" value=" Dodaj ">
+                    </form>
+                    -->
                     <input id="database_name" class="options_input" type="text" placeholder="Nazwa bazy danych..." oninput="generateSQL()"/>
-                    <button class="options_button">
-                        <i class="fas fa-database"></i>
-                        <i class="fas fa-bolt fa-xs"></i><br />
-                        Generuj
-                    </button>
+                        <button type="submit" id="newDatabase" class="options_button" onclick="genereteDatabase('generatedSql')">
+                            <i class="fas fa-database"></i>
+                            <i class="fas fa-bolt fa-xs"></i><br />
+                            Generuj
+                        </button>
                 </div>
                 <div id="options_2_div">
                     <input class="options_input" type="text" placeholder="Nazwa diagramu ER..." />

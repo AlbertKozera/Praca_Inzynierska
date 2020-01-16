@@ -20,8 +20,10 @@ public class CreateSchemaController {
 
 
     @PostMapping(path = { "/user/saveNameOfDatabase" })
-    public String createSchema(@ModelAttribute("databaseTable") DatabaseTable databaseTable) {
-        databaseTableService.nazwametody(databaseTable);
+    public String createSchema(@RequestBody String tmp) {
+        String[] split = tmp.replace("\n", "").split(";");
+        databaseTableService.nazwametody(split);
+
         return "redirect:/user";
     }
 
