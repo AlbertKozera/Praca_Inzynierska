@@ -829,11 +829,11 @@ function infoOpen() {
 function generateSQL() {
     var text = '';
 
-    text = "CREATE USER \"" + $('#database_name').val() + "\" IDENTIFIED BY \"null\";\n\n";
+    text = "CREATE USER " + "\"" + $('#schema_name').val() + "\"" + " IDENTIFIED BY \"null\";\n\n";
 
     // enumerate all tables in the current diagram
     ArrayList.forEach(diagram.nodes, function (table) {
-        text += "CREATE TABLE " + table.getText() + " (\n";
+        text += "CREATE TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + table.getText() + " (\n";
 
         // enumerate all rows of a table
         for (var r = 0; r < table.cells.rows; ++r) {
@@ -853,7 +853,7 @@ function generateSQL() {
         for (var r = 0; r < table.cells.rows; ++r) {
             if (table.getCell(3, r).getText() == "true" && flag_PK)
             {
-                text += "\nALTER TABLE " + table.getText();
+                text += "\nALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + table.getText();
                 text += " ADD CONSTRAINT " + table.getText() + "_PK " + "PRIMARY KEY " + "(";
                 flag_PK = false;
             }
@@ -877,7 +877,7 @@ function generateSQL() {
         for (var r = 0; r < table.cells.rows; ++r) {
             if (table.getCell(4, r).getText() == "true" && flag_UK) // sprawdz czy wiersz to unique key
             {
-                text += "\nALTER TABLE " + table.getText();
+                text += "\nALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + table.getText();
                 text += " ADD CONSTRAINT " + table.getText() + "_UK" + ++iterator_numbersUK + " UNIQUE " + "(";
                 flag_UK = false;
             }
@@ -903,7 +903,7 @@ function generateSQL() {
             var rowDestination = link.getDestinationIndex();
             var rowOrigin = link.getOriginIndex();
 
-            text += "\nALTER TABLE " + tableOrigin.getText();
+            text += "\nALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableOrigin.getText();
             text += " ADD CONSTRAINT " + tableOrigin.getText() + "_FK" + ++iterator_numbersFK;
             text += " FOREIGN KEY " + "(";
 
@@ -920,7 +920,7 @@ function generateSQL() {
                 origin = true;
             }
             text += ")" + "\n";
-            text += "REFERENCES " + tableDestination.getText() + " (";
+            text += "REFERENCES " + "\"" + $('#schema_name').val() + "\"" + "." + tableDestination.getText() + " (";
             if ((tableDestination.getCell(3, rowDestination).getText() == "true") && (!destination)) {
                 text = addFieldToGeneratedText(3, tableDestination, text);
                 destination = true;

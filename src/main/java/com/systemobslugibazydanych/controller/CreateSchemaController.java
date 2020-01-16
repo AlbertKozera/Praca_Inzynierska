@@ -21,7 +21,7 @@ public class CreateSchemaController {
 
     @PostMapping(path = { "/user/saveNameOfDatabase" })
     public String createSchema(@RequestBody String tmp) {
-        String[] split = tmp.replace("\n", "").split(";");
+        String[] split = tmp.replace("\n", "").replace("\t", "").split(";");
         databaseTableService.nazwametody(split);
 
         return "redirect:/user";
