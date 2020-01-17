@@ -48,13 +48,13 @@ public class CustomerCrudController
             throws RuntimeException
     {
         service.deleteEmployeeById(id);
-        return "redirect:/";
+        return "redirect:/list";
     }
 
     @RequestMapping(path = "/createEmployee", method = RequestMethod.POST)
     public String createOrUpdateEmployee(Customer employee)
     {
         service.createOrUpdateEmployee(employee);
-        return "redirect:/";
+        return "redirect:/list";
     }
 }

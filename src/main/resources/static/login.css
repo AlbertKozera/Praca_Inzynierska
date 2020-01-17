@@ -88,5 +88,5 @@ after { clear: both; }
     transition: background 0.3s ease-in-out;
 }
 #login form input[type="submit"]:hover {
-    background: rgb(111, 83, 171);
+    background: #2f89fc;
 }
