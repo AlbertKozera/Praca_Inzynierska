@@ -8279,7 +8279,7 @@ h1, h2, h3, h4, h5,
   height: 30px; }
 #sidebar .custom-menu .btn.btn-primary:after, #sidebar .custom-menu .btn.btn-primary:before {
   position: absolute;
-  top: 9px;
+  top: 3px;
   left: 0;
   right: 0;
   bottom: 0;
@@ -8290,7 +8290,7 @@ h1, h2, h3, h4, h5,
 #sidebar .custom-menu .btn.btn-primary:after {
   content: "\f053";
   right: 2px;
-  top: 9px}
+  top: 3px}
 
 .bg-wrap {
   width: 100%;

@@ -16,25 +16,25 @@ public class Customer {
 	@Column(name = "user_id")
 	private int id;
 
-	@NotNull(message="First name is compulsory")
+	@NotNull(message="Imie jest obowiązkowe")
 	@Length(min=3, message="Imie musi składać się conajmniej z 3 znaków")
 	@Length(max=25, message="Imie może składać się maksymalnie z 25 znaków")
 	@Column(name = "first_name")
 	private String name;
 
-	@NotNull(message="Last name is compulsory")
+	@NotNull(message="Nazwisko jest obowiązkowe")
 	@Length(min=3, message="Nazwisko musi składać się conajmniej z 3 znaków")
 	@Length(max=25, message="Nazwisko może składać się maksymalnie z 25 znaków")
 	@Column(name = "last_name")
 	private String lastName;
 
-	@NotNull(message="Email is compulsory")
+	@NotNull(message="Email jest obowiązkowy")
 	@Length(min=3, message="Email musi składać się conajmniej z 3 znaków")
 	@Email(message = "Email jest nieprawidłowy")
 	@Column(name = "email")
 	private String email;
 
-	@NotNull(message="Password is compulsory")
+	@NotNull(message="Hasło jest obowiązkowe")
 	@Length(min=5, message="Hasło nie może być krótsze niż 5 znaków")
 	@Length(max=25, message="Hasło nie może być dłuższe niż 25 znaków")
 	@Column(name = "password")
