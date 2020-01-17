@@ -908,10 +908,12 @@ function generateSQL() {
             text += " FOREIGN KEY " + "(";
 
             if ((tableOrigin.getCell(3, rowOrigin).getText() == "true") && (!origin)) {
+                text += regex(tableOrigin.getCell(1, rowOrigin).getText());
                 text = addFieldToGeneratedText(3, tableOrigin, text);
                 origin = true;
             }
             else if ((tableOrigin.getCell(4, rowOrigin).getText() == "true") && (!origin)) {
+                text += regex(tableOrigin.getCell(1, rowOrigin).getText());
                 text = addFieldToGeneratedText(4, tableOrigin, text);
                 origin = true;
             }
@@ -922,14 +924,46 @@ function generateSQL() {
             text += ")" + "\n";
             text += "REFERENCES " + "\"" + $('#schema_name').val() + "\"" + "." + tableDestination.getText() + " (";
             if ((tableDestination.getCell(3, rowDestination).getText() == "true") && (!destination)) {
+                text += regex(tableDestination.getCell(1, rowDestination).getText());
                 text = addFieldToGeneratedText(3, tableDestination, text);
                 destination = true;
             }
             if ((tableDestination.getCell(4, rowDestination).getText() == "true") && (!destination)) {
+                text += regex(tableDestination.getCell(1, rowDestination).getText());
                 text = addFieldToGeneratedText(4, tableDestination, text);
                 destination = true;
             }
             text += ");";
+
+    });
+
+
+    ArrayList.forEach(diagram.links, function (link) {
+        var tableDestination = link.getDestination();
+        var tableOrigin = link.getOrigin();
+        var rowDestination = link.getDestinationIndex();
+        var rowOrigin = link.getOriginIndex();
+
+        var i = 0;
+        for (var r = 0; r < tableOrigin.cells.rows; ++r) {
+            if((tableOrigin.getCell(3, r).getText() == "true") || (tableOrigin.getCell(4, r).getText() == "true")){
+                if(tableOrigin.rows[r].outgoingLinks.length == 1){
+                    i++;
+                }
+            }
+        }
+        if(i>1){
+            for (var r = 0; r < tableOrigin.cells.rows; ++r) {
+                if((tableOrigin.getCell(3, r).getText() == "true") || (tableOrigin.getCell(4, r).getText() == "true")){
+                    if(tableOrigin.rows[r].outgoingLinks.length == 1){
+
+                        tableOrigin.rows[r].outgoingLinks[0].setBaseShape('RevWithLine');
+                        tableOrigin.rows[r].outgoingLinks[0].setHeadShape('OneToOne');
+                    }
+                }
+            }
+        }
+
 
     });
 
@@ -950,12 +984,9 @@ function regex(text) {
 }
 
 function addFieldToGeneratedText(primaryOrUnique, table, text){
-    var i = 0;
     for (var r = 0; r < table.cells.rows; ++r) {
-        if (table.getCell(primaryOrUnique, r).getText() == "true") {
-            i++;
-            if (i > 1)
-                text += ", ";
+        if ((table.getCell(primaryOrUnique, r).getText() == "true") && (table.rows[r].outgoingLinks.length == 0) && (table.rows[r].incomingLinks.length == 0)) {
+            text += ", ";
             text += regex(table.getCell(1, r).getText());
         }
     }
