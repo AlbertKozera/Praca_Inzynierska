@@ -64,13 +64,6 @@ public class CreateSchemaController {
         return "/admin/deleteuser";
     }
 
-
-
-
-    @GetMapping("/list")
-    public String listemploye(Model model) {
-        return "/list";
-    }
 }
 
 

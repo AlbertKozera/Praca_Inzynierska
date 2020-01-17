@@ -2,6 +2,8 @@ package com.systemobslugibazydanych.service;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 
 import com.systemobslugibazydanych.entity.Customer;
 import com.systemobslugibazydanych.entity.Role;
@@ -14,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class CustomerServiceImpl implements CustomerService {
+public class CustomerServiceImpl {
 	
 	@Autowired
 	private BCryptPasswordEncoder encoder;
@@ -23,7 +25,7 @@ public class CustomerServiceImpl implements CustomerService {
 	@Autowired
 	private CustomerRepository customerRepository;
 
-	@Override
+
 	public void saveCustomer(Customer customer) {
 		customer.setPassword(encoder.encode(customer.getPassword()));
 		customer.setStatus("VERIFIED");
@@ -32,7 +34,7 @@ public class CustomerServiceImpl implements CustomerService {
 		customerRepository.save(customer);
 	}
 
-	@Override
+
 	public boolean isCustomerAlreadyPresent(Customer customer) {
 		// Try to implement this method, as assignment.
 		return false;
@@ -44,5 +46,66 @@ public class CustomerServiceImpl implements CustomerService {
 
 
 
+
+
+
+	public List<Customer> getAllEmployees()
+	{
+		List<Customer> result = customerRepository.findAll();
+		return result;
+	}
+
+	public Customer getEmployeeById(Integer id) throws RuntimeException
+	{
+		Optional<Customer> customer = customerRepository.findById(id);
+
+		if(customer.isPresent()) {
+			return customer.get();
+		} else {
+			throw new RuntimeException("No customer record exist for given id");
+		}
+	}
+
+	public Customer createOrUpdateEmployee(Customer entity)
+	{
+		if(entity.getId()  == null)
+		{
+			entity = customerRepository.save(entity);
+
+			return entity;
+		}
+		else
+		{
+			Optional<Customer> customer = customerRepository.findById(entity.getId());
+
+			if(customer.isPresent())
+			{
+				Customer newEntity = customer.get();
+				newEntity.setEmail(entity.getEmail());
+				newEntity.setName(entity.getName());
+				newEntity.setLastName(entity.getLastName());
+
+				newEntity = customerRepository.save(newEntity);
+
+				return newEntity;
+			} else {
+				entity = customerRepository.save(entity);
+
+				return entity;
+			}
+		}
+	}
+
+	public void deleteEmployeeById(Integer id) throws RuntimeException
+	{
+		Optional<Customer> customer = customerRepository.findById(id);
+
+		if(customer.isPresent())
+		{
+			customerRepository.deleteById(id);
+		} else {
+			throw new RuntimeException("No customer record exist for given id");
+		}
+	}
 
 }

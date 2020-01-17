@@ -36,7 +36,6 @@ public class Customer {
 
 	@NotNull(message="Hasło jest obowiązkowe")
 	@Length(min=5, message="Hasło nie może być krótsze niż 5 znaków")
-	@Length(max=25, message="Hasło nie może być dłuższe niż 25 znaków")
 	@Column(name = "password")
 	private String password;
 

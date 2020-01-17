@@ -4,10 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 import com.systemobslugibazydanych.entity.Customer;
-import com.systemobslugibazydanych.service.CustomerCrudService;
+import com.systemobslugibazydanych.service.CustomerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,15 +19,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class CustomerCrudController
 {
     @Autowired
-    CustomerCrudService service;
+    CustomerServiceImpl service;
 
-    @RequestMapping
+    @GetMapping(path = "/list")
     public String getAllEmployees(Model model)
     {
         List<Customer> list = service.getAllEmployees();
 
-        model.addAttribute("employees", list);
-        return "list-employees";
+        model.addAttribute("customers", list);
+        return "list";
     }
 
     @RequestMapping(path = {"/edit", "/edit/{id}"})

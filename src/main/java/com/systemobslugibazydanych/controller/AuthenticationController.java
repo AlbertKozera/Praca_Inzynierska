@@ -3,7 +3,7 @@ package com.systemobslugibazydanych.controller;
 import javax.validation.Valid;
 
 import com.systemobslugibazydanych.entity.Customer;
-import com.systemobslugibazydanych.service.CustomerService;
+import com.systemobslugibazydanych.service.CustomerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -20,7 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class AuthenticationController {
 
 	@Autowired
-	CustomerService customerService;
+	CustomerServiceImpl customerService;
 
 	@GetMapping("/login")
 	public String login() {
