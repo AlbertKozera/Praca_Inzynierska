@@ -1,34 +1,31 @@
-<div th:fragment="registerUser" xmlns:th="http://www.w3.org/1999/xhtml">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<div th:fragment="adduserFragment" xmlns:th="http://www.w3.org/1999/xhtml">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<div class="container-fluid" style="padding: 0">
 		<div class="row col-lg-4 col-lg-offset-4" style="margin-top: 60px; margin-left: 60px; background-color: #32373d; padding: 20px; padding-top: 12px;">
-			<form autocomplete="off" action="#" th:action="@{/admin/register}" th:object="${user}" method="post" class="form-signin" role="form" style="color: #ffffff">
-				<h3 class="form-signin-heading">Rejestracja użytkownika</h3>
+			<form autocomplete="off" action="#" th:action="@{/adduser/add}" th:object="${user}" method="post" class="form-signin" role="form" style="color: #e1e6ec; padding-top: 20px;">
 				<div class="form-group">
 					<div class="">
-						<input type="text" th:field="*{name}" placeholder="Imie" class="form-control" style="width: 498px"/>
+						<input type="text" th:field="*{name}" placeholder="Imie" class="form-control" style="width: 498px; background: #2d333a63; color: #e1e6ec;"/>
 					</div>
 				</div>
 				<div class="form-group">
 					<div class="">
-						<input type="text" th:field="*{lastName}" placeholder="Nazwisko" class="form-control" style="width: 498px"/>
+						<input type="text" th:field="*{lastName}" placeholder="Nazwisko" class="form-control" style="width: 498px; background: #2d333a63; color: #e1e6ec;"/>
 					</div>
 				</div>
 				<div class="form-group">
 					<div class="">
-						<input type="text" th:field="*{email}" placeholder="Email" class="form-control" style="width: 498px"/>
+						<input type="text" th:field="*{email}" placeholder="Email" class="form-control" style="width: 498px; background: #2d333a63; color: #e1e6ec;"/>
 					</div>
 				</div>
 				<div class="form-group">
 					<div class="">
-						<input type="password" th:field="*{password}" placeholder="Hasło" class="form-control" style="width: 498px"/>
+						<input type="password" th:field="*{password}" placeholder="Hasło" class="form-control" style="width: 498px; background: #2d333a63; color: #e1e6ec;"/>
 					</div>
 				</div>
 				<div class="form-group">
 					<div class="">
-						<button type="submit" class="btn btn-primary btn-block" style="width: 498px">Rejestruj użytkownika</button>
+						<button type="submit" class="btn btn-primary btn-block" style="width: 498px; background: #272c3269; color: #e1e6ec; border 0">Rejestruj użytkownika</button>
 					</div>
 				</div>
 				<span th:utext="${successMessage}"></span>

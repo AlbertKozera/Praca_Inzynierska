@@ -27,7 +27,7 @@ public class AuthenticationController {
 		return "/login";
 	}
 
-	@PostMapping(value="/admin/register")
+	@PostMapping(value="/adduser/add")
 	public ModelAndView registerUser(@Valid Customer customer, BindingResult bindingResult, ModelMap modelMap) {
 		ModelAndView modelAndView = new ModelAndView();
 		// Check for the validations
@@ -44,7 +44,7 @@ public class AuthenticationController {
 			modelAndView.addObject("successMessage", "Użytkownik został zarejestrowany pomyślnie!");
 		}
 		modelAndView.addObject("user", new Customer());
-		modelAndView.setViewName("/admin/admin");
+		modelAndView.setViewName("/admin/adduser");
 		return modelAndView;
 	}
 }

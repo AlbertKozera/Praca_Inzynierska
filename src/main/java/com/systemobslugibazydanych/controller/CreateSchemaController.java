@@ -41,25 +41,28 @@ public class CreateSchemaController {
         return modelAndView;
     }
 
-    @GetMapping("/test")
-    public String test() {
-        return "/test";
+
+    @GetMapping("/users")
+    public String users(Model model) {
+        return "/admin/users";
     }
 
-    @GetMapping("/register")
-    public String register(Model model) {
+    @GetMapping("/adduser")
+    public String adduser(Model model) {
         Customer user = new Customer();
         model.addAttribute("user", user);
-        return "/admin/register";
+        return "/admin/adduser";
     }
 
-    @GetMapping("/admin")
-    public String admin(Model model) {
-        Customer user = new Customer();
-        model.addAttribute("user", user);
-        return "/admin/admin";
+    @GetMapping("/edituser")
+    public String edituser(Model model) {
+        return "/admin/edituser";
     }
 
+    @GetMapping("/deleteuser")
+    public String deleteuser(Model model) {
+        return "/admin/deleteuser";
+    }
 }
 
 
