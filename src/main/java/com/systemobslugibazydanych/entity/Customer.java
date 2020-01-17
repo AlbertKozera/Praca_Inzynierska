@@ -14,7 +14,7 @@ public class Customer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "user_id")
-	private int id;
+	private Integer id;
 
 	@NotNull(message="Imie jest obowiązkowe")
 	@Length(min=3, message="Imie musi składać się conajmniej z 3 znaków")
@@ -50,12 +50,11 @@ public class Customer {
 	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<DatabaseTable> databaseTables;
 
-
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
