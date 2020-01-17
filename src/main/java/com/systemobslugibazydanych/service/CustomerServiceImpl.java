@@ -9,6 +9,8 @@ import com.systemobslugibazydanych.entity.Customer;
 import com.systemobslugibazydanych.entity.Role;
 import com.systemobslugibazydanych.repository.CustomerRepository;
 import com.systemobslugibazydanych.repository.RoleRepository;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,8 @@ public class CustomerServiceImpl {
 	private RoleRepository roleRepository;
 	@Autowired
 	private CustomerRepository customerRepository;
+	@Autowired
+	private SomeService someService;
 
 
 	public void saveCustomer(Customer customer) {
@@ -102,6 +106,12 @@ public class CustomerServiceImpl {
 
 		if(customer.isPresent())
 		{
+			SessionFactory hibernateFactory = someService.getHibernateFactory();
+			Session session = hibernateFactory.openSession();
+			String query = "DELETE FROM \"ALBERT\".\"USER_ROLE\" WHERE USER_ID = " + id;
+			session.doWork(connection -> connection.prepareStatement(query).execute());
+			session.close();
+
 			customerRepository.deleteById(id);
 		} else {
 			throw new RuntimeException("No customer record exist for given id");

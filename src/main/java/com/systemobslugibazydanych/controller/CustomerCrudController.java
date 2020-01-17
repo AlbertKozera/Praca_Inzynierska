@@ -27,7 +27,7 @@ public class CustomerCrudController
         List<Customer> list = service.getAllEmployees();
 
         model.addAttribute("customers", list);
-        return "list";
+        return "/admin/list";
     }
 
     @RequestMapping(path = {"/edit", "/edit/{id}"})
@@ -36,11 +36,11 @@ public class CustomerCrudController
     {
         if (id.isPresent()) {
             Customer entity = service.getEmployeeById(id.get());
-            model.addAttribute("employee", entity);
+            model.addAttribute("customer", entity);
         } else {
-            model.addAttribute("employee", new Customer());
+            model.addAttribute("customer", new Customer());
         }
-        return "add-edit-employee";
+        return "/admin/list2";
     }
 
     @RequestMapping(path = "/delete/{id}")
