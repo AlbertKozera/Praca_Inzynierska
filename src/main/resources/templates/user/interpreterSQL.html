@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <th:block th:include="fragments/sidebar/headerinc :: head"/>
+    <link rel="stylesheet" href="/static/sidebar/common/styleWithoutDiagram.css">
 </head>
 <body>
 <div class="wrapper d-flex align-items-stretch">
@@ -40,13 +41,13 @@
     <div id="content" style="position: relative; background-color: #272c32; overflow: hidden">
 
         <button type="submit" onclick="executeSQL('interpreterSQL')"   style="position: absolute;
-    top: 193px;
-    left: 27px;
-    padding-top: 3px;
-    color: #ecea8e;
-    background: #32373d;
-    border-color: #32373d;
-    border-radius: 10px;">
+        top: 193px;
+        left: 27px;
+        padding-top: 3px;
+        color: #ecea8e;
+        background: #32373d;
+        border-color: #32373d;
+        border-radius: 10px;">
             <i class="fas fa-bolt"></i>
         </button>
         <textarea id="interpreterSQL" placeholder="❔❔❔" style="position: relative;
@@ -64,6 +65,14 @@
 
 
 }"></textarea>
+        <img id="oracle_watermark" src="static/sidebar/oracle_watermark.png" style="position: relative;
+        width: 150px;
+        height: 150px;
+        float: right;
+        bottom: 450px;
+        right: 2px;
+        z-index: 2;
+        pointer-events: none;">
 
     </div>
 </div>

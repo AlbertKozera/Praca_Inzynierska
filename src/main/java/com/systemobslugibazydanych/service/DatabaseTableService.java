@@ -39,8 +39,7 @@ public class DatabaseTableService {
         return String.valueOf(content);
     }
 
-    public void executeSQL(String[] split){
-
+    public String executeSQL(String[] split){
         SessionFactory hibernateFactory = someService.getHibernateFactory();
         Session session = hibernateFactory.openSession();
         String wyjatek = null;
@@ -48,16 +47,15 @@ public class DatabaseTableService {
             try{
                 String query = split[i];
                 session.doWork(connection -> connection.prepareStatement(query).execute());
-
+                wyjatek = "Operacja została wykonana pomyślnie";
             }
            catch(Exception e){
                 wyjatek = ((SQLGrammarException) e).getSQLException().getMessage();
-
            }
 
         }
-        String bla = wyjatek;
         session.close();
+        return wyjatek;
     }
 
 
