@@ -19,17 +19,11 @@
             </div>
         </div>
         <ul class="list-unstyled components mb-5">
-            <li >
+            <li class="active">
                 <a href="/users"><span class="fas fa-users mr-3"></span> Użytkownicy</a>
             </li>
             <li >
                 <a href="/adduser"><span class="fas fa-user-plus mr-3"></span> Dodaj użytkownika</a>
-            </li>
-            <li class="active">
-                <a href="/edituser"><span class="fas fa-user-edit mr-3"></span> Edytuj użytkownika</a>
-            </li>
-            <li >
-                <a href="/deleteuser"><span class="fas fa-user-minus mr-3"></span> Usuń użytkownika</a>
             </li>
             <li>
                 <a th:href="@{/logout}"><span class="fa fa-sign-out-alt mr-3"></span> Wyloguj</a>
@@ -38,7 +32,7 @@
     </nav>
     <!-- Page Content  -->
     <div id="content" style="position: relative; background-color: #272c32; overflow: hidden">
-
+        <div th:replace="admin/fragments/edituserFragment.html :: edituserFragment"></div>
     </div>
 </div>
 </body>

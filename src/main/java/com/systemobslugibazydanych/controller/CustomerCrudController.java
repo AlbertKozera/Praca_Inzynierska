@@ -21,13 +21,13 @@ public class CustomerCrudController
     @Autowired
     CustomerServiceImpl service;
 
-    @GetMapping(path = "/list")
+    @GetMapping(path = "/users")
     public String getAllEmployees(Model model)
     {
         List<Customer> list = service.getAllEmployees();
 
         model.addAttribute("customers", list);
-        return "/admin/list";
+        return "/admin/users";
     }
 
     @RequestMapping(path = {"/edit", "/edit/{id}"})
@@ -40,7 +40,7 @@ public class CustomerCrudController
         } else {
             model.addAttribute("customer", new Customer());
         }
-        return "/admin/list2";
+        return "/admin/edituser";
     }
 
     @RequestMapping(path = "/delete/{id}")
@@ -48,13 +48,13 @@ public class CustomerCrudController
             throws RuntimeException
     {
         service.deleteEmployeeById(id);
-        return "redirect:/list";
+        return "redirect:/users";
     }
 
     @RequestMapping(path = "/createEmployee", method = RequestMethod.POST)
     public String createOrUpdateEmployee(Customer employee)
     {
         service.createOrUpdateEmployee(employee);
-        return "redirect:/list";
+        return "redirect:/users";
     }
 }

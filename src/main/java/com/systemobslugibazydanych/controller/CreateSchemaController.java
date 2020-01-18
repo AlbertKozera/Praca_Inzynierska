@@ -42,10 +42,6 @@ public class CreateSchemaController {
     }
 
 
-    @GetMapping("/users")
-    public String users(Model model) {
-        return "/admin/users";
-    }
 
     @GetMapping("/adduser")
     public String adduser(Model model) {
