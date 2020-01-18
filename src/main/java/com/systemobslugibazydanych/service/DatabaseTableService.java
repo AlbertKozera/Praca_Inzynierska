@@ -9,12 +9,15 @@ import org.hibernate.exception.SQLGrammarException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
 import java.io.*;
 import java.io.Reader;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class DatabaseTableService {
@@ -46,11 +49,15 @@ public class DatabaseTableService {
         for (int i = 0; i < split.length; i++) {
             try{
                 String query = split[i];
-                session.doWork(connection -> connection.prepareStatement(query).execute());
+                EntityManager entityManager = hibernateFactory.createEntityManager();
+                //entityManager.createNativeQuery(query);
+                List<Object[]> resultList = entityManager.createNativeQuery(query).getResultList();
+                resultList.stream().map(Arrays::toString).forEach(System.out::println);
                 wyjatek = "Operacja została wykonana pomyślnie";
             }
            catch(Exception e){
-                wyjatek = ((SQLGrammarException) e).getSQLException().getMessage();
+                wyjatek = "tmp";
+
            }
 
         }
