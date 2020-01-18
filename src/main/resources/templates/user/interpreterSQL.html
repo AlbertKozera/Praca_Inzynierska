@@ -18,13 +18,13 @@
             </div>
         </div>
         <ul class="list-unstyled components mb-5">
-            <li class="active">
-                <a href="#"><span class="fa fa-pencil-alt mr-3"></span> Rysuj diagram</a>
+            <li >
+                <a href="/drawdiagram"><span class="fa fa-pencil-alt mr-3"></span> Rysuj diagram</a>
             </li>
             <li>
                 <a href="#"><span class="fa fa-database mr-3"></span> Menedżer baz danych</a>
             </li>
-            <li>
+            <li class="active">
                 <a href="/interpreterSQL"><span class="fa fa-terminal mr-3"></span> Interpreter SQL</a>
             </li>
             <li>
@@ -38,7 +38,33 @@
     </nav>
     <!-- Page Content  -->
     <div id="content" style="position: relative; background-color: #272c32; overflow: hidden">
-        <th:block th:include="/fragments/diagramER/diagramER :: diagram"/>
+
+        <button type="submit" onclick="executeSQL('interpreterSQL')"   style="position: absolute;
+    top: 193px;
+    left: 27px;
+    padding-top: 3px;
+    color: #ecea8e;
+    background: #32373d;
+    border-color: #32373d;
+    border-radius: 10px;">
+            <i class="fas fa-bolt"></i>
+        </button>
+        <textarea id="interpreterSQL" placeholder="❔❔❔" style="position: relative;
+    width: calc(100% - 60px);
+    height: 50%;
+    left: 60px;
+    top: 60px;
+
+
+    background: #1a1f25;
+	color: white;
+	border: 2px solid;
+	border-color: #373d44;
+
+
+
+}"></textarea>
+
     </div>
 </div>
 </body>

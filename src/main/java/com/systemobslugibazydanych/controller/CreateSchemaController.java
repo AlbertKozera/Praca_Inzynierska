@@ -27,6 +27,15 @@ public class CreateSchemaController {
         return "redirect:/user";
     }
 
+    @PostMapping(path = { "/user/executeSQL" })
+    public String executeSQL(@RequestBody String tmp) {
+        String[] split = tmp.replace("\n", "").replace("\t", "").split(";");
+        databaseTableService.executeSQL(split);
+        return "redirect:/user/interpreterSQL";
+    }
+
+
+
     @RequestMapping(path = { "/user" })
     public String showNewDatabase(Model model){
         DatabaseTable databaseTable = new DatabaseTable();
@@ -49,10 +58,14 @@ public class CreateSchemaController {
     }
 
     @GetMapping("/drawdiagram")
-    public String drawdiagram(Model model) {
+    public String drawdiagram() {
         return "/user/drawdiagram";
     }
 
+    @GetMapping("/interpreterSQL")
+    public String interpreterSQL() {
+        return "/user/interpreterSQL";
+    }
 }
 
 

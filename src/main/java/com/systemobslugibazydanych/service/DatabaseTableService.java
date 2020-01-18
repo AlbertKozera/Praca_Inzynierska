@@ -5,6 +5,7 @@ import com.systemobslugibazydanych.entity.DatabaseTable;
 import com.systemobslugibazydanych.repository.DatabaseTableRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.exception.SQLGrammarException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,7 @@ import java.io.Reader;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 
 @Service
 public class DatabaseTableService {
@@ -36,6 +38,29 @@ public class DatabaseTableService {
         }
         return String.valueOf(content);
     }
+
+    public void executeSQL(String[] split){
+
+        SessionFactory hibernateFactory = someService.getHibernateFactory();
+        Session session = hibernateFactory.openSession();
+        String wyjatek = null;
+        for (int i = 0; i < split.length; i++) {
+            try{
+                String query = split[i];
+                session.doWork(connection -> connection.prepareStatement(query).execute());
+
+            }
+           catch(Exception e){
+                wyjatek = ((SQLGrammarException) e).getSQLException().getMessage();
+
+           }
+
+        }
+        String bla = wyjatek;
+        session.close();
+    }
+
+
 
     public void nazwametody(String[] split){
 
