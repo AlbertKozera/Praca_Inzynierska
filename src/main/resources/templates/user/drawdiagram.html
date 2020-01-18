@@ -14,24 +14,26 @@
         <div class="img bg-wrap text-center py-4" style="background-image: url(sidebar/images/bg_1.jpg);">
             <div class="user-logo">
                 <div class="img" style="background-image: url(sidebar/images/logo.jpg);"></div>
-                <div sec:authorize="isAuthenticated()">
-                    <h3 sec:authentication="principal.username"></h3>
-                </div>
-                <div sec:authorize="isAnonymous()">
-                    <h3>Anonymous</h3>
-                </div>
+                <h3 sec:authentication="principal.username"></h3>
             </div>
         </div>
         <ul class="list-unstyled components mb-5">
-                <li class="active">
-                    <a href="#"><span class="fa fa-pencil-alt mr-3"></span> Rysuj diagram</a>
-                </li>
-                <li>
-                    <a href="#"><span class="fa fa-question-circle mr-3"></span> FAQ</a>
-                </li>
-                <li>
-                    <a th:href="@{/login}"><span class="fas fa-sign-in-alt mr-3"></span> Zaloguj</a>
-                </li>
+            <li class="active">
+                <a href="#"><span class="fa fa-pencil-alt mr-3"></span> Rysuj diagram</a>
+            </li>
+            <li>
+                <a href="#"><span class="fa fa-database mr-3"></span> Menedżer baz danych</a>
+            </li>
+            <li>
+                <a href="#"><span class="fa fa-terminal mr-3"></span> Interpreter SQL</a>
+            </li>
+            <li>
+                <a href="#"><span class="fa fa-question-circle mr-3"></span> FAQ</a>
+            </li>
+            <li>
+                <a th:href="@{/logout}"><span class="fa fa-sign-out-alt mr-3"></span> Wyloguj</a>
+            </li>
+
         </ul>
     </nav>
     <!-- Page Content  -->
@@ -45,6 +47,3 @@
 </footer>
 
 </html>
-
-
-

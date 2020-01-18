@@ -41,8 +41,6 @@ public class CreateSchemaController {
         return modelAndView;
     }
 
-
-
     @GetMapping("/adduser")
     public String adduser(Model model) {
         Customer user = new Customer();
@@ -50,14 +48,9 @@ public class CreateSchemaController {
         return "/admin/adduser";
     }
 
-    @GetMapping("/edituser")
-    public String edituser(Model model) {
-        return "/admin/edituser";
-    }
-
-    @GetMapping("/deleteuser")
-    public String deleteuser(Model model) {
-        return "/admin/deleteuser";
+    @GetMapping("/drawdiagram")
+    public String drawdiagram(Model model) {
+        return "/user/drawdiagram";
     }
 
 }
