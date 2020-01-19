@@ -50,16 +50,15 @@ public class DatabaseTableService {
         return String.valueOf(content);
     }
 
-    @Transactional
+
     public String executeSQL(String[] split){
         SessionFactory hibernateFactory = someService.getHibernateFactory();
-        Session session = hibernateFactory.openSession();
         String wyjatek = null;
         int rows = 0;
+        EntityManager entityManager = hibernateFactory.createEntityManager();
+        EntityTransaction utx = entityManager.getTransaction();
         for (int i = 0; i < split.length; i++) {
             String query = split[i];
-            EntityManager entityManager = hibernateFactory.createEntityManager();
-            EntityTransaction utx = entityManager.getTransaction();
             try {
                 utx.begin();
                 Query query1 = entityManager.createNativeQuery(query);
@@ -71,8 +70,7 @@ public class DatabaseTableService {
                 wyjatek = (((SQLGrammarException)e.getCause()).getSQLException()).getMessage();
             }
         }
-
-        session.close();
+        entityManager.close();
         return wyjatek;
     }
 
