@@ -64,8 +64,13 @@ public class DatabaseTableService {
                 Query query1 = entityManager.createNativeQuery(query);
                 rows = query1.executeUpdate();
                 utx.commit();
-                List<Object[]> resultList = query1.getResultList();
-                resultList.stream().map(Arrays::toString).forEach(System.out::println);
+
+                try{
+                    List<Object[]> resultList = query1.getResultList();
+                    resultList.stream().map(Arrays::toString).forEach(System.out::println);
+                }
+                catch(Exception e){
+                }
 
 
                 wyjatek = "Operacja została wykonana pomyślnie \nwpływ na wiersze ["+rows+"]";
