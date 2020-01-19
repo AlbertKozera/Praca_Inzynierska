@@ -59,7 +59,7 @@
         <div  class="options_div">
             <div sec:authorize="isAuthenticated()">
                 <div id="options_1_div">
-                    <input id="schema_name" class="options_input" type="text" placeholder="Nazwa bazy danych..." oninput="generateSQL()"/>
+                    <input id="schema_name" class="options_input" type="text" placeholder="Nazwa schematu..." oninput="generateSQL()"/>
                         <button type="submit" id="new_schema" class="options_button" onclick="genereteDatabase('generatedSql')">
                             <i class="fas fa-database"></i>
                             <i class="fas fa-bolt fa-xs"></i><br />
@@ -67,16 +67,18 @@
                         </button>
                 </div>
                 <div id="options_2_div">
-                    <input class="options_input" type="text" placeholder="Nazwa diagramu ER..." />
-                    <button class="options_button">
-                        <i class="fas fa-save"></i><br />
-                        Zapisz
-                    </button>
+                    <input id="filenameJson" class="options_input" type="text" placeholder="Nazwa diagramu <json>..." />
+                        <a id="downloadJson" download="diagram.json">
+                            <button class="options_button" onclick="exportAsJSON('downloadJson')">
+                                <i class="fas fa-file-code"></i><br />
+                                Pobierz
+                            </button>
+                        </a>
                 </div>
                 <div id="options_3_div">
-                    <input id="filename" class="options_input" type="text" placeholder="Nazwa pliku..." />
-                        <a id="download" download="diagram.png">
-                            <button class="options_button" onclick="exportAsPNG('download')">
+                    <input id="filenamePng" class="options_input" type="text" placeholder="Nazwa diagramu <png>..." />
+                        <a id="downloadPng" download="diagram.png">
+                            <button class="options_button" onclick="exportAsPNG('downloadPng')">
                                 <i class="fas fa-image"></i><br />
                                 Pobierz
                             </button>
@@ -84,10 +86,19 @@
                 </div>
             </div>
             <div sec:authorize="isAnonymous()">
-                <div id="options_3_div" style="bottom: -110px;">
-                    <input id="filename" class="options_input" type="text" placeholder="Nazwa pliku..." />
-                    <a id="download" download="diagram.png">
-                        <button class="options_button" onclick="exportAsPNG('download')">
+                <div id="options_2_div" style="bottom: -55px;">
+                    <input id="filenameJson" class="options_input" type="text" placeholder="Nazwa diagramu <json>..." />
+                    <a id="downloadJson" download="diagram.json">
+                        <button class="options_button" onclick="exportAsJSON('downloadJson')">
+                            <i class="fas fa-file-code"></i><br />
+                            Pobierz
+                        </button>
+                    </a>
+                </div>
+                <div id="options_3_div" style="bottom: -53px;">
+                    <input id="filenamePng" class="options_input" type="text" placeholder="Nazwa diagramu <png>..." />
+                    <a id="downloadPng" download="diagram.png">
+                        <button class="options_button" onclick="exportAsPNG('downloadPng')">
                             <i class="fas fa-image"></i><br />
                             Pobierz
                         </button>

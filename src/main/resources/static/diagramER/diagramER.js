@@ -1186,15 +1186,25 @@ function exportAsPNG(id){
         flag = false;
     }
 
-    if($('#filename').val() != "")
-        document.getElementById(id).setAttribute("download", $('#filename').val() +".png");
-    var download = document.getElementById("download");
+    if($('#filenamePng').val() != "")
+        document.getElementById(id).setAttribute("download", $('#filenamePng').val() +".png");
+    var downloadPng = document.getElementById("downloadPng");
     var image = document.getElementById("diagram").toDataURL("image/png").replace("image/png", "image/octet-stream");
-    download.setAttribute("href", image);
+    downloadPng.setAttribute("href", image);
 
     if(flag)
         diagram.setShowGrid(true);
 }
+
+function exportAsJSON(id) {
+    if($('#filenameJson').val() != "")
+        document.getElementById(id).setAttribute("download", $('#filenameJson').val() +".json");
+    var json = diagram.toJson();
+    var data = "text/json;charset=utf-8," + encodeURIComponent(json);
+    var downloadJson = document.getElementById("downloadJson");
+    downloadJson.setAttribute("href", "data:" + data + "");
+}
+
 
 function genereteDatabase(generatedSql) {
     var tmp = document.getElementById(generatedSql).value;
