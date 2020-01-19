@@ -1,0 +1,91 @@
+/* width */
+::-webkit-scrollbar {
+    background: #272C32;
+}
+
+/* corner */
+::-webkit-scrollbar-corner{
+    background: #272C32;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    display: none;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+
+#interpreterSubmit{
+    position: absolute;
+    top: 69px;
+    z-index: 2;
+    left: 68px;
+    padding: 7px;
+    color: #ecea8e;
+    background: #32373d;
+    border-color: #32373d;
+    border-radius: 10px;
+}
+
+#interpreterSQL{
+    position: relative;
+    width: calc(100% - 60px);
+    height: 618px;
+    left: 60px;
+    top: 60px;
+    background: #1a1f25;
+    color: white;
+    border: 2px solid;
+    border-color: #373d44;
+    padding-top: 65px;
+    padding-left: 8px;
+    resize: none;
+}
+
+#oracle_watermark{
+    position: relative;
+    width: 150px;
+    height: 150px;
+    float: right;
+    bottom: 67px;
+    right: 2px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+#queryHandler{
+    position: relative;
+    float: left;
+    width: 1000px;
+    height: 259px;
+    left: 60px;
+    top: 52px;
+    background: #121519;
+    color: red;
+    border: 2px solid;
+    border-color: #3b444e;
+    resize: none;
+}
+
+#errorsHandler{
+    position: absolute;
+    float: left;
+    top: 678px;
+    width: calc(100% - 1060px);
+    height: 259px;
+    left: 1060px;
+    background: #121519;
+    color: red;
+    border: 2px solid;
+    border-color: #3b444e;
+    resize: none;
+}

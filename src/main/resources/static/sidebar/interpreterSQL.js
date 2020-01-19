@@ -1,5 +1,6 @@
 function executeSQL(interpreterSQL) {
     var tmp = document.getElementById(interpreterSQL).value;
+    document.getElementById("errorsHandler").value = "";
 
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
