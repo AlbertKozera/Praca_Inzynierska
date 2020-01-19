@@ -16,6 +16,9 @@ function executeSQL(interpreterSQL) {
                 for(var r = 0; r < responseJSON.query.length ; ++r){
                     document.getElementById("queryHandler").value += responseJSON.query[r] + "\n";
                 }
+                var addSpace = document.getElementById("queryHandler").value;
+                addSpace = addSpace.replace(/,/g, ',  ')
+                document.getElementById("queryHandler").value = addSpace;
             }
 
             if(feedbackString.indexOf("Operacja została wykonana pomyślnie") === 0){

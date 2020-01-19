@@ -52,6 +52,7 @@ public class DatabaseTableService {
     }
 
 
+    @Transactional
     public String executeSQL(String[] split){
         SessionFactory hibernateFactory = someService.getHibernateFactory();
         String wyjatek = null;
@@ -65,17 +66,13 @@ public class DatabaseTableService {
                 Query query1 = entityManager.createNativeQuery(query);
                 rows = query1.executeUpdate();
                 utx.commit();
-
-
                 try{
                     resultList = query1.getResultList();
                     resultList.stream().map(Arrays::toString).forEach(System.out::println);
                 }
                 catch(Exception e){
                 }
-
-
-                wyjatek = "Operacja została wykonana pomyślnie \nwpływ na wiersze ["+rows+"]";
+                wyjatek = "Operacja została wykonana pomyślnie \n{ ["+rows+"] <--- wiersze }";
             }catch (PersistenceException e){
                 utx.rollback();
                 wyjatek = (((SQLGrammarException)e.getCause()).getSQLException()).getMessage();
