@@ -12,14 +12,11 @@ function executeSQL(interpreterSQL) {
             var feedback = responseJSON.feedback;
             var feedbackString = feedback[0];
 
-
             if(responseJSON.query != null){
                 for(var r = 0; r < responseJSON.query.length ; ++r){
                     document.getElementById("queryHandler").value += responseJSON.query[r] + "\n";
                 }
             }
-
-
 
             if(feedbackString.indexOf("Operacja została wykonana pomyślnie") === 0){
                 ifOperationWasSuccessed();

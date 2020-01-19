@@ -66,6 +66,7 @@ public class DatabaseTableService {
                 rows = query1.executeUpdate();
                 utx.commit();
 
+
                 try{
                     resultList = query1.getResultList();
                     resultList.stream().map(Arrays::toString).forEach(System.out::println);

@@ -70,10 +70,12 @@
     left: 60px;
     top: 52px;
     background: #121519;
-    color: red;
+    color: #c7c7c7;
     border: 2px solid;
     border-color: #3b444e;
     resize: none;
+    padding-left: 8px;
+    padding-top: 4px;
 }
 
 #errorsHandler{
@@ -88,4 +90,6 @@
     border: 2px solid;
     border-color: #3b444e;
     resize: none;
+    padding-left: 8px;
+    padding-top: 4px;
 }
