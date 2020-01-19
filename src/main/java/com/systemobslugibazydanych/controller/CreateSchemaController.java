@@ -11,7 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -35,8 +37,9 @@ public class CreateSchemaController {
     @PostMapping(path = { "/user/executeSQL" })
     public ResponseEntity<Object> executeSQL(@RequestBody String tmp) {
         String[] split = tmp.replace("\n", "").replace("\t", "").split(";");
-        Map<String,String> response = new HashMap<String, String>();
-        response.put("feedback", databaseTableService.executeSQL(split));
+        Map<String, List> response = new HashMap<String, List>();
+        response.put("feedback", Collections.singletonList(databaseTableService.executeSQL(split)));
+        response.put("query", databaseTableService.getResultList());
         return new ResponseEntity<>( response , HttpStatus.OK);
     }
 

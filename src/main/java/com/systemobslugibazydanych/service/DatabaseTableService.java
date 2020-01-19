@@ -35,6 +35,7 @@ public class DatabaseTableService {
 
     private DatabaseTableRepository databaseTableRepository;
     private CustomerRepository customerRepository;
+    private List<Object[]> resultList;
 
     public DatabaseTableService(DatabaseTableRepository databaseTableRepository, CustomerRepository customerRepository){
         this.databaseTableRepository = databaseTableRepository;
@@ -66,7 +67,7 @@ public class DatabaseTableService {
                 utx.commit();
 
                 try{
-                    List<Object[]> resultList = query1.getResultList();
+                    resultList = query1.getResultList();
                     resultList.stream().map(Arrays::toString).forEach(System.out::println);
                 }
                 catch(Exception e){
@@ -82,6 +83,8 @@ public class DatabaseTableService {
         entityManager.close();
         return wyjatek;
     }
+
+
 
 
 
@@ -107,11 +110,6 @@ public class DatabaseTableService {
         } catch (IOException e) {
             e.printStackTrace();
         }*/
-
-
-
-
-
 
 
        SessionFactory hibernateFactory = someService.getHibernateFactory();
@@ -145,6 +143,14 @@ public class DatabaseTableService {
 /*
         databaseTable = databaseTableRepository.save(databaseTable);
         return databaseTable;*/
+    }
+
+    public List<Object[]> getResultList() {
+        return resultList;
+    }
+
+    public void setResultList(List<Object[]> resultList) {
+        this.resultList = resultList;
     }
 }
 

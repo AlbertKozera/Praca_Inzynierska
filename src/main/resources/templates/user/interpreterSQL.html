@@ -41,15 +41,16 @@
     <div id="content" style="position: relative; background-color: #272c32; overflow: hidden">
 
         <button type="submit" onclick="executeSQL('interpreterSQL')"   style="position: absolute;
-        top: 193px;
-        left: 27px;
-        padding-top: 3px;
-        color: #ecea8e;
-        background: #32373d;
-        border-color: #32373d;
-        border-radius: 10px;">
+    top: 69px;
+    z-index: 2;
+    left: 68px;
+    padding: 7px;
+    color: #ecea8e;
+    background: #32373d;
+    border-color: #32373d;
+    border-radius: 10px;">
             <i class="fas fa-bolt"></i>
-        </button>
+        Wykonaj</button>
         <textarea id="interpreterSQL" placeholder=". . ." style="position: relative;
     width: calc(100% - 60px);
     height: 63%;
@@ -59,19 +60,31 @@
     color: white;
     border: 2px solid;
     border-color: #373d44;"></textarea>
-        <img id="oracle_watermark" src="static/sidebar/oracle_watermark.png" style="position: relative;
+        <img id="oracle_watermark" src="static/sidebar/oracle_watermark.png" style="    position: relative;
     width: 150px;
     height: 150px;
     float: right;
-    bottom: 636px;
+    bottom: 67px;
     right: 2px;
     z-index: 2;
     pointer-events: none;">
-        <textarea id="errorsHandler" readonly style="position: relative;
-    width: calc(100% - 60px);
+        <textarea id="queryHandler" readonly style="position: relative;
+    float: left;
+    width: 1000px;
     height: 287px;
     left: 60px;
-    top: -98px;
+    top: 52px;
+    background: #121519;
+    color: red;
+    border: 2px solid;
+    border-color: #3b444e;
+"></textarea>
+        <textarea id="errorsHandler" readonly style="position: absolute;
+    float: left;
+    top: 650px;
+    width: calc(100% - 1060px);
+    height: 287px;
+    left: 1060px;
     background: #121519;
     color: red;
     border: 2px solid;

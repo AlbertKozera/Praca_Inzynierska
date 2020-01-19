@@ -8,17 +8,16 @@ function executeSQL(interpreterSQL) {
             var response = xhttp.responseText;
             var responseJSON = JSON.parse(response);
             var feedback = responseJSON.feedback;
+            var feedbackString = feedback[0];
 
-
-            if(feedback.indexOf("Operacja została wykonana pomyślnie") === 0){
+            if(feedbackString.indexOf("Operacja została wykonana pomyślnie") === 0){
                 ifOperationWasSuccessed();
             }else{
                 ifOperationWasNotSuccessed();
             }
 
-
-            document.getElementById("errorsHandler").value = feedback;
-            console.log(feedback);
+            document.getElementById("errorsHandler").value = feedbackString;
+            console.log(feedbackString);
         }
     };
 
