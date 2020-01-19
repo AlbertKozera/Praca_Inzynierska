@@ -341,9 +341,9 @@ fieldset{
 	height: 57px;
 	border-radius: 0;
 	border: 2px solid;
-	border-left: 0;
 	border-right: 0;
 	border-color: #5f6a77;
+	border-left-color: #373d44;
 }
 
 #generatedSqlFK{
