@@ -40,6 +40,7 @@ public class CreateSchemaController {
         Map<String, List> response = new HashMap<String, List>();
         response.put("feedback", Collections.singletonList(databaseTableService.executeSQL(split)));
         response.put("query", databaseTableService.getResultList());
+        databaseTableService.setResultList(null);
         return new ResponseEntity<>( response , HttpStatus.OK);
     }
 

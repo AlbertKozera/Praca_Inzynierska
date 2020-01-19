@@ -1,6 +1,7 @@
 function executeSQL(interpreterSQL) {
     var tmp = document.getElementById(interpreterSQL).value;
     document.getElementById("errorsHandler").value = "";
+    document.getElementById("queryHandler").value = "";
 
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
@@ -10,6 +11,15 @@ function executeSQL(interpreterSQL) {
             var responseJSON = JSON.parse(response);
             var feedback = responseJSON.feedback;
             var feedbackString = feedback[0];
+
+
+            if(responseJSON.query != null){
+                for(var r = 0; r < responseJSON.query.length ; ++r){
+                    document.getElementById("queryHandler").value += responseJSON.query[r] + "\n";
+                }
+            }
+
+
 
             if(feedbackString.indexOf("Operacja została wykonana pomyślnie") === 0){
                 ifOperationWasSuccessed();

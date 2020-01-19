@@ -35,7 +35,7 @@ public class DatabaseTableService {
 
     private DatabaseTableRepository databaseTableRepository;
     private CustomerRepository customerRepository;
-    private List<Object[]> resultList;
+    private List<Object[]> resultList = null;
 
     public DatabaseTableService(DatabaseTableRepository databaseTableRepository, CustomerRepository customerRepository){
         this.databaseTableRepository = databaseTableRepository;
