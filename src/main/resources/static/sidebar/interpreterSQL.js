@@ -10,7 +10,7 @@ function executeSQL(interpreterSQL) {
             var feedback = responseJSON.feedback;
 
 
-            if(feedback === "Operacja została wykonana pomyślnie"){
+            if(feedback.search("Operacja została wykonana pomyślnie")){
                 ifOperationWasSuccessed();
             }else{
                 ifOperationWasNotSuccessed();

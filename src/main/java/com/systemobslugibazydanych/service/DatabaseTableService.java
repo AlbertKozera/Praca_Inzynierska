@@ -5,17 +5,25 @@ import com.systemobslugibazydanych.entity.DatabaseTable;
 import com.systemobslugibazydanych.repository.DatabaseTableRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.cache.spi.support.EntityTransactionalAccess;
 import org.hibernate.exception.SQLGrammarException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceException;
+import javax.persistence.Query;
+import javax.transaction.UserTransaction;
+import java.awt.*;
 import java.io.*;
 import java.io.Reader;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.SQLException;
+import java.sql.SQLSyntaxErrorException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,25 +50,28 @@ public class DatabaseTableService {
         return String.valueOf(content);
     }
 
+    @Transactional
     public String executeSQL(String[] split){
         SessionFactory hibernateFactory = someService.getHibernateFactory();
         Session session = hibernateFactory.openSession();
         String wyjatek = null;
+        int rows = 0;
         for (int i = 0; i < split.length; i++) {
-            try{
-                String query = split[i];
-                EntityManager entityManager = hibernateFactory.createEntityManager();
-                //entityManager.createNativeQuery(query);
-                List<Object[]> resultList = entityManager.createNativeQuery(query).getResultList();
-                resultList.stream().map(Arrays::toString).forEach(System.out::println);
-                wyjatek = "Operacja została wykonana pomyślnie";
+            String query = split[i];
+            EntityManager entityManager = hibernateFactory.createEntityManager();
+            EntityTransaction utx = entityManager.getTransaction();
+            try {
+                utx.begin();
+                Query query1 = entityManager.createNativeQuery(query);
+                rows = query1.executeUpdate();
+                utx.commit();
+                wyjatek = "Operacja została wykonana pomyślnie ---> wpływ na wiersze ["+rows+"]";
+            }catch (PersistenceException e){
+                utx.rollback();
+                wyjatek = (((SQLGrammarException)e.getCause()).getSQLException()).getMessage();
             }
-           catch(Exception e){
-                wyjatek = "tmp";
-
-           }
-
         }
+
         session.close();
         return wyjatek;
     }
