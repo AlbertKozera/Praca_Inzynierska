@@ -1,0 +1,21 @@
+<div th:fragment="loginFragment" class="container my-2" xmlns:th="http://www.w3.org/1999/xhtml">
+<link rel="stylesheet" href="/static/sidebar/common/styleWithoutDiagram.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700">
+<link rel="stylesheet" type="text/css" href="/static/login.css">
+
+
+	<div id="login">
+		<form th:action="@{/login}" method="POST" class="form-signin">
+			<span class="fontawesome-user"></span>
+			<input type="text" id="email" name="email" th:placeholder="Login" class="form-control" />
+
+			<span class="fontawesome-lock"></span>
+			<input type="password" th:placeholder="Hasło" id="password" name="password" class="form-control" />
+
+			<input type="submit" value="Zaloguj">
+
+		</form>
+	</div>
+</div>
+
+

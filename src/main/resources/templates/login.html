@@ -1,28 +1,42 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en-US">
-
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-	<meta charset="utf-8">
-	<title>Login</title>
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700">
-	<link rel="stylesheet" type="text/css" href="/static/login.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <th:block th:include="fragments/sidebar/headerinc :: head"/>
 </head>
-
 <body>
-	<div id="login">
-		<form th:action="@{/login}" method="POST" class="form-signin">
-			<span class="fontawesome-user"></span>
-			<input type="text" id="email" name="email" th:placeholder="Login" class="form-control" />
+<div class="wrapper d-flex align-items-stretch">
+    <nav id="sidebar">
+        <div class="custom-menu">
+            <button type="button" id="sidebarCollapse" class="btn btn-primary" onclick="refreshCanvas()">
+            </button>
+        </div>
 
-			<span class="fontawesome-lock"></span>
-			<input type="password" th:placeholder="Hasło" id="password" name="password" class="form-control" />
-
-			<input type="submit" value="Zaloguj">
-
-		</form>
-	</div>
+        <div class="img bg-wrap text-center py-4" style="background-image: url(sidebar/images/bg_1.jpg);">
+            <div class="user-logo">
+                <div class="img" style="background-image: url(sidebar/images/logo.jpg);"></div>
+                <h3>Anonymous</h3>
+            </div>
+        </div>
+        <ul class="list-unstyled components mb-5">
+                <li>
+                    <a href="/index"><span class="fa fa-pencil-alt mr-3"></span> Rysuj diagram</a>
+                </li>
+                <li class="active">
+                    <a href="#"><span class="fas fa-sign-in-alt mr-3"></span> Zaloguj</a>
+                </li>
+        </ul>
+    </nav>
+    <!-- Page Content  -->
+    <div id="content" style="position: relative; background-color: #272c32; overflow: hidden">
+        <th:block th:include="/fragments/loginFragment.html :: loginFragment"/>
+    </div>
+</div>
 </body>
+<footer>
+    <th:block th:include="fragments/sidebar/footerinc :: footer"/>
+</footer>
+
 </html>
+
 
 

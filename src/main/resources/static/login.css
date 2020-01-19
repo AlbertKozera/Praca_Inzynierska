@@ -37,7 +37,7 @@ after { clear: both; }
     right: 20px;
     margin: auto;
     padding: 22px 22px 22px 22px;
-    width: 100%;
+    width: 330px;
     border-radius: 5px;
     background: #282e33;
     border-top: 3px solid #434a52;
@@ -64,7 +64,7 @@ after { clear: both; }
     margin-bottom: 1em;
     padding: 0 16px;
     width: 235px;
-    height: 50px;
+    height: 50px !important;
 }
 
 #login form input[type="password"] {
@@ -74,7 +74,7 @@ after { clear: both; }
     margin-bottom: 1em;
     padding: 0 16px;
     width: 235px;
-    height: 50px;
+    height: 50px !important;
 }
 
 #login form input[type="submit"] {

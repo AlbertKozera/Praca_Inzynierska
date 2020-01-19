@@ -14,12 +14,7 @@
         <div class="img bg-wrap text-center py-4" style="background-image: url(sidebar/images/bg_1.jpg);">
             <div class="user-logo">
                 <div class="img" style="background-image: url(sidebar/images/logo.jpg);"></div>
-                <div sec:authorize="isAuthenticated()">
-                    <h3 sec:authentication="principal.username"></h3>
-                </div>
-                <div sec:authorize="isAnonymous()">
-                    <h3>Anonymous</h3>
-                </div>
+                <h3>Anonymous</h3>
             </div>
         </div>
         <ul class="list-unstyled components mb-5">
@@ -27,10 +22,7 @@
                     <a href="#"><span class="fa fa-pencil-alt mr-3"></span> Rysuj diagram</a>
                 </li>
                 <li>
-                    <a href="#"><span class="fa fa-question-circle mr-3"></span> FAQ</a>
-                </li>
-                <li>
-                    <a th:href="@{/login}"><span class="fas fa-sign-in-alt mr-3"></span> Zaloguj</a>
+                    <a href="/login"><span class="fas fa-sign-in-alt mr-3"></span> Zaloguj</a>
                 </li>
         </ul>
     </nav>
