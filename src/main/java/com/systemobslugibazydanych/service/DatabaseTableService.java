@@ -64,7 +64,11 @@ public class DatabaseTableService {
                 Query query1 = entityManager.createNativeQuery(query);
                 rows = query1.executeUpdate();
                 utx.commit();
-                wyjatek = "Operacja została wykonana pomyślnie ---> wpływ na wiersze ["+rows+"]";
+                List<Object[]> resultList = query1.getResultList();
+                resultList.stream().map(Arrays::toString).forEach(System.out::println);
+
+
+                wyjatek = "Operacja została wykonana pomyślnie \nwpływ na wiersze ["+rows+"]";
             }catch (PersistenceException e){
                 utx.rollback();
                 wyjatek = (((SQLGrammarException)e.getCause()).getSQLException()).getMessage();
