@@ -28,20 +28,15 @@ public class CreateSchemaController {
         String[] split = tmp.replace("\n", "").replace("\t", "").replace("\r", "").split(";");
         Map<String, ArrayList<String>> response = new HashMap<String, ArrayList<String>>();
         response.put("feedback", databaseTableService.executeSQL(split));
-        databaseTableService.clearMapList();
         return new ResponseEntity<>( response , HttpStatus.OK);
     }
 
     @PostMapping(path = { "/user/executeSQL" })
     public ResponseEntity<Object> executeSQL(@RequestBody String tmp) {
         String[] split = tmp.replace("\n", "").replace("\t", "").replace("\r", "").split(";");
-
         FeedbackDTO feedbackDTO = new FeedbackDTO(databaseTableService.executeSQL(split), databaseTableService.getMapList(), databaseTableService.isUpdateFlag());
-
         Map<String, FeedbackDTO> response = new HashMap<String, FeedbackDTO>();
         response.put("feedback", feedbackDTO);
-
-        //databaseTableService.clearMapList();
         return new ResponseEntity<>( response , HttpStatus.OK);
     }
 

@@ -1382,27 +1382,16 @@ function genereteDatabase(generatedSql) {
         if (this.readyState == 4 && this.status == 200) {
 
             var response = xhttp.responseText;
-
-
-
-
             var responseJSON = JSON.parse(response);
             var feedback = responseJSON.feedback;
-            var feedbackString = feedback[0];
 
-            if(responseJSON.query != null){
-                for(var r = 0; r < responseJSON.query.length ; ++r){
-                    document.getElementById("queryHandler").value += responseJSON.query[r] + "\n";
+            if(feedback != null){
+                for(var r = 0; r < feedback.length ; ++r){
+                    document.getElementById("createSchemaFeedback").value += feedback[r] + "\n";
                 }
-                var addSpace = document.getElementById("queryHandler").value;
+                var addSpace = document.getElementById("createSchemaFeedback").value;
                 addSpace = addSpace.replace(/,/g, ',  ')
-                document.getElementById("queryHandler").value = addSpace;
-            }
-
-            if(feedbackString.indexOf("Operacja została wykonana pomyślnie") === 0){
-                ifOperationWasSuccessed();
-            }else{
-                ifOperationWasNotSuccessed();
+                document.getElementById("createSchemaFeedback").value = addSpace;
             }
 
 
