@@ -1,8 +1,4 @@
 /// <reference path="MindFusion.Diagramming-vsdoc.js" />
-
-
-var copyRuler;
-
 var Diagram = MindFusion.Diagramming.Diagram;
 var TableNode = MindFusion.Diagramming.TableNode;
 var DiagramNode = MindFusion.Diagramming.DiagramNode;
@@ -53,6 +49,8 @@ var youCanNotConnectNormalPool = false;
 var link_youCanNotConnectNormalPool = null;
 var oneToOne = new Shape({outline: '', decoration: 'M13,110 L87,110 M13,80 L87,80', id: 'OneToOne'});
 var noShape = new Shape({outline: '', decoration: 'M0,0 L0,0', id: 'NoShape'});
+
+var copyRuler;
 
 $(document).ready(function () {
     // create a Diagram component that wraps the "diagram" canvas
@@ -170,8 +168,6 @@ $(document).ready(function () {
         turnOffHighlightSelected(selectedHighlightedTable, selectedHighlightedRow);
         tblClicked = null;
         rowClicked = -1;
-        rowDeselected();
-
 
     });
 
@@ -239,6 +235,7 @@ $(document).ready(function () {
     });
 
     diagram.addEventListener(Events.nodeClicked, function (sender, args) {
+
         rowClicked = -1;
         // wyłączenie podświetlenia wiersza
         turnOffHighlightSelected(selectedHighlightedTable, selectedHighlightedRow);
@@ -1198,11 +1195,36 @@ function exportAsPNG(id){
 
 function exportAsJSON(id) {
     if($('#filenameJson').val() != "")
-        document.getElementById(id).setAttribute("download", $('#filenameJson').val() +".json");
+        document.getElementById(id).setAttribute("download", $('#filenameJson').val() +".txt");
     var json = diagram.toJson();
-    var data = "text/json;charset=utf-8," + encodeURIComponent(json);
+    var data = "text/plain;charset=utf-8," + encodeURIComponent(json);
     var downloadJson = document.getElementById("downloadJson");
     downloadJson.setAttribute("href", "data:" + data + "");
+}
+
+
+function onFileLoad() {
+    var file = document.getElementById("FileReader").files[0];
+    var textType = /text.*/;
+    var fileDisplayArea = document.getElementById("FileContent");
+    if(file.type == "text/plain"){
+        if (file.type.match(textType)) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                diagram.fromJson(reader.result);
+            }
+            reader.readAsText(file);
+            setTimeout(function () {
+                generateSQL();
+            }, 100);
+        }
+        else {
+            fileDisplayArea.innerText = "File not supported!"
+        }
+    }
+    else {
+        fileDisplayArea.innerText = "File not supported!"
+    }
 }
 
 

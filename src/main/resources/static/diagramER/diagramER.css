@@ -447,3 +447,35 @@ fieldset{
 	z-index: 2;
 	pointer-events: none;
 }
+
+.fileInputStyle::-webkit-file-upload-button {
+	visibility: hidden !important;
+}
+.fileInputStyle::before {
+	font-family: "Font Awesome 5 Free";
+	content: 'Wczytaj diagram \f574';
+	background: #1a1f25;
+	border-radius: 7px;
+	padding: 13px 12px;
+	outline: none;
+	white-space: nowrap;
+	cursor: pointer;
+	font-weight: 600;
+	font-size: 12pt;
+	color: white;
+}
+.fileInputStyle:active::before {
+	background: #2f89fc;
+}
+
+#FileReader{
+	all: unset;
+	position: absolute;
+	width: 139px;
+	height: 36px;
+	padding-top: 5px;
+	padding-right: 21px;
+	z-index: 99999;
+	left: 27px;
+	bottom: 23px;
+}

@@ -68,7 +68,7 @@
                 </div>
                 <div id="options_2_div">
                     <input id="filenameJson" class="options_input" type="text" placeholder="Nazwa diagramu <json>..." />
-                        <a id="downloadJson" download="diagram.json">
+                        <a id="downloadJson" download="diagram.txt">
                             <button class="options_button" onclick="exportAsJSON('downloadJson')">
                                 <i class="fas fa-file-code"></i><br />
                                 Pobierz
@@ -88,7 +88,7 @@
             <div sec:authorize="isAnonymous()">
                 <div id="options_2_div" style="bottom: -55px;">
                     <input id="filenameJson" class="options_input" type="text" placeholder="Nazwa diagramu <json>..." />
-                    <a id="downloadJson" download="diagram.json">
+                    <a id="downloadJson" download="diagram.txt">
                         <button class="options_button" onclick="exportAsJSON('downloadJson')">
                             <i class="fas fa-file-code"></i><br />
                             Pobierz
@@ -106,7 +106,8 @@
                 </div>
             </div>
         </div>
-
+        <input type="file" id="FileReader" onchange="onFileLoad()" class="fileInputStyle"/>
+        <div id="FileContent" style = "display: none"></div>
         <textarea id="generatedSql" readonly></textarea>
     </div>
 
