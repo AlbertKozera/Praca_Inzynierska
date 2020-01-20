@@ -1,4 +1,5 @@
 package com.systemobslugibazydanych.controller;
+import com.systemobslugibazydanych.DTO.FeedbackDTO;
 import com.systemobslugibazydanych.entity.Customer;
 import com.systemobslugibazydanych.entity.DatabaseTable;
 import com.systemobslugibazydanych.repository.DatabaseTableRepository;
@@ -11,10 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class CreateSchemaController {
@@ -27,20 +25,23 @@ public class CreateSchemaController {
 
     @PostMapping(path = { "/user/genereteSchema" })
     public ResponseEntity<Object> createSchema(@RequestBody String tmp) {
-        String[] split = tmp.replace("\n", "").replace("\t", "").split(";");
-        Map<String, String> response = new HashMap<String, String>();
+        String[] split = tmp.replace("\n", "").replace("\t", "").replace("\r", "").split(";");
+        Map<String, ArrayList<String>> response = new HashMap<String, ArrayList<String>>();
         response.put("feedback", databaseTableService.executeSQL(split));
-        databaseTableService.setResultList(null);
+        databaseTableService.clearMapList();
         return new ResponseEntity<>( response , HttpStatus.OK);
     }
 
     @PostMapping(path = { "/user/executeSQL" })
     public ResponseEntity<Object> executeSQL(@RequestBody String tmp) {
-        String[] split = tmp.replace("\n", "").replace("\t", "").split(";");
-        Map<String, List> response = new HashMap<String, List>();
-        response.put("feedback", Collections.singletonList(databaseTableService.executeSQL(split)));
-        response.put("query", databaseTableService.getResultList());
-        databaseTableService.setResultList(null);
+        String[] split = tmp.replace("\n", "").replace("\t", "").replace("\r", "").split(";");
+
+        FeedbackDTO feedbackDTO = new FeedbackDTO(databaseTableService.executeSQL(split), databaseTableService.getMapList(), databaseTableService.isUpdateFlag());
+
+        Map<String, FeedbackDTO> response = new HashMap<String, FeedbackDTO>();
+        response.put("feedback", feedbackDTO);
+
+        //databaseTableService.clearMapList();
         return new ResponseEntity<>( response , HttpStatus.OK);
     }
 

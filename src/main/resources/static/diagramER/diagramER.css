@@ -490,3 +490,16 @@ fieldset{
 	left: 27px;
 	bottom: 23px;
 }
+
+#feedback-dialog{
+	display: none;
+
+}
+
+#createSchemaFeedback{
+	width: 405px;
+	background: rgb(18, 21, 25);
+	border: 2px solid rgb(59, 68, 78);
+	padding-left: 8px;
+	padding-top: 4px;
+}

@@ -1,31 +1,21 @@
 package com.systemobslugibazydanych.service;
 
 import com.systemobslugibazydanych.repository.CustomerRepository;
-import com.systemobslugibazydanych.entity.DatabaseTable;
 import com.systemobslugibazydanych.repository.DatabaseTableRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cache.spi.support.EntityTransactionalAccess;
-import org.hibernate.exception.SQLGrammarException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.PersistenceException;
-import javax.persistence.Query;
-import javax.transaction.UserTransaction;
-import java.awt.*;
 import java.io.*;
 import java.io.Reader;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.sql.SQLException;
-import java.sql.SQLSyntaxErrorException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class DatabaseTableService {
@@ -33,13 +23,20 @@ public class DatabaseTableService {
     @Autowired
     SomeService someService;
 
+    @Autowired
+    private final JdbcTemplate jdbcTemplate;
+
+
     private DatabaseTableRepository databaseTableRepository;
     private CustomerRepository customerRepository;
-    private List<Object[]> resultList = null;
+    private List<Map<String, Object>> mapList;
+    private List<Map<String, Object>> emptyMapList = null;
+    private boolean updateFlag = false;
 
-    public DatabaseTableService(DatabaseTableRepository databaseTableRepository, CustomerRepository customerRepository){
+    public DatabaseTableService(DatabaseTableRepository databaseTableRepository, CustomerRepository customerRepository) {
         this.databaseTableRepository = databaseTableRepository;
         this.customerRepository = customerRepository;
+        jdbcTemplate = null;
     }
 
     public static String readAllCharactersOneByOne(Reader reader) throws IOException {
@@ -53,40 +50,46 @@ public class DatabaseTableService {
 
 
     @Transactional
-    public String executeSQL(String[] split){
+    public ArrayList<String> executeSQL(String[] split) {
         SessionFactory hibernateFactory = someService.getHibernateFactory();
-        String wyjatek = null;
-        int rows = 0;
         EntityManager entityManager = hibernateFactory.createEntityManager();
         EntityTransaction utx = entityManager.getTransaction();
-        for (int i = 0; i < split.length; i++) {
+        ArrayList<String> listException = new ArrayList<String>();
+        boolean flag = false;
+        for (int i = 0; i < split.length; ++i) {
             String query = split[i];
             try {
                 utx.begin();
-                Query query1 = entityManager.createNativeQuery(query);
-                rows = query1.executeUpdate();
+                mapList = jdbcTemplate.queryForList(query);
                 utx.commit();
-                try{
-                    resultList = query1.getResultList();
-                    resultList.stream().map(Arrays::toString).forEach(System.out::println);
-                }
-                catch(Exception e){
-                }
-                wyjatek = "Operacja została wykonana pomyślnie \n{ ["+rows+"] <--- wiersze }";
-            }catch (PersistenceException e){
+                listException.add("Operacja została wykonana pomyślnie!");
+            } catch (Exception e1) {
                 utx.rollback();
-                wyjatek = (((SQLGrammarException)e.getCause()).getSQLException()).getMessage();
+                try {
+                    utx.begin();
+                    int rows = jdbcTemplate.update(query);
+                    utx.commit();
+                    listException.add("Operacja została wykonana pomyślnie! { [" + rows + "] <-- zaktualizowane wiersze }");
+                } catch (Exception e2) {
+                    utx.rollback();
+                    flag = true;
+                    listException.add(e2.getCause().getMessage());
+                }
             }
         }
         entityManager.close();
-        return wyjatek;
+        if(flag){
+            mapList = emptyMapList;
+            updateFlag = false;
+        }
+        else{
+            updateFlag = true;
+        }
+        return listException;
     }
 
 
-
-
-
-    public void nazwametody(String[] split){
+    public void nazwametody(String[] split) {
 
 
 /*        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -110,7 +113,7 @@ public class DatabaseTableService {
         }*/
 
 
-       SessionFactory hibernateFactory = someService.getHibernateFactory();
+        SessionFactory hibernateFactory = someService.getHibernateFactory();
         Session session = hibernateFactory.openSession();
        /*  String query1 = null;
         try {
@@ -143,12 +146,24 @@ public class DatabaseTableService {
         return databaseTable;*/
     }
 
-    public List<Object[]> getResultList() {
-        return resultList;
+    public List<Map<String, Object>> getMapList() {
+        return mapList;
     }
 
-    public void setResultList(List<Object[]> resultList) {
-        this.resultList = resultList;
+    public void setMapList(List<Map<String, Object>> mapList) {
+        this.mapList = mapList;
+    }
+
+    public void clearMapList() {
+        mapList.clear();
+    }
+
+    public boolean isUpdateFlag() {
+        return updateFlag;
+    }
+
+    public void setUpdateFlag(boolean updateFlag) {
+        this.updateFlag = updateFlag;
     }
 }
 

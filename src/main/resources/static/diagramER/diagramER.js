@@ -35,6 +35,7 @@ var addRowDialog = null, addRowForm = null, addRowName = null, addRowType = null
 var editRowDialog = null, editRowForm = null, editRowName = null, editRowType = null;
 var renameTableDialog = null, renameTableForm = null, renameTableCaption = null;
 var infoDialog = null, infoText = null;
+var feedbackDialog = null;
 var btnAddRow, btnEditRow, btnDeleteRow, btnRenameTable, btnInfo;
 
 var highlightedTable = false;
@@ -486,6 +487,19 @@ $(document).ready(function () {
         }
     });
     infoText = infoDialog.find("p");
+
+    feedbackDialog = $("#feedback-dialog").dialog({
+        autoOpen: false,
+        resizable: false,
+        height: 'auto',
+        width: 440,
+        modal: true,
+        buttons: {
+            "OK": function () {
+                feedbackDialog.dialog("close");
+            }
+        }
+    });
 
     // Prepare buttons
     $('#btnAddRow').button("option", "disabled", true).click(function (event) {
@@ -1100,9 +1114,6 @@ function genereteSqlHidden() {
     return text;
 }
 
-
-
-
 function isThisFieldIsForeignKey(str) {
     if(str.search("🗝") > -1)
         return true;
@@ -1371,6 +1382,34 @@ function genereteDatabase(generatedSql) {
         if (this.readyState == 4 && this.status == 200) {
 
             var response = xhttp.responseText;
+
+
+
+
+            var responseJSON = JSON.parse(response);
+            var feedback = responseJSON.feedback;
+            var feedbackString = feedback[0];
+
+            if(responseJSON.query != null){
+                for(var r = 0; r < responseJSON.query.length ; ++r){
+                    document.getElementById("queryHandler").value += responseJSON.query[r] + "\n";
+                }
+                var addSpace = document.getElementById("queryHandler").value;
+                addSpace = addSpace.replace(/,/g, ',  ')
+                document.getElementById("queryHandler").value = addSpace;
+            }
+
+            if(feedbackString.indexOf("Operacja została wykonana pomyślnie") === 0){
+                ifOperationWasSuccessed();
+            }else{
+                ifOperationWasNotSuccessed();
+            }
+
+
+
+
+
+            feedbackDialog.dialog("open");
             console.log("ok"+response);
         }
     };

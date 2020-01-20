@@ -10,25 +10,48 @@ function executeSQL(interpreterSQL) {
             var response = xhttp.responseText;
             var responseJSON = JSON.parse(response);
             var feedback = responseJSON.feedback;
-            var feedbackString = feedback[0];
 
-            if(responseJSON.query != null){
-                for(var r = 0; r < responseJSON.query.length ; ++r){
-                    document.getElementById("queryHandler").value += responseJSON.query[r] + "\n";
+            if(feedback.mapa != null){
+                var namesOfColumns = Object.keys(feedback.mapa[0]);
+                var numberOfRows = 0;
+
+                document.getElementById("queryHandler").value += "         ";
+                for(var r = 0; r < namesOfColumns.length ; ++r){
+                    if(r < (namesOfColumns.length - 1))
+                        document.getElementById("queryHandler").value += namesOfColumns[r] + "  |  ";
+                    else
+                        document.getElementById("queryHandler").value += namesOfColumns[r];
                 }
-                var addSpace = document.getElementById("queryHandler").value;
-                addSpace = addSpace.replace(/,/g, ',  ')
-                document.getElementById("queryHandler").value = addSpace;
-            }
-
-            if(feedbackString.indexOf("Operacja została wykonana pomyślnie") === 0){
+                document.getElementById("queryHandler").value += "\n";
+                for(var r = 0; r < feedback.mapa.length ; ++r){
+                    if((numberOfRows + '').indexOf('1') > -1)
+                        document.getElementById("queryHandler").value += numberOfRows++ + "   |    ";
+                    else
+                        document.getElementById("queryHandler").value += numberOfRows++ + "  |    ";
+                    var dataRow = Object.values(feedback.mapa[r]);
+                    for(var i = 0; i < dataRow.length ; ++i) {
+                        if(i < (dataRow.length - 1))
+                            document.getElementById("queryHandler").value += dataRow[i] + ",  ";
+                        else
+                            document.getElementById("queryHandler").value += dataRow[i];
+                    }
+                    document.getElementById("queryHandler").value += "\n";
+                }
+                for(var r = 0; r < feedback.lista.length ; ++r){
+                    document.getElementById("errorsHandler").value += feedback.lista[r] + "\n";
+                }
                 ifOperationWasSuccessed();
-            }else{
-                ifOperationWasNotSuccessed();
             }
-
-            document.getElementById("errorsHandler").value = feedbackString;
-            console.log(feedbackString);
+            else{
+                for(var r = 0; r < feedback.lista.length ; ++r){
+                    var errorMessage = feedback.lista[r].replace(/\n/ig, '');
+                    document.getElementById("errorsHandler").value += errorMessage + "\n";
+                    if(feedback.updateFlag)
+                        ifOperationWasSuccessed();
+                    else
+                        ifOperationWasNotSuccessed();
+                }
+            }
         }
     };
 
