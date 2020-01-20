@@ -25,13 +25,13 @@ public class CreateSchemaController {
     @Autowired
     DatabaseTableService databaseTableService;
 
-
-    @PostMapping(path = { "/user/saveNameOfDatabase" })
-    public String createSchema(@RequestBody String tmp) {
+    @PostMapping(path = { "/user/genereteSchema" })
+    public ResponseEntity<Object> createSchema(@RequestBody String tmp) {
         String[] split = tmp.replace("\n", "").replace("\t", "").split(";");
-        databaseTableService.nazwametody(split);
-
-        return "redirect:/user";
+        Map<String, String> response = new HashMap<String, String>();
+        response.put("feedback", databaseTableService.executeSQL(split));
+        databaseTableService.setResultList(null);
+        return new ResponseEntity<>( response , HttpStatus.OK);
     }
 
     @PostMapping(path = { "/user/executeSQL" })
@@ -43,7 +43,6 @@ public class CreateSchemaController {
         databaseTableService.setResultList(null);
         return new ResponseEntity<>( response , HttpStatus.OK);
     }
-
 
     @RequestMapping(path = { "/user" })
     public String showNewDatabase(Model model){
