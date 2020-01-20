@@ -246,7 +246,18 @@ fieldset{
 #addRow-fieldType{
 	width: 180px;
 	margin-top: 10px;
+}
 
+#addRow-fieldType-menu{
+	width: 180px;
+	height: 218px;
+	overflow-y: scroll;
+}
+
+#editRow-fieldType-menu{
+	width: 180px;
+	height: 218px;
+	overflow-y: scroll;
 }
 
 #editRow-fieldType{
