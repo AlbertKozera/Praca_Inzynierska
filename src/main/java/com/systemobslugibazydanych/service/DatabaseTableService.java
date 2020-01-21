@@ -5,17 +5,19 @@ import com.systemobslugibazydanych.repository.DatabaseTableRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceContext;
 import java.io.*;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.regex.Pattern;
 
 @Service
 public class DatabaseTableService {
@@ -26,18 +28,62 @@ public class DatabaseTableService {
     @Autowired
     private final JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private EntityManagerFactory entityManagerFactory;
+
 
     private DatabaseTableRepository databaseTableRepository;
     private CustomerRepository customerRepository;
     private List<Map<String, Object>> mapList;
     private List<Map<String, Object>> emptyMapList = null;
     private boolean updateFlag = false;
+    private List<String> statementsListDDL = Arrays.asList("ALTER", "ANALYZE", "ASSOCIATE STATISTICS", "AUDIT", "COMMENT", "CREATE", "DISASSOCIATE STATISTICS",
+            "DROP", "GRANT", "NOAUDIT", "PURGE", "RENAME", "REVOKE", "TRUNCATE", "UNDROP");
+    private List<String> statementsListDML = Arrays.asList("CALL", "DELETE", "EXPLAIN PLAN", "INSERT", "LOCK TABLE", "MERGE", "SELECT", "UPDATE");
+    private Map<String, List<String>> typesOfStatements = new HashMap<String, List<String>>(){{
+        put("DDL", statementsListDDL);
+        put("DML", statementsListDML);
+    }};
+
+
+
+    public boolean whatKindOfStatementIsThat(String query, String typeOfStatement){
+        boolean success = false;
+        for(int i = 0; i < typesOfStatements.get(typeOfStatement).size(); ++i){
+            if(Pattern.compile(Pattern.quote(typesOfStatements.get(typeOfStatement).get(i)), Pattern.CASE_INSENSITIVE).matcher(query).find()){
+                success = true;
+                break;
+            }
+        }
+        return success;
+    }
+
+
 
     public DatabaseTableService(DatabaseTableRepository databaseTableRepository, CustomerRepository customerRepository) {
         this.databaseTableRepository = databaseTableRepository;
         this.customerRepository = customerRepository;
         jdbcTemplate = null;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public static String readAllCharactersOneByOne(Reader reader) throws IOException {
         StringBuilder content = new StringBuilder();
@@ -49,42 +95,49 @@ public class DatabaseTableService {
     }
 
 
-    @Transactional
     public ArrayList<String> executeSQL(String[] split) {
-        SessionFactory hibernateFactory = someService.getHibernateFactory();
-        EntityManager entityManager = hibernateFactory.createEntityManager();
-        EntityTransaction utx = entityManager.getTransaction();
         ArrayList<String> listException = new ArrayList<String>();
-        boolean flag = false;
+/*        boolean flag = false;
+        boolean flag2 = false;*/
         for (int i = 0; i < split.length; ++i) {
             String query = split[i];
-            try {
-                utx.begin();
-                mapList = jdbcTemplate.queryForList(query);
-                utx.commit();
-                listException.add("Operacja została wykonana pomyślnie!");
-            } catch (Exception e1) {
-                utx.rollback();
+
+            if(Pattern.compile(Pattern.quote("SELECT"), Pattern.CASE_INSENSITIVE).matcher(query).find()){
+
+            }
+            else if(whatKindOfStatementIsThat(query,"DDL")){
+                try{
+                    jdbcTemplate.execute(query);
+                    listException.add("Operacja została wykonana pomyślnie!");
+                }catch (DataAccessException exceptionDDL){
+                    listException.add(exceptionDDL.getCause().getMessage());
+                    break;
+                }
+            }
+            else if (whatKindOfStatementIsThat(query,"DML")){
                 try {
-                    utx.begin();
                     int rows = jdbcTemplate.update(query);
-                    utx.commit();
-                    listException.add("Operacja została wykonana pomyślnie! { [" + rows + "] <-- zaktualizowane wiersze }");
-                } catch (Exception e2) {
-                    utx.rollback();
-                    flag = true;
-                    listException.add(e2.getCause().getMessage());
+                    listException.add("Operacja została wykonana pomyślnie! { [" + rows + "] <-- zaafektowane wiersze }");
+                }catch (DataAccessException exceptionDML){
+                    listException.add(exceptionDML.getCause().getMessage());
+                    break;
+                }
+            }
+            else{
+                try{
+                    jdbcTemplate.execute(query);
+                }catch (Exception exception){
+                    listException.add(exception.getCause().getMessage());
+                    break;
                 }
             }
         }
-        entityManager.close();
-        if(flag){
-            mapList = emptyMapList;
+/*        if(flag){
             updateFlag = false;
         }
         else{
             updateFlag = true;
-        }
+        }*/
         return listException;
     }
 
@@ -155,7 +208,7 @@ public class DatabaseTableService {
     }
 
     public void clearMapList() {
-        mapList.clear();
+        mapList = emptyMapList;
     }
 
     public boolean isUpdateFlag() {

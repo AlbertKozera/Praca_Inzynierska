@@ -27,6 +27,7 @@ public class CreateSchemaController {
     public ResponseEntity<Object> createSchema(@RequestBody String tmp) {
         String[] split = tmp.replace("\n", "").replace("\t", "").replace("\r", "").split(";");
         Map<String, ArrayList<String>> response = new HashMap<String, ArrayList<String>>();
+        databaseTableService.clearMapList();
         response.put("feedback", databaseTableService.executeSQL(split));
         return new ResponseEntity<>( response , HttpStatus.OK);
     }
@@ -34,6 +35,7 @@ public class CreateSchemaController {
     @PostMapping(path = { "/user/executeSQL" })
     public ResponseEntity<Object> executeSQL(@RequestBody String tmp) {
         String[] split = tmp.replace("\n", "").replace("\t", "").replace("\r", "").split(";");
+        databaseTableService.clearMapList();
         FeedbackDTO feedbackDTO = new FeedbackDTO(databaseTableService.executeSQL(split), databaseTableService.getMapList(), databaseTableService.isUpdateFlag());
         Map<String, FeedbackDTO> response = new HashMap<String, FeedbackDTO>();
         response.put("feedback", feedbackDTO);

@@ -1376,11 +1376,11 @@ function onFileLoad() {
 
 function genereteDatabase(generatedSql) {
     var tmp = genereteSqlHidden();
+    document.getElementById("createSchemaFeedback").value = "";
 
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-
             var response = xhttp.responseText;
             var responseJSON = JSON.parse(response);
             var feedback = responseJSON.feedback;
@@ -1393,10 +1393,6 @@ function genereteDatabase(generatedSql) {
                 addSpace = addSpace.replace(/,/g, ',  ')
                 document.getElementById("createSchemaFeedback").value = addSpace;
             }
-
-
-
-
 
             feedbackDialog.dialog("open");
             console.log("ok"+response);
