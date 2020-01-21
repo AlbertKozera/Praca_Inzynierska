@@ -74,8 +74,8 @@ public class DatabaseTableService {
         return success;
     }
 
-    public void dropUser(){
-        jdbcTemplate.execute("DROP USER " + queryRows[0].split( " ")[2] + " CASCADE");
+    public void dropUser(String userName){
+        jdbcTemplate.execute("DROP USER " + userName + " CASCADE");
     }
 
 

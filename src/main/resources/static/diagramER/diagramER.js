@@ -1395,6 +1395,7 @@ function genereteDatabase(generatedSql) {
                 document.getElementById("createSchemaFinalFeedback").value = "Nie udało się utworzyć schematu!";
                 ifOperationWasNotSuccessed('#createSchemaFeedback');
                 ifOperationWasNotSuccessed('#createSchemaFinalFeedback');
+                dropUserIfOperationWasNotSuccessed(genereteSqlHidden().split( " ")[2]);
             }
             feedbackDialog.dialog("open");
         }
@@ -1404,8 +1405,12 @@ function genereteDatabase(generatedSql) {
     xhttp.send(genereteSqlHidden());
 }
 
-function dropUserIfOperationWasNotSuccessed() {
+function dropUserIfOperationWasNotSuccessed(userName) {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "/user/dropUser", true);
-    xhttp.send();
+
+    xhttp.onreadystatechange = function() {
+    };
+
+    xhttp.open("POST", "/user/dropUser", true);
+    xhttp.send(userName);
 }

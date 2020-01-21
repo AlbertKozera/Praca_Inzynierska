@@ -33,11 +33,17 @@ public class CreateSchemaController {
         return new ResponseEntity<>( response , HttpStatus.OK);
     }
 
-    @GetMapping("/user/dropUser")
-    public String dropUser() {
 
-        return "/admin/adduser";
+
+    @PostMapping(path = { "/user/dropUser" })
+    public String dropUser(@RequestBody String userName) {
+        databaseTableService.dropUser(userName);
+        return "/user";
     }
+
+
+
+
 
 
     @RequestMapping(path = { "/user" })
