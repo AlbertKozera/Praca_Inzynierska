@@ -492,7 +492,7 @@ $(document).ready(function () {
         autoOpen: false,
         resizable: false,
         height: 'auto',
-        width: 1050,
+        width: 1035,
         modal: false,
         buttons: {
             "OK": function () {
@@ -967,30 +967,29 @@ function generateSQL() {
 function genereteSqlHidden() {
     var text = '';
 
-    text = "CREATE USER " + "\"" + $('#schema_name').val() + "\"" + " IDENTIFIED BY \"null\" DEFAULT TABLESPACE \n";
-    text += "USERS TEMPORARY TABLESPACE TEMP QUOTA 25 M ON USERS ACCOUNT UNLOCK;\n";
+    text = "CREATE USER " + "\"" + $('#schema_name').val() + "\"" + " IDENTIFIED BY \"null\" DEFAULT TABLESPACE USERS TEMPORARY TABLESPACE TEMP QUOTA 25 M ON USERS ACCOUNT UNLOCK;\n";
     text += "GRANT CONNECT TO " + "\"" + $('#schema_name').val() + "\"" + ";\n";
     text += "GRANT CREATE SESSION TO " + "\"" + $('#schema_name').val() + "\"" + ";\n";
     text += "GRANT CREATE TABLE TO " + "\"" + $('#schema_name').val() + "\"" + ";\n";
     text += "GRANT CREATE VIEW TO " + "\"" + $('#schema_name').val() + "\"" + ";\n";
     text += "GRANT CREATE PROCEDURE TO " + "\"" + $('#schema_name').val() + "\"" + ";\n";
     text += "GRANT CREATE SEQUENCE TO " + "\"" + $('#schema_name').val() + "\"" + ";\n";
-    text += "GRANT CREATE TRIGGER TO " + "\"" + $('#schema_name').val() + "\"" + ";\n\n";
+    text += "GRANT CREATE TRIGGER TO " + "\"" + $('#schema_name').val() + "\"" + ";\n";
 
     // enumerate all tables in the current diagram
     ArrayList.forEach(diagram.nodes, function (table) {
-        text += "CREATE TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + table.getText() + " (\n";
+        text += "CREATE TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + table.getText() + " (";
 
         // enumerate all rows of a table
         for (var r = 0; r < table.cells.rows; ++r) {
             // get text of cells in current row
-            text += "\t" + regex(table.getCell(1, r).getText()) + " " + table.getCell(2, r).getText();
+            text += "" + regex(table.getCell(1, r).getText()) + " " + table.getCell(2, r).getText();
             if((table.getCell(5, r).getText()) == "NOT NULL")
                 text += " NOT NULL";
             if (r < table.cells.rows - 1)
-                text += ",\r\n";
+                text += ",";
         }
-        text += "\r\n);\r\n";
+        text += ");\n";
     });
 
     // alter table Primary Key
@@ -999,8 +998,7 @@ function genereteSqlHidden() {
         for (var r = 0; r < table.cells.rows; ++r) {
             if (table.getCell(3, r).getText() == "true" && flag_PK)
             {
-                text += "\nALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + table.getText();
-                text += " ADD CONSTRAINT " + table.getText() + "_PK " + "PRIMARY KEY " + "(";
+                text += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + table.getText() + " ADD CONSTRAINT " + table.getText() + "_PK " + "PRIMARY KEY " + "(";
                 flag_PK = false;
             }
             if (table.getCell(3, r).getText() == "true" && !flag_PK)
@@ -1011,7 +1009,7 @@ function genereteSqlHidden() {
             }
         }
         if (!flag_PK) {
-            text += ");";
+            text += ");\n";
             flag_PK = true;
         }
     });
@@ -1023,8 +1021,7 @@ function genereteSqlHidden() {
         for (var r = 0; r < table.cells.rows; ++r) {
             if (table.getCell(4, r).getText() == "true" && flag_UK) // sprawdz czy wiersz to unique key
             {
-                text += "\nALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + table.getText();
-                text += " ADD CONSTRAINT " + table.getText() + "_UK" + ++iterator_numbersUK + " UNIQUE " + "(";
+                text += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + table.getText() + " ADD CONSTRAINT " + table.getText() + "_UK" + ++iterator_numbersUK + " UNIQUE " + "(";
                 flag_UK = false;
             }
             if (table.getCell(4, r).getText() == "true" && !flag_UK) // sprawdz czy wiersz to unique key
@@ -1035,7 +1032,7 @@ function genereteSqlHidden() {
             }
         }
         if (!flag_UK) {
-            text += ");";
+            text += ");\n";
             flag_UK = true;
         }
     });
@@ -1049,9 +1046,7 @@ function genereteSqlHidden() {
         var rowDestination = link.getDestinationIndex();
         var rowOrigin = link.getOriginIndex();
 
-        text += "\nALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableOrigin.getText();
-        text += " ADD CONSTRAINT " + tableOrigin.getText() + "_FK" + ++iterator_numbersFK;
-        text += " FOREIGN KEY " + "(";
+        text += "\nALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableOrigin.getText() + " ADD CONSTRAINT " + tableOrigin.getText() + "_FK" + ++iterator_numbersFK + " FOREIGN KEY " + "(";
 
         if ((tableOrigin.getCell(3, rowOrigin).getText() == "true") && (!origin)) {
             text += regex(tableOrigin.getCell(1, rowOrigin).getText());
@@ -1067,8 +1062,8 @@ function genereteSqlHidden() {
             text += regex(tableOrigin.getCell(1, rowOrigin).getText());
             origin = true;
         }
-        text += ")" + "\n";
-        text += "REFERENCES " + "\"" + $('#schema_name').val() + "\"" + "." + tableDestination.getText() + " (";
+        text += ")";
+        text += " REFERENCES " + "\"" + $('#schema_name').val() + "\"" + "." + tableDestination.getText() + " (";
         if ((tableDestination.getCell(3, rowDestination).getText() == "true") && (!destination)) {
             text += regex(tableDestination.getCell(1, rowDestination).getText());
             text = addFieldToGeneratedText(3, tableDestination, text);
@@ -1374,7 +1369,6 @@ function onFileLoad() {
 
 
 function genereteDatabase(generatedSql) {
-    var tmp = genereteSqlHidden();
     document.getElementById("createSchemaFeedback").value = "";
 
     var xhttp = new XMLHttpRequest();
@@ -1385,22 +1379,27 @@ function genereteDatabase(generatedSql) {
             var feedback = responseJSON.feedback;
 
             if(feedback != null){
-                for(var r = 0; r < feedback.length ; ++r){
-                    document.getElementById("createSchemaFeedback").value += feedback[r] + "\n";
+                for(var r = 0; r < feedback.lista.length ; ++r){
+                    document.getElementById("createSchemaFeedback").value += feedback.lista[r] + "\n";
                 }
-                var addSpace = document.getElementById("createSchemaFeedback").value;
-                addSpace = addSpace.replace(/,/g, ',  ')
-                document.getElementById("createSchemaFeedback").value = addSpace;
+                document.getElementById("createSchemaSqlGeneratedCode").value = genereteSqlHidden();
             }
 
-            if(feedback.updateFlag)
+            if(feedback.updateFlag){
+                document.getElementById("createSchemaFinalFeedback").value = "Schemat został pomyślnie utworzony!";
                 ifOperationWasSuccessed('#createSchemaFeedback');
-            else if(!feedback.updateFlag)
+                ifOperationWasSuccessed('#createSchemaFinalFeedback');
+            }
+
+            else if(!feedback.updateFlag){
+                document.getElementById("createSchemaFinalFeedback").value = "Nie udało się utworzyć schematu!";
                 ifOperationWasNotSuccessed('#createSchemaFeedback');
+                ifOperationWasNotSuccessed('#createSchemaFinalFeedback');
+            }
             feedbackDialog.dialog("open");
         }
     };
 
-    xhttp.open("POST", "/user/genereteSchema", true);
-    xhttp.send(tmp);
+    xhttp.open("POST", "/user/executeSQL", true);
+    xhttp.send(genereteSqlHidden());
 }

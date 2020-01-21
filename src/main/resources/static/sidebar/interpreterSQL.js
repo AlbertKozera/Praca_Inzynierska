@@ -1,5 +1,4 @@
 function executeSQL(interpreterSQL) {
-    var tmp = document.getElementById(interpreterSQL).value;
     document.getElementById("errorsHandler").value = "";
     document.getElementById("queryHandler").value = "";
 
@@ -59,9 +58,8 @@ function executeSQL(interpreterSQL) {
     };
 
     xhttp.open("POST", "/user/executeSQL", true);
-    xhttp.send(tmp);
+    xhttp.send(document.getElementById(interpreterSQL).value);
 }
-
 
 function ifOperationWasSuccessed(textarea) {
     $(textarea).css({

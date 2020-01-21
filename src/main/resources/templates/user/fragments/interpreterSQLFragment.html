@@ -6,6 +6,16 @@
     <button id="interpreterSubmit" type="submit" onclick="executeSQL('interpreterSQL')"><i class="fas fa-bolt"></i>Wykonaj</button>
     <textarea id="interpreterSQL" ></textarea>
     <img id="oracle_watermark" src="static/sidebar/oracle_watermark.png">
-    <textarea id="queryHandler" readonly></textarea>
-    <textarea id="errorsHandler" readonly></textarea>
+    <div id="wrapperQueryHandler">
+        <textarea id="queryHandler" readonly></textarea>
+    </div>
+    <div id="wrapperErrorsHandler">
+        <textarea id="errorsHandler" readonly></textarea>
+    </div>
 </div>
+
+
+
+
+
+

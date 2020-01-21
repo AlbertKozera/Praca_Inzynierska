@@ -23,24 +23,18 @@ public class CreateSchemaController {
     @Autowired
     DatabaseTableService databaseTableService;
 
-    @PostMapping(path = { "/user/genereteSchema" })
-    public ResponseEntity<Object> createSchema(@RequestBody String tmp) {
-        String[] split = tmp.replace("\n", "").replace("\t", "").replace("\r", "").split(";");
-        Map<String, ArrayList<String>> response = new HashMap<String, ArrayList<String>>();
-        databaseTableService.clearMapList();
-        response.put("feedback", databaseTableService.executeSQL(split));
-        return new ResponseEntity<>( response , HttpStatus.OK);
-    }
-
     @PostMapping(path = { "/user/executeSQL" })
-    public ResponseEntity<Object> executeSQL(@RequestBody String tmp) {
-        String[] split = tmp.replace("\n", "").replace("\t", "").replace("\r", "").split(";");
+    public ResponseEntity<Object> executeSQL(@RequestBody String sqlCode) {
+        String[] split = sqlCode.replace("\n", "").replace("\t", "").replace("\r", "").split(";");
         databaseTableService.clearMapList();
         FeedbackDTO feedbackDTO = new FeedbackDTO(databaseTableService.executeSQL(split), databaseTableService.getMapList(), databaseTableService.isUpdateFlag());
         Map<String, FeedbackDTO> response = new HashMap<String, FeedbackDTO>();
         response.put("feedback", feedbackDTO);
         return new ResponseEntity<>( response , HttpStatus.OK);
     }
+
+
+
 
     @RequestMapping(path = { "/user" })
     public String showNewDatabase(Model model){

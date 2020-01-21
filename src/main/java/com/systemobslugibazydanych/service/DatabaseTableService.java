@@ -81,7 +81,6 @@ public class DatabaseTableService {
 
         ArrayList<String> listException = new ArrayList<String>();
         for (int i = 0; i < split.length; ++i) {
-            boolean selectExecuted = false;
             String query = split[i];
             if(query.trim().length() > 5 && query.trim().substring(0, 6).toUpperCase().equals("SELECT")){
                 try{
@@ -93,8 +92,6 @@ public class DatabaseTableService {
                     listException.add(exceptionSelect.getCause().getMessage());
                     updateFlag = false;
                     break;
-                }finally {
-                    selectExecuted = true;
                 }
             }
             else if(whatKindOfStatementIsThat(query,"DDL")){
@@ -108,7 +105,7 @@ public class DatabaseTableService {
                     break;
                 }
             }
-            else if (!selectExecuted && whatKindOfStatementIsThat(query,"DML")){
+            else if (whatKindOfStatementIsThat(query,"DML")){
                 try {
                     int rows = jdbcTemplate.update(query);
                     listException.add("Operacja została wykonana pomyślnie! { zaafektowane wiersze --> [" + rows + "] }");
