@@ -87,7 +87,7 @@ public class DatabaseTableService {
                 try{
                     mapList = jdbcTemplate.queryForList(query);
                     int rows = mapList.size();
-                    listException.add("Operacja została wykonana pomyślnie! { [" + rows + "] <-- zaafektowane wiersze }");
+                    listException.add("Operacja została wykonana pomyślnie! { zaafektowane wiersze --> [" + rows + "] }");
                     updateFlag = true;
                 }catch (DataAccessException exceptionSelect){
                     listException.add(exceptionSelect.getCause().getMessage());
@@ -111,7 +111,7 @@ public class DatabaseTableService {
             else if (!selectExecuted && whatKindOfStatementIsThat(query,"DML")){
                 try {
                     int rows = jdbcTemplate.update(query);
-                    listException.add("Operacja została wykonana pomyślnie! { [" + rows + "] <-- zaafektowane wiersze }");
+                    listException.add("Operacja została wykonana pomyślnie! { zaafektowane wiersze --> [" + rows + "] }");
                     updateFlag = true;
                 }catch (DataAccessException exceptionDML){
                     listException.add(exceptionDML.getCause().getMessage());
