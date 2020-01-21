@@ -1046,7 +1046,7 @@ function genereteSqlHidden() {
         var rowDestination = link.getDestinationIndex();
         var rowOrigin = link.getOriginIndex();
 
-        text += "\nALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableOrigin.getText() + " ADD CONSTRAINT " + tableOrigin.getText() + "_FK" + ++iterator_numbersFK + " FOREIGN KEY " + "(";
+        text += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableOrigin.getText() + " ADD CONSTRAINT " + tableOrigin.getText() + "_FK" + ++iterator_numbersFK + " FOREIGN KEY " + "(";
 
         if ((tableOrigin.getCell(3, rowOrigin).getText() == "true") && (!origin)) {
             text += regex(tableOrigin.getCell(1, rowOrigin).getText());
@@ -1074,7 +1074,7 @@ function genereteSqlHidden() {
             text = addFieldToGeneratedText(4, tableDestination, text);
             destination = true;
         }
-        text += ");";
+        text += ");\n";
 
     });
 
@@ -1402,4 +1402,10 @@ function genereteDatabase(generatedSql) {
 
     xhttp.open("POST", "/user/executeSQL", true);
     xhttp.send(genereteSqlHidden());
+}
+
+function dropUserIfOperationWasNotSuccessed() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "/user/dropUser", true);
+    xhttp.send();
 }

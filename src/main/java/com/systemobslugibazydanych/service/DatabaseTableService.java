@@ -74,14 +74,18 @@ public class DatabaseTableService {
         return success;
     }
 
-    public ArrayList<String> executeSQL(String[] split) {
+    public void dropUser(){
+        jdbcTemplate.execute("DROP USER " + queryRows[0].split( " ")[2] + " CASCADE");
+    }
+
+
+    public ArrayList<String> executeSQL(String[] queryRows) {
         SessionFactory hibernateFactory = someService.getHibernateFactory();
         Session session = hibernateFactory.openSession();
 
-
         ArrayList<String> listException = new ArrayList<String>();
-        for (int i = 0; i < split.length; ++i) {
-            String query = split[i];
+        for (int i = 0; i < queryRows.length; ++i) {
+            String query = queryRows[i];
             if(query.trim().length() > 5 && query.trim().substring(0, 6).toUpperCase().equals("SELECT")){
                 try{
                     mapList = jdbcTemplate.queryForList(query);
