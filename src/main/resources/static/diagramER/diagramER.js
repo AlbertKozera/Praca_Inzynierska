@@ -493,7 +493,7 @@ $(document).ready(function () {
         resizable: false,
         height: 'auto',
         width: 1035,
-        modal: false,
+        modal: true,
         buttons: {
             "OK": function () {
                 feedbackDialog.dialog("close");
