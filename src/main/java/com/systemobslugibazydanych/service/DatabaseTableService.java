@@ -4,6 +4,7 @@ import com.systemobslugibazydanych.repository.CustomerRepository;
 import com.systemobslugibazydanych.repository.DatabaseTableRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.NativeQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,6 +17,8 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import java.io.*;
 import java.io.Reader;
+import java.sql.Connection;
+import java.sql.Statement;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -45,7 +48,20 @@ public class DatabaseTableService {
         put("DML", statementsListDML);
     }};
 
+    public DatabaseTableService(DatabaseTableRepository databaseTableRepository, CustomerRepository customerRepository) {
+        this.databaseTableRepository = databaseTableRepository;
+        this.customerRepository = customerRepository;
+        jdbcTemplate = null;
+    }
 
+    public static String readAllCharactersOneByOne(Reader reader) throws IOException {
+        StringBuilder content = new StringBuilder();
+        int nextChar;
+        while ((nextChar = reader.read()) != -1) {
+            content.append((char) nextChar);
+        }
+        return String.valueOf(content);
+    }
 
     public boolean whatKindOfStatementIsThat(String query, String typeOfStatement){
         boolean success = false;
@@ -58,86 +74,63 @@ public class DatabaseTableService {
         return success;
     }
 
-
-
-    public DatabaseTableService(DatabaseTableRepository databaseTableRepository, CustomerRepository customerRepository) {
-        this.databaseTableRepository = databaseTableRepository;
-        this.customerRepository = customerRepository;
-        jdbcTemplate = null;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public static String readAllCharactersOneByOne(Reader reader) throws IOException {
-        StringBuilder content = new StringBuilder();
-        int nextChar;
-        while ((nextChar = reader.read()) != -1) {
-            content.append((char) nextChar);
-        }
-        return String.valueOf(content);
-    }
-
-
     public ArrayList<String> executeSQL(String[] split) {
+        SessionFactory hibernateFactory = someService.getHibernateFactory();
+        Session session = hibernateFactory.openSession();
+
+
         ArrayList<String> listException = new ArrayList<String>();
-/*        boolean flag = false;
-        boolean flag2 = false;*/
         for (int i = 0; i < split.length; ++i) {
+            boolean selectExecuted = false;
             String query = split[i];
-
-            if(Pattern.compile(Pattern.quote("SELECT"), Pattern.CASE_INSENSITIVE).matcher(query).find()){
-
+            if(query.trim().length() > 5 && query.trim().substring(0, 6).toUpperCase().equals("SELECT")){
+                try{
+                    mapList = jdbcTemplate.queryForList(query);
+                    int rows = mapList.size();
+                    listException.add("Operacja została wykonana pomyślnie! { [" + rows + "] <-- zaafektowane wiersze }");
+                    updateFlag = true;
+                }catch (DataAccessException exceptionSelect){
+                    listException.add(exceptionSelect.getCause().getMessage());
+                    updateFlag = false;
+                    break;
+                }finally {
+                    selectExecuted = true;
+                }
             }
             else if(whatKindOfStatementIsThat(query,"DDL")){
                 try{
                     jdbcTemplate.execute(query);
                     listException.add("Operacja została wykonana pomyślnie!");
+                    updateFlag = true;
                 }catch (DataAccessException exceptionDDL){
                     listException.add(exceptionDDL.getCause().getMessage());
+                    updateFlag = false;
                     break;
                 }
             }
-            else if (whatKindOfStatementIsThat(query,"DML")){
+            else if (!selectExecuted && whatKindOfStatementIsThat(query,"DML")){
                 try {
                     int rows = jdbcTemplate.update(query);
                     listException.add("Operacja została wykonana pomyślnie! { [" + rows + "] <-- zaafektowane wiersze }");
+                    updateFlag = true;
                 }catch (DataAccessException exceptionDML){
                     listException.add(exceptionDML.getCause().getMessage());
+                    updateFlag = false;
                     break;
                 }
             }
             else{
                 try{
                     jdbcTemplate.execute(query);
+                    listException.add("Operacja została wykonana pomyślnie!");
+                    updateFlag = true;
                 }catch (Exception exception){
                     listException.add(exception.getCause().getMessage());
+                    updateFlag = false;
                     break;
                 }
             }
         }
-/*        if(flag){
-            updateFlag = false;
-        }
-        else{
-            updateFlag = true;
-        }*/
         return listException;
     }
 

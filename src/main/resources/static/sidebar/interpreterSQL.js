@@ -40,7 +40,10 @@ function executeSQL(interpreterSQL) {
                 for(var r = 0; r < feedback.lista.length ; ++r){
                     document.getElementById("errorsHandler").value += feedback.lista[r] + "\n";
                 }
-                ifOperationWasSuccessed();
+                if(feedback.updateFlag)
+                    ifOperationWasSuccessed();
+                else if(!feedback.updateFlag)
+                    ifOperationWasNotSuccessed();
             }
             else{
                 for(var r = 0; r < feedback.lista.length ; ++r){
@@ -48,7 +51,7 @@ function executeSQL(interpreterSQL) {
                     document.getElementById("errorsHandler").value += errorMessage + "\n";
                     if(feedback.updateFlag)
                         ifOperationWasSuccessed();
-                    else
+                    else if(!feedback.updateFlag)
                         ifOperationWasNotSuccessed();
                 }
             }
