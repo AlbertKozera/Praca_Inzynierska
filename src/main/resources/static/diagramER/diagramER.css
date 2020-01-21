@@ -486,7 +486,7 @@ fieldset{
 	height: 36px;
 	padding-top: 5px;
 	padding-right: 21px;
-	z-index: 99999;
+	z-index: 3;
 	left: 27px;
 	bottom: 23px;
 }

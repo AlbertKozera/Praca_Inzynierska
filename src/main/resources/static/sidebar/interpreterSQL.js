@@ -13,7 +13,7 @@ function executeSQL(interpreterSQL) {
 
             if(feedback.mapa != null){
                 var namesOfColumns = Object.keys(feedback.mapa[0]);
-                var numberOfRows = 0;
+                var numberOfRows = 1;
 
                 document.getElementById("queryHandler").value += "         ";
                 for(var r = 0; r < namesOfColumns.length ; ++r){
