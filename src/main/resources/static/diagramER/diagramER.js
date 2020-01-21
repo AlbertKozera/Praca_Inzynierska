@@ -492,8 +492,8 @@ $(document).ready(function () {
         autoOpen: false,
         resizable: false,
         height: 'auto',
-        width: 440,
-        modal: true,
+        width: 1050,
+        modal: false,
         buttons: {
             "OK": function () {
                 feedbackDialog.dialog("close");
@@ -1083,7 +1083,6 @@ function genereteSqlHidden() {
 
     });
 
-
     ArrayList.forEach(diagram.links, function (link) {
         var tableDestination = link.getDestination();
         var tableOrigin = link.getOrigin();
@@ -1394,8 +1393,11 @@ function genereteDatabase(generatedSql) {
                 document.getElementById("createSchemaFeedback").value = addSpace;
             }
 
+            if(feedback.updateFlag)
+                ifOperationWasSuccessed('#createSchemaFeedback');
+            else if(!feedback.updateFlag)
+                ifOperationWasNotSuccessed('#createSchemaFeedback');
             feedbackDialog.dialog("open");
-            console.log("ok"+response);
         }
     };
 

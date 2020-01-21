@@ -41,18 +41,18 @@ function executeSQL(interpreterSQL) {
                     document.getElementById("errorsHandler").value += feedback.lista[r] + "\n";
                 }
                 if(feedback.updateFlag)
-                    ifOperationWasSuccessed();
+                    ifOperationWasSuccessed('#errorsHandler');
                 else if(!feedback.updateFlag)
-                    ifOperationWasNotSuccessed();
+                    ifOperationWasNotSuccessed('#errorsHandler');
             }
             else{
                 for(var r = 0; r < feedback.lista.length ; ++r){
                     var errorMessage = feedback.lista[r].replace(/\n/ig, '');
                     document.getElementById("errorsHandler").value += errorMessage + "\n";
                     if(feedback.updateFlag)
-                        ifOperationWasSuccessed();
+                        ifOperationWasSuccessed('#errorsHandler');
                     else if(!feedback.updateFlag)
-                        ifOperationWasNotSuccessed();
+                        ifOperationWasNotSuccessed('#errorsHandler');
                 }
             }
         }
@@ -63,14 +63,14 @@ function executeSQL(interpreterSQL) {
 }
 
 
-function ifOperationWasSuccessed() {
-    $('#errorsHandler').css({
+function ifOperationWasSuccessed(textarea) {
+    $(textarea).css({
         'color': 'rgb(0, 255, 0)'
     });
 }
 
-function ifOperationWasNotSuccessed() {
-    $('#errorsHandler').css({
+function ifOperationWasNotSuccessed(textarea) {
+    $(textarea).css({
         'color': 'red'
     });
 }

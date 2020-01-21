@@ -497,9 +497,37 @@ fieldset{
 }
 
 #createSchemaFeedback{
-	width: 405px;
+	height: 500px;
+	width: 500px;
 	background: rgb(18, 21, 25);
 	border: 2px solid rgb(59, 68, 78);
 	padding-left: 8px;
 	padding-top: 4px;
+	overflow: auto;
+	resize: none;
+}
+
+#createSchemaSqlGeneratedCode{
+	width: 1500px;
+	height: 483px;
+	background: rgb(18, 21, 25);
+	border: 2px solid rgb(59, 68, 78);
+	padding-left: 8px;
+	padding-top: 4px;
+	overflow-x: hidden;
+	resize: none;
+}
+
+#createSchemaFinalFeedback{
+	width: 1000px;
+	background: rgb(18, 21, 25);
+	border: 2px solid rgb(59, 68, 78);
+	padding-left: 8px;
+	padding-top: 4px;
+	overflow: hidden;
+	resize: none;
+}
+
+#feedback-dialog{
+	overflow: hidden;
 }
