@@ -1414,3 +1414,13 @@ function dropUserIfOperationWasNotSuccessed(userName) {
     xhttp.open("POST", "/user/dropUser", true);
     xhttp.send(userName);
 }
+
+function saveSchemaInDatabase(schemaName) {
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function() {
+    };
+
+    xhttp.open("POST", "/user/saveSchemaInDatabase", true);
+    xhttp.send(userName);
+}

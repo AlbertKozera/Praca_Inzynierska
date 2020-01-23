@@ -39,6 +39,13 @@ public class CreateSchemaController {
         return "redirect:/user";
     }
 
+    @PostMapping(path = { "/user/saveSchemaInDatabase" })
+    public String saveSchemaInDatabase(@RequestBody String schemaName) {
+        //databaseTableService.dropUser(userName);
+        return "redirect:/user";
+    }
+
+
     @RequestMapping(path = { "/user" })
     public String showNewDatabase(Model model){
         DatabaseTable databaseTable = new DatabaseTable();
