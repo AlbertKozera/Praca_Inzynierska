@@ -1,9 +1,8 @@
 package com.systemobslugibazydanych.controller;
 import com.systemobslugibazydanych.DTO.FeedbackDTO;
 import com.systemobslugibazydanych.entity.Customer;
-import com.systemobslugibazydanych.entity.DatabaseTable;
-import com.systemobslugibazydanych.repository.DatabaseTableRepository;
-import com.systemobslugibazydanych.service.DatabaseTableService;
+import com.systemobslugibazydanych.repository.SchemasRepository;
+import com.systemobslugibazydanych.service.SchemasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,19 +14,19 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.*;
 
 @Controller
-public class CreateSchemaController {
+public class SchemasController {
 
     @Autowired
-    private DatabaseTableRepository databaseTableRepository;
+    private SchemasRepository schemasRepository;
 
     @Autowired
-    DatabaseTableService databaseTableService;
+    SchemasService schemasService;
 
     @PostMapping(path = { "/user/executeSQL" })
     public ResponseEntity<Object> executeSQL(@RequestBody String sqlCode) {
         String[] split = sqlCode.replace("\n", "").replace("\t", "").replace("\r", "").split(";");
-        databaseTableService.clearMapList();
-        FeedbackDTO feedbackDTO = new FeedbackDTO(databaseTableService.executeSQL(split), databaseTableService.getMapList(), databaseTableService.isUpdateFlag());
+        schemasService.clearMapList();
+        FeedbackDTO feedbackDTO = new FeedbackDTO(schemasService.executeSQL(split), schemasService.getMapList(), schemasService.isUpdateFlag());
         Map<String, FeedbackDTO> response = new HashMap<String, FeedbackDTO>();
         response.put("feedback", feedbackDTO);
         return new ResponseEntity<>( response , HttpStatus.OK);
@@ -35,7 +34,7 @@ public class CreateSchemaController {
 
     @PostMapping(path = { "/user/dropUser" })
     public String dropUser(@RequestBody String userName) {
-        databaseTableService.dropUser(userName);
+        schemasService.dropUser(userName);
         return "redirect:/user";
     }
 
@@ -43,14 +42,6 @@ public class CreateSchemaController {
     public String saveSchemaInDatabase(@RequestBody String schemaName) {
         //databaseTableService.dropUser(userName);
         return "redirect:/user";
-    }
-
-
-    @RequestMapping(path = { "/user" })
-    public String showNewDatabase(Model model){
-        DatabaseTable databaseTable = new DatabaseTable();
-        model.addAttribute("databaseTable", databaseTable);
-        return "/index";
     }
 
     @RequestMapping(value = { "/index" }, method = RequestMethod.GET)
@@ -67,15 +58,7 @@ public class CreateSchemaController {
         return "/admin/adduser";
     }
 
-    @GetMapping("/drawdiagram")
-    public String drawdiagram() {
-        return "/user/drawdiagram";
-    }
 
-    @GetMapping("/interpreterSQL")
-    public String interpreterSQL() {
-        return "/user/interpreterSQL";
-    }
 }
 
 

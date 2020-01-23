@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.systemobslugibazydanych.entity.Customer;
-import com.systemobslugibazydanych.service.CustomerServiceImpl;
+import com.systemobslugibazydanych.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class CustomerCrudController
 {
     @Autowired
-    CustomerServiceImpl service;
+    CustomerService service;
 
     @GetMapping(path = "/users")
     public String getAllEmployees(Model model)

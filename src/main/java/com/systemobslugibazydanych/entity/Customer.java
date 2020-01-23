@@ -47,7 +47,8 @@ public class Customer {
 	private Set<Role> roles;
 
 	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<DatabaseTable> databaseTables;
+	private List<Schemas> schemas;
+
 
 	public Integer getId() {
 		return id;
@@ -105,11 +106,11 @@ public class Customer {
 		this.roles = roles;
 	}
 
-	public List<DatabaseTable> getDatabaseTables() {
-		return databaseTables;
+	public List<Schemas> getSchemas() {
+		return schemas;
 	}
 
-	public void setDatabaseTables(List<DatabaseTable> databaseTables) {
-		this.databaseTables = databaseTables;
+	public void setSchemas(List<Schemas> schemas) {
+		this.schemas = schemas;
 	}
 }

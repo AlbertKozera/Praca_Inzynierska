@@ -1,29 +1,21 @@
 package com.systemobslugibazydanych.service;
 
 import com.systemobslugibazydanych.repository.CustomerRepository;
-import com.systemobslugibazydanych.repository.DatabaseTableRepository;
+import com.systemobslugibazydanych.repository.SchemasRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.NativeQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.PersistenceContext;
 import java.io.*;
 import java.io.Reader;
-import java.sql.Connection;
-import java.sql.Statement;
 import java.util.*;
 import java.util.regex.Pattern;
 
 @Service
-public class DatabaseTableService {
+public class SchemasService {
 
     @Autowired
     SomeService someService;
@@ -35,7 +27,7 @@ public class DatabaseTableService {
     private EntityManagerFactory entityManagerFactory;
 
 
-    private DatabaseTableRepository databaseTableRepository;
+    private SchemasRepository schemasRepository;
     private CustomerRepository customerRepository;
     private List<Map<String, Object>> mapList;
     private List<Map<String, Object>> emptyMapList = null;
@@ -48,8 +40,8 @@ public class DatabaseTableService {
         put("DML", statementsListDML);
     }};
 
-    public DatabaseTableService(DatabaseTableRepository databaseTableRepository, CustomerRepository customerRepository) {
-        this.databaseTableRepository = databaseTableRepository;
+    public SchemasService(SchemasRepository schemasRepository, CustomerRepository customerRepository) {
+        this.schemasRepository = schemasRepository;
         this.customerRepository = customerRepository;
         jdbcTemplate = null;
     }
@@ -148,12 +140,12 @@ public class DatabaseTableService {
         }
         User user = userRepository.findByEmail(username);
 
-        String filename = user.getId() + "_" + databaseTable.getName()+".sql";*/
+        String filename = user.getId() + "_" + databaseTable.getSchemaName()+".sql";*/
 /*        File file = new File("C:/Users/Alfu/IdeaProjects/Inzynierka/src/main/resources/sqlCodeFile/" + filename);
         FileWriter fileWriter = null;
         try {
             fileWriter = new FileWriter(file);
-            fileWriter.write("DROP SCHEMA IF EXISTS '"+databaseTable.getName()+"';\n" + "CREATE SCHEMA '"+databaseTable.getName()+"';");
+            fileWriter.write("DROP SCHEMA IF EXISTS '"+databaseTable.getSchemaName()+"';\n" + "CREATE SCHEMA '"+databaseTable.getSchemaName()+"';");
             fileWriter.close();
         } catch (IOException e) {
             e.printStackTrace();

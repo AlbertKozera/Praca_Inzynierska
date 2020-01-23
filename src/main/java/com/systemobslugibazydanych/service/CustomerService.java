@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class CustomerServiceImpl {
+public class CustomerService {
 	
 	@Autowired
 	private BCryptPasswordEncoder encoder;
