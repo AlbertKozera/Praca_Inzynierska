@@ -44,13 +44,6 @@ public class SchemasController {
         return "redirect:/user";
     }
 
-    @RequestMapping(value = { "/index" }, method = RequestMethod.GET)
-    public ModelAndView index() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("index.html"); // resources/templates/login.html
-        return modelAndView;
-    }
-
     @GetMapping("/adduser")
     public String adduser(Model model) {
         Customer user = new Customer();

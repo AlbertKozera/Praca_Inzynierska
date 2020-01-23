@@ -16,4 +16,8 @@ public class SidebarController {
         return "/user/interpreterSQL";
     }
 
+    @GetMapping("/index")
+    public String index() {
+        return "/index.html";
+    }
 }

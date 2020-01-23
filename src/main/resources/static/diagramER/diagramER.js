@@ -152,7 +152,6 @@ $(document).ready(function () {
             //ustawienie haków
             table.setHandlesStyle(2);
 
-
             // set the first column to resize with the table
             table.columns[0] = {width: 5, columnStyle: 0};
             table.getColumn(1).columnStyle = ColumnStyle.AutoWidth;
@@ -232,11 +231,9 @@ $(document).ready(function () {
                 oldHoverCell = false;
             }
         }
-
     });
 
     diagram.addEventListener(Events.nodeClicked, function (sender, args) {
-
         rowClicked = -1;
         // wyłączenie podświetlenia wiersza
         turnOffHighlightSelected(selectedHighlightedTable, selectedHighlightedRow);
@@ -276,23 +273,8 @@ $(document).ready(function () {
         }
     });
 
-    diagram.addEventListener(Events.linkClicked, function (sender, args) {
-        var linkClicked = args.getLink();
-        /*
-        DefaultFlow
-        PointerArrow
-        Reversed
-        RevWithLine
-        Slash
-                */
-    });
-
     diagram.addEventListener(Events.linkDoubleClicked, function (sender, args) {
         infoOpen();
-    });
-
-    diagram.addEventListener(Events.linkDeleting, function (sender, args) {
-
     });
 
     diagram.addEventListener(Events.linkDeleted, function (sender, args) {
@@ -321,7 +303,6 @@ $(document).ready(function () {
             }
         }
     });
-
 
     diagram.addEventListener(Events.linkCreated, function (sender, args) {
         var linkCreated = args.getLink();
@@ -524,11 +505,9 @@ $(document).ready(function () {
         infoOpen();
     });
 
-
     $("#addRow-fieldType").selectmenu("destroy").selectmenu({style: "dropdown"}); // lista typów danych fix
     $("#editRow-fieldType").selectmenu("destroy").selectmenu({style: "dropdown"}); // lista typów danych fix
 });
-
 
 function addRowOpen() {
     var table = tblClicked || diagram.getActiveItem();
@@ -623,10 +602,7 @@ function editRowOpen() {
     } else
         editRowNN.attr("checked", false);
 
-
     editRowType.selectmenu("refresh");
-
-
     editRowDialog.dialog("open");
 }
 
@@ -647,7 +623,6 @@ function editRow() {
         table.getCell(5, rowClicked).setText("NOT NULL");
     else
         table.getCell(5, rowClicked).setText("");
-
 
     var PK_state = editRowPK[0].checked, UK_state = editRowUK[0].checked;
 
@@ -726,7 +701,6 @@ function createTable() {
     table.scroller.updateContent();
     //ustawienie haków
     table.setHandlesStyle(2);
-
 
     // set the first column to resize with the table
     table.columns[0] = {width: 5, columnStyle: 0};
@@ -1229,7 +1203,6 @@ function turnOnHighlight(highlightedTable, rowHighlighted) {
 }
 
 function turnOffHighlight(highlightedTable, rowHighlighted) {
-
     if ((selectedHighlightedRow != -1) && (selectedHighlightedTable != -1)) {
         if ((rowHighlighted != selectedHighlightedRow)) {
             setTextToNormal(highlightedTable, rowHighlighted);
@@ -1279,8 +1252,6 @@ function gridSlider() {
 }
 
 function rulerSlider() {
-
-
     var ruler = copyRuler;
     if (rulerSliderFlag) {
         ruler.setHorizontalScaleVisible(false);
@@ -1322,7 +1293,6 @@ function exportAsPNG(id){
     else{
         flag = false;
     }
-
     if($('#filenamePng').val() != "")
         document.getElementById(id).setAttribute("download", $('#filenamePng').val() +".png");
     var downloadPng = document.getElementById("downloadPng");
@@ -1341,7 +1311,6 @@ function exportAsJSON(id) {
     var downloadJson = document.getElementById("downloadJson");
     downloadJson.setAttribute("href", "data:" + data + "");
 }
-
 
 function onFileLoad() {
     var file = document.getElementById("FileReader").files[0];
@@ -1367,7 +1336,6 @@ function onFileLoad() {
     }
 }
 
-
 function genereteDatabase(generatedSql) {
     document.getElementById("createSchemaFeedback").value = "";
 
@@ -1384,13 +1352,11 @@ function genereteDatabase(generatedSql) {
                 }
                 document.getElementById("createSchemaSqlGeneratedCode").value = genereteSqlHidden();
             }
-
             if(feedback.updateFlag){
                 document.getElementById("createSchemaFinalFeedback").value = "Schemat został pomyślnie utworzony!";
                 ifOperationWasSuccessed('#createSchemaFeedback');
                 ifOperationWasSuccessed('#createSchemaFinalFeedback');
             }
-
             else if(!feedback.updateFlag){
                 document.getElementById("createSchemaFinalFeedback").value = "Nie udało się utworzyć schematu!";
                 ifOperationWasNotSuccessed('#createSchemaFeedback');
@@ -1406,8 +1372,8 @@ function genereteDatabase(generatedSql) {
 }
 
 function dropUserIfOperationWasNotSuccessed(userName) {
-    var xhttp = new XMLHttpRequest();
 
+    var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
     };
 
@@ -1416,8 +1382,9 @@ function dropUserIfOperationWasNotSuccessed(userName) {
 }
 
 function saveSchemaInDatabase(schemaName) {
-    var xhttp = new XMLHttpRequest();
 
+
+    var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
     };
 
