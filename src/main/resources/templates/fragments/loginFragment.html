@@ -7,10 +7,10 @@
 	<div id="login">
 		<form th:action="@{/login}" method="POST" class="form-signin">
 			<span class="fontawesome-user"></span>
-			<input type="text" id="email" firstName="email" th:placeholder="Login" class="form-control" />
+			<input type="text" id="email" name="email" th:placeholder="Login" class="form-control" />
 
 			<span class="fontawesome-lock"></span>
-			<input type="password" th:placeholder="Hasło" id="password" firstName="password" class="form-control" />
+			<input type="password" th:placeholder="Hasło" id="password" name="password" class="form-control" />
 
 			<input type="submit" value="Zaloguj">
 
