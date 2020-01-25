@@ -24,7 +24,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private DataSource dataSource;
 
-	private final String customerQuery = "select email, password, '1' as enabled from users where email=? and status='VERIFIED'";
+	private final String customerQuery = "select email, password, '1' as enabled from users where email=?";
 
 	private final String roleQuery = "select u.email, r.role_name from users u inner join user_role ur on(u.user_id=ur.user_id) inner join role r on(ur.role_id=r.role_id) where u.email=?";
 
@@ -43,7 +43,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/login").permitAll()
 				.antMatchers("/index").anonymous()
 				.antMatchers("/admin/**").hasAuthority("ADMIN")
-				.antMatchers("/user/**").hasAuthority("USER")
+				.antMatchers("/user/**").hasAuthority("CUSTOMER")
 				.anyRequest().authenticated()
 				.and()
 				// form login

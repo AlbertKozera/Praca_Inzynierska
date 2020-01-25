@@ -39,9 +39,6 @@ public class Users {
 	@Column(name = "password")
 	private String password;
 
-	@Column(name = "status")
-	private String status;
-
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles;
@@ -88,14 +85,6 @@ public class Users {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
 	}
 
 	public Set<Role> getRoles() {

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping("/")
-public class CustomerCrudController
+public class UsersCrudController
 {
     @Autowired
     UsersService service;

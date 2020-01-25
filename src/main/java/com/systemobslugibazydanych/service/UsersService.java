@@ -32,7 +32,6 @@ public class UsersService {
 
 	public void saveUser(Users users) {
 		users.setPassword(encoder.encode(users.getPassword()));
-		users.setStatus("VERIFIED");
 		Role customerRole = roleRepository.findByRole("USER");
 		users.setRoles(new HashSet<Role>(Arrays.asList(customerRole)));
 		usersRepository.save(users);
