@@ -2,7 +2,7 @@ package com.systemobslugibazydanych.controller;
 
 import javax.validation.Valid;
 
-import com.systemobslugibazydanych.entity.User;
+import com.systemobslugibazydanych.entity.Users;
 import com.systemobslugibazydanych.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,22 +26,22 @@ public class AuthenticationController {
 	}
 
 	@PostMapping(value="/adduser/add")
-	public ModelAndView registerUser(@Valid User user, BindingResult bindingResult, ModelMap modelMap) {
+	public ModelAndView registerUser(@Valid Users users, BindingResult bindingResult, ModelMap modelMap) {
 		ModelAndView modelAndView = new ModelAndView();
 		// Check for the validations
 		if(bindingResult.hasErrors()) {
 			modelAndView.addObject("successMessage", "Formularz zawiera błędy!");
 			modelMap.addAttribute("bindingResult", bindingResult);
 		}
-		else if(customerService.isCustomerAlreadyPresent(user)){
+		else if(customerService.isCustomerAlreadyPresent(users)){
 			modelAndView.addObject("successMessage", "Taki użytkownik już istnieje!");
 		}
 		// we will save the user if, no binding errors
 		else {
-			customerService.saveCustomer(user);
+			customerService.saveCustomer(users);
 			modelAndView.addObject("successMessage", "Użytkownik został zarejestrowany pomyślnie!");
 		}
-		modelAndView.addObject("user", new User());
+		modelAndView.addObject("user", new Users());
 		modelAndView.setViewName("/admin/adduser");
 		return modelAndView;
 	}

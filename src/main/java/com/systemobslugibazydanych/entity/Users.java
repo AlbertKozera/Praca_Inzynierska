@@ -8,8 +8,8 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
-@Table(name = "user")
-public class User {
+@Table(name = "users")
+public class Users {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

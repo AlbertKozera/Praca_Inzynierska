@@ -3,7 +3,7 @@ package com.systemobslugibazydanych.controller;
 import java.util.List;
 import java.util.Optional;
 
-import com.systemobslugibazydanych.entity.User;
+import com.systemobslugibazydanych.entity.Users;
 import com.systemobslugibazydanych.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,7 +24,7 @@ public class CustomerCrudController
     @GetMapping(path = "/users")
     public String getAllEmployees(Model model)
     {
-        List<User> list = service.getAllEmployees();
+        List<Users> list = service.getAllEmployees();
 
         model.addAttribute("customers", list);
         return "/admin/users";
@@ -35,10 +35,10 @@ public class CustomerCrudController
             throws RuntimeException
     {
         if (id.isPresent()) {
-            User entity = service.getEmployeeById(id.get());
+            Users entity = service.getEmployeeById(id.get());
             model.addAttribute("customer", entity);
         } else {
-            model.addAttribute("customer", new User());
+            model.addAttribute("customer", new Users());
         }
         return "/admin/edituser";
     }
@@ -52,7 +52,7 @@ public class CustomerCrudController
     }
 
     @RequestMapping(path = "/createEmployee", method = RequestMethod.POST)
-    public String createOrUpdateEmployee(User employee)
+    public String createOrUpdateEmployee(Users employee)
     {
         service.createOrUpdateEmployee(employee);
         return "redirect:/users";

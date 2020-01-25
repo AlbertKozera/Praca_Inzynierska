@@ -1,6 +1,6 @@
 package com.systemobslugibazydanych.controller;
 import com.systemobslugibazydanych.DTO.FeedbackDTO;
-import com.systemobslugibazydanych.entity.User;
+import com.systemobslugibazydanych.entity.Users;
 import com.systemobslugibazydanych.repository.SchemasRepository;
 import com.systemobslugibazydanych.service.SchemasService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,8 +45,8 @@ public class SchemasController {
 
     @GetMapping("/adduser")
     public String adduser(Model model) {
-        User user = new User();
-        model.addAttribute("user", user);
+        Users users = new Users();
+        model.addAttribute("user", users);
         return "/admin/adduser";
     }
 
