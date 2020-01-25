@@ -1,6 +1,6 @@
 package com.systemobslugibazydanych.service;
 
-import com.systemobslugibazydanych.repository.CustomerRepository;
+import com.systemobslugibazydanych.repository.UsersRepository;
 import com.systemobslugibazydanych.repository.SchemasRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -28,7 +28,7 @@ public class SchemasService {
 
 
     private SchemasRepository schemasRepository;
-    private CustomerRepository customerRepository;
+    private UsersRepository usersRepository;
     private List<Map<String, Object>> mapList;
     private List<Map<String, Object>> emptyMapList = null;
     private boolean updateFlag = false;
@@ -40,9 +40,9 @@ public class SchemasService {
         put("DML", statementsListDML);
     }};
 
-    public SchemasService(SchemasRepository schemasRepository, CustomerRepository customerRepository) {
+    public SchemasService(SchemasRepository schemasRepository, UsersRepository usersRepository) {
         this.schemasRepository = schemasRepository;
-        this.customerRepository = customerRepository;
+        this.usersRepository = usersRepository;
         jdbcTemplate = null;
     }
 
@@ -69,7 +69,6 @@ public class SchemasService {
     public void dropUser(String userName){
         jdbcTemplate.execute("DROP USER " + userName + " CASCADE");
     }
-
 
     public ArrayList<String> executeSQL(String[] queryRows) {
         SessionFactory hibernateFactory = someService.getHibernateFactory();

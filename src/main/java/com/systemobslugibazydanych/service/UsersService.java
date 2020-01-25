@@ -7,7 +7,7 @@ import java.util.Optional;
 
 import com.systemobslugibazydanych.entity.Users;
 import com.systemobslugibazydanych.entity.Role;
-import com.systemobslugibazydanych.repository.CustomerRepository;
+import com.systemobslugibazydanych.repository.UsersRepository;
 import com.systemobslugibazydanych.repository.RoleRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -18,50 +18,40 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class CustomerService {
+public class UsersService {
 	
 	@Autowired
 	private BCryptPasswordEncoder encoder;
 	@Autowired
 	private RoleRepository roleRepository;
 	@Autowired
-	private CustomerRepository customerRepository;
+	private UsersRepository usersRepository;
 	@Autowired
 	private SomeService someService;
 
 
-	public void saveCustomer(Users users) {
+	public void saveUser(Users users) {
 		users.setPassword(encoder.encode(users.getPassword()));
 		users.setStatus("VERIFIED");
 		Role customerRole = roleRepository.findByRole("USER");
 		users.setRoles(new HashSet<Role>(Arrays.asList(customerRole)));
-		customerRepository.save(users);
+		usersRepository.save(users);
 	}
 
-
-	public boolean isCustomerAlreadyPresent(Users users) {
+	public boolean isUserAlreadyPresent(Users users) {
 		// Try to implement this method, as assignment.
 		return false;
 	}
 
-
-
-
-
-
-
-
-
-
 	public List<Users> getAllEmployees()
 	{
-		List<Users> result = customerRepository.findAll();
+		List<Users> result = usersRepository.findAll();
 		return result;
 	}
 
 	public Users getEmployeeById(Integer id) throws RuntimeException
 	{
-		Optional<Users> customer = customerRepository.findById(id);
+		Optional<Users> customer = usersRepository.findById(id);
 
 		if(customer.isPresent()) {
 			return customer.get();
@@ -74,13 +64,13 @@ public class CustomerService {
 	{
 		if(entity.getId()  == null)
 		{
-			entity = customerRepository.save(entity);
+			entity = usersRepository.save(entity);
 
 			return entity;
 		}
 		else
 		{
-			Optional<Users> customer = customerRepository.findById(entity.getId());
+			Optional<Users> customer = usersRepository.findById(entity.getId());
 
 			if(customer.isPresent())
 			{
@@ -89,11 +79,11 @@ public class CustomerService {
 				newEntity.setFirstName(entity.getFirstName());
 				newEntity.setLastName(entity.getLastName());
 
-				newEntity = customerRepository.save(newEntity);
+				newEntity = usersRepository.save(newEntity);
 
 				return newEntity;
 			} else {
-				entity = customerRepository.save(entity);
+				entity = usersRepository.save(entity);
 
 				return entity;
 			}
@@ -102,7 +92,7 @@ public class CustomerService {
 
 	public void deleteEmployeeById(Integer id) throws RuntimeException
 	{
-		Optional<Users> customer = customerRepository.findById(id);
+		Optional<Users> customer = usersRepository.findById(id);
 
 		if(customer.isPresent())
 		{
@@ -112,7 +102,7 @@ public class CustomerService {
 			session.doWork(connection -> connection.prepareStatement(query).execute());
 			session.close();
 
-			customerRepository.deleteById(id);
+			usersRepository.deleteById(id);
 		} else {
 			throw new RuntimeException("No customer record exist for given id");
 		}
