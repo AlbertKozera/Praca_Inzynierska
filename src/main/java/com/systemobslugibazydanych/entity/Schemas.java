@@ -18,7 +18,7 @@ public class Schemas {
 
     @ManyToOne
     @JoinColumn(name = "user_idFK")
-    private Customer customer;
+    private User user;
 
 
     public Integer getId() {
@@ -45,11 +45,11 @@ public class Schemas {
         this.schemaERD = schemaERD;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public User getUser() {
+        return user;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

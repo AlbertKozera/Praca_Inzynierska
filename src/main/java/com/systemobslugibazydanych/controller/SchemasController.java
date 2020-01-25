@@ -1,6 +1,6 @@
 package com.systemobslugibazydanych.controller;
 import com.systemobslugibazydanych.DTO.FeedbackDTO;
-import com.systemobslugibazydanych.entity.Customer;
+import com.systemobslugibazydanych.entity.User;
 import com.systemobslugibazydanych.repository.SchemasRepository;
 import com.systemobslugibazydanych.service.SchemasService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.*;
 
@@ -46,7 +45,7 @@ public class SchemasController {
 
     @GetMapping("/adduser")
     public String adduser(Model model) {
-        Customer user = new Customer();
+        User user = new User();
         model.addAttribute("user", user);
         return "/admin/adduser";
     }

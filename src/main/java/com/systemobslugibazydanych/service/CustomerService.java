@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
-import com.systemobslugibazydanych.entity.Customer;
+import com.systemobslugibazydanych.entity.User;
 import com.systemobslugibazydanych.entity.Role;
 import com.systemobslugibazydanych.repository.CustomerRepository;
 import com.systemobslugibazydanych.repository.RoleRepository;
@@ -30,16 +30,16 @@ public class CustomerService {
 	private SomeService someService;
 
 
-	public void saveCustomer(Customer customer) {
-		customer.setPassword(encoder.encode(customer.getPassword()));
-		customer.setStatus("VERIFIED");
+	public void saveCustomer(User user) {
+		user.setPassword(encoder.encode(user.getPassword()));
+		user.setStatus("VERIFIED");
 		Role customerRole = roleRepository.findByRole("USER");
-		customer.setRoles(new HashSet<Role>(Arrays.asList(customerRole)));
-		customerRepository.save(customer);
+		user.setRoles(new HashSet<Role>(Arrays.asList(customerRole)));
+		customerRepository.save(user);
 	}
 
 
-	public boolean isCustomerAlreadyPresent(Customer customer) {
+	public boolean isCustomerAlreadyPresent(User user) {
 		// Try to implement this method, as assignment.
 		return false;
 	}
@@ -53,15 +53,15 @@ public class CustomerService {
 
 
 
-	public List<Customer> getAllEmployees()
+	public List<User> getAllEmployees()
 	{
-		List<Customer> result = customerRepository.findAll();
+		List<User> result = customerRepository.findAll();
 		return result;
 	}
 
-	public Customer getEmployeeById(Integer id) throws RuntimeException
+	public User getEmployeeById(Integer id) throws RuntimeException
 	{
-		Optional<Customer> customer = customerRepository.findById(id);
+		Optional<User> customer = customerRepository.findById(id);
 
 		if(customer.isPresent()) {
 			return customer.get();
@@ -70,7 +70,7 @@ public class CustomerService {
 		}
 	}
 
-	public Customer createOrUpdateEmployee(Customer entity)
+	public User createOrUpdateEmployee(User entity)
 	{
 		if(entity.getId()  == null)
 		{
@@ -80,13 +80,13 @@ public class CustomerService {
 		}
 		else
 		{
-			Optional<Customer> customer = customerRepository.findById(entity.getId());
+			Optional<User> customer = customerRepository.findById(entity.getId());
 
 			if(customer.isPresent())
 			{
-				Customer newEntity = customer.get();
+				User newEntity = customer.get();
 				newEntity.setEmail(entity.getEmail());
-				newEntity.setName(entity.getName());
+				newEntity.setFirstName(entity.getFirstName());
 				newEntity.setLastName(entity.getLastName());
 
 				newEntity = customerRepository.save(newEntity);
@@ -102,7 +102,7 @@ public class CustomerService {
 
 	public void deleteEmployeeById(Integer id) throws RuntimeException
 	{
-		Optional<Customer> customer = customerRepository.findById(id);
+		Optional<User> customer = customerRepository.findById(id);
 
 		if(customer.isPresent())
 		{

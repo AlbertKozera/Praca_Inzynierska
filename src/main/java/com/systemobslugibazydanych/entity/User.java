@@ -8,8 +8,8 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
-@Table(name = "customer")
-public class Customer {
+@Table(name = "user")
+public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,7 +20,7 @@ public class Customer {
 	@Length(min=3, message="Imie musi składać się conajmniej z 3 znaków")
 	@Length(max=25, message="Imie może składać się maksymalnie z 25 znaków")
 	@Column(name = "first_name")
-	private String name;
+	private String firstName;
 
 	@NotNull(message="Nazwisko jest obowiązkowe")
 	@Length(min=3, message="Nazwisko musi składać się conajmniej z 3 znaków")
@@ -46,9 +46,8 @@ public class Customer {
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles;
 
-	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Schemas> schemas;
-
 
 	public Integer getId() {
 		return id;
@@ -58,12 +57,12 @@ public class Customer {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
 	public String getLastName() {
