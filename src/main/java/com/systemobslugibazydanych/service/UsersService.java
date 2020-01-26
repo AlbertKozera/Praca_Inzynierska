@@ -59,32 +59,33 @@ public class UsersService {
 		}
 	}
 
-	public Users createOrUpdateUsers(Users entity)
+	public Users createOrUpdateUsers(Users user)
 	{
-		if(entity.getId()  == null)
+		if(user.getId()  == null)
 		{
-			entity = usersRepository.save(entity);
+			user = usersRepository.save(user);
 
-			return entity;
+			return user;
 		}
 		else
 		{
-			Optional<Users> users = usersRepository.findById(entity.getId());
+			Optional<Users> users = usersRepository.findById(user.getId());
 
 			if(users.isPresent())
 			{
 				Users newEntity = users.get();
-				newEntity.setEmail(entity.getEmail());
-				newEntity.setFirstName(entity.getFirstName());
-				newEntity.setLastName(entity.getLastName());
+				newEntity.setEmail(user.getEmail());
+				newEntity.setFirstName(user.getFirstName());
+				newEntity.setLastName(user.getLastName());
+				newEntity.setPassword(encoder.encode(user.getPassword()));
 
 				newEntity = usersRepository.save(newEntity);
 
 				return newEntity;
 			} else {
-				entity = usersRepository.save(entity);
+				user = usersRepository.save(user);
 
-				return entity;
+				return user;
 			}
 		}
 	}
