@@ -22,39 +22,39 @@ public class UsersCrudController
     UsersService service;
 
     @GetMapping(path = "/users")
-    public String getAllEmployees(Model model)
+    public String getAllUsers(Model model)
     {
-        List<Users> list = service.getAllEmployees();
+        List<Users> list = service.getAllUsers();
 
-        model.addAttribute("customers", list);
+        model.addAttribute("users", list);
         return "/admin/users";
     }
 
     @RequestMapping(path = {"/edit", "/edit/{id}"})
-    public String editEmployeeById(Model model, @PathVariable("id") Optional<Integer> id)
+    public String editUsersById(Model model, @PathVariable("id") Optional<Integer> id)
             throws RuntimeException
     {
         if (id.isPresent()) {
-            Users entity = service.getEmployeeById(id.get());
-            model.addAttribute("customer", entity);
+            Users entity = service.getUsersById(id.get());
+            model.addAttribute("users", entity);
         } else {
-            model.addAttribute("customer", new Users());
+            model.addAttribute("users", new Users());
         }
         return "/admin/edituser";
     }
 
     @RequestMapping(path = "/delete/{id}")
-    public String deleteEmployeeById(Model model, @PathVariable("id") Integer id)
+    public String deleteUsersById(Model model, @PathVariable("id") Integer id)
             throws RuntimeException
     {
-        service.deleteEmployeeById(id);
+        service.deleteUsersById(id);
         return "redirect:/users";
     }
 
-    @RequestMapping(path = "/createEmployee", method = RequestMethod.POST)
-    public String createOrUpdateEmployee(Users employee)
+    @RequestMapping(path = "/createUser", method = RequestMethod.POST)
+    public String createOrUpdateUsers(Users users)
     {
-        service.createOrUpdateEmployee(employee);
+        service.createOrUpdateUsers(users);
         return "redirect:/users";
     }
 }

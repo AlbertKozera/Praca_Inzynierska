@@ -6,7 +6,7 @@
     background: #272c32;
 border: 0;">
         <div class="card-body">
-            <div th:switch="${customers}" class="container my-5">
+            <div th:switch="${users}" class="container my-5">
                 <div class="col-md-10" style="    left: -50px;
     bottom: 65px;">
                     <h2 th:case="null">No record found !!</h2>
@@ -22,18 +22,18 @@ border: 0;">
                             </tr>
                             </thead>
                             <tbody style="text-align: center;">
-                            <tr th:each="customer : ${customers}">
-                                <td th:text="${customer.firstName}"></td>
-                                <td th:text="${customer.lastName}"></td>
-                                <td th:text="${customer.email}"></td>
+                            <tr th:each="users : ${users}">
+                                <td th:text="${users.firstName}"></td>
+                                <td th:text="${users.lastName}"></td>
+                                <td th:text="${users.email}"></td>
                                 <td>
-                                    <a th:href="@{/edit/{id}(id=${customer.id})}"
+                                    <a th:href="@{/edit/{id}(id=${users.id})}"
                                        class="btn btn-primary">
                                         <i class="fas fa-user-edit ml-2"></i>
                                     </a>
                                 </td>
                                 <td>
-                                    <a th:href="@{/delete/{id}(id=${customer.id})}"
+                                    <a th:href="@{/delete/{id}(id=${users.id})}"
                                        class="btn btn-primary">
                                         <i class="fas fa-user-times ml-2"></i>
                                     </a>

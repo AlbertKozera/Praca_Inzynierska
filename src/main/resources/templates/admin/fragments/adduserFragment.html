@@ -2,7 +2,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<div class="container-fluid" style="padding: 0">
 		<div class="row col-lg-4 col-lg-offset-4" style="margin-top: 60px; margin-left: 60px; background-color: #32373d; padding: 20px; padding-top: 12px;">
-			<form autocomplete="off" action="#" th:action="@{/adduser/add}" th:object="${user}" method="post" class="form-signin" role="form" style="color: #e1e6ec; padding-top: 20px;">
+			<form autocomplete="off" action="#" th:action="@{/adduser/add}" th:object="${users}" method="post" class="form-signin" role="form" style="color: #e1e6ec; padding-top: 20px;">
 				<div class="form-group">
 					<div class="">
 						<input type="text" th:field="*{firstName}" placeholder="Imie" class="form-control" style="width: 498px; background: #2d3238; color: #e1e6ec;"/>

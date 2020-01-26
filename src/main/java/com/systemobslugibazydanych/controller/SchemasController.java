@@ -46,7 +46,7 @@ public class SchemasController {
     @GetMapping("/adduser")
     public String adduser(Model model) {
         Users users = new Users();
-        model.addAttribute("user", users);
+        model.addAttribute("users", users);
         return "/admin/adduser";
     }
 

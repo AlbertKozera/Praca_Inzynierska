@@ -32,7 +32,7 @@ public class UsersService {
 
 	public void saveUser(Users users) {
 		users.setPassword(encoder.encode(users.getPassword()));
-		Role customerRole = roleRepository.findByRole("USER");
+		Role customerRole = roleRepository.findByRole("CUSTOMER");
 		users.setRoles(new HashSet<Role>(Arrays.asList(customerRole)));
 		usersRepository.save(users);
 	}
@@ -42,24 +42,24 @@ public class UsersService {
 		return false;
 	}
 
-	public List<Users> getAllEmployees()
+	public List<Users> getAllUsers()
 	{
 		List<Users> result = usersRepository.findAll();
 		return result;
 	}
 
-	public Users getEmployeeById(Integer id) throws RuntimeException
+	public Users getUsersById(Integer id) throws RuntimeException
 	{
-		Optional<Users> customer = usersRepository.findById(id);
+		Optional<Users> users = usersRepository.findById(id);
 
-		if(customer.isPresent()) {
-			return customer.get();
+		if(users.isPresent()) {
+			return users.get();
 		} else {
-			throw new RuntimeException("No customer record exist for given id");
+			throw new RuntimeException("No user record exist for given id");
 		}
 	}
 
-	public Users createOrUpdateEmployee(Users entity)
+	public Users createOrUpdateUsers(Users entity)
 	{
 		if(entity.getId()  == null)
 		{
@@ -69,11 +69,11 @@ public class UsersService {
 		}
 		else
 		{
-			Optional<Users> customer = usersRepository.findById(entity.getId());
+			Optional<Users> users = usersRepository.findById(entity.getId());
 
-			if(customer.isPresent())
+			if(users.isPresent())
 			{
-				Users newEntity = customer.get();
+				Users newEntity = users.get();
 				newEntity.setEmail(entity.getEmail());
 				newEntity.setFirstName(entity.getFirstName());
 				newEntity.setLastName(entity.getLastName());
@@ -89,11 +89,11 @@ public class UsersService {
 		}
 	}
 
-	public void deleteEmployeeById(Integer id) throws RuntimeException
+	public void deleteUsersById(Integer id) throws RuntimeException
 	{
-		Optional<Users> customer = usersRepository.findById(id);
+		Optional<Users> users = usersRepository.findById(id);
 
-		if(customer.isPresent())
+		if(users.isPresent())
 		{
 			SessionFactory hibernateFactory = someService.getHibernateFactory();
 			Session session = hibernateFactory.openSession();
@@ -103,7 +103,7 @@ public class UsersService {
 
 			usersRepository.deleteById(id);
 		} else {
-			throw new RuntimeException("No customer record exist for given id");
+			throw new RuntimeException("No user record exist for given id");
 		}
 	}
 
