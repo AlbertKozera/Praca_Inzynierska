@@ -1367,6 +1367,7 @@ function genereteDatabase(generatedSql) {
                 document.getElementById("createSchemaFinalFeedback").value = "Schemat został pomyślnie utworzony!";
                 ifOperationWasSuccessed('#createSchemaFeedback');
                 ifOperationWasSuccessed('#createSchemaFinalFeedback');
+                saveSchemaInDatabase($('#schema_name').val(), diagram.toJson());
             }
             else if(!feedback.updateFlag){
                 document.getElementById("createSchemaFinalFeedback").value = "Nie udało się utworzyć schematu!";
@@ -1392,13 +1393,16 @@ function dropUserIfOperationWasNotSuccessed(userName) {
     xhttp.send(userName);
 }
 
-function saveSchemaInDatabase(schemaName) {
-
+function saveSchemaInDatabase(schemaName, diagramJson) {
+    var data = new FormData();
+    data.append("schemaName", schemaName);
+    data.append("diagramJson", diagramJson);
 
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
     };
 
     xhttp.open("POST", "/user/saveSchemaInDatabase", true);
-    xhttp.send(userName);
+    xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
+    xhttp.send(JSON.stringify(Object.fromEntries(data)));
 }

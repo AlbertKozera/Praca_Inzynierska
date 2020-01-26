@@ -1,8 +1,11 @@
 package com.systemobslugibazydanych.controller;
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.systemobslugibazydanych.DTO.SaveSchemaInDatabaseDTO;
 import com.systemobslugibazydanych.DTO.FeedbackDTO;
 import com.systemobslugibazydanych.entity.Users;
 import com.systemobslugibazydanych.repository.SchemasRepository;
 import com.systemobslugibazydanych.service.SchemasService;
+import jdk.nashorn.internal.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,8 +41,7 @@ public class SchemasController {
     }
 
     @PostMapping(path = { "/user/saveSchemaInDatabase" })
-    public String saveSchemaInDatabase(@RequestBody String schemaName) {
-        //databaseTableService.dropUser(userName);
+    public String saveSchemaInDatabase(@RequestBody SaveSchemaInDatabaseDTO saveSchemaInDatabaseDto) {
         return "redirect:/user";
     }
 
