@@ -130,39 +130,50 @@ $(document).ready(function () {
         var table = args.getNode();
 
         if (table) {
-            //nadanie tagu
-            table.setTag(uniqueTagTable++);
-            //podstawowe ustawienia
-            table.redimTable(7, 0);
-            table.setScrollable(true);
-            table.setConnectionStyle(ConnectionStyle.Rows);
-            //nagłówek tabeli
-            table.setText("Table" + tableCount++);
-            table.setCaptionFont(new Font("Verdana", 3.5, true, true));
-            table.setCaptionBackBrush("#1a1f25");
-            table.setCaptionHeight(7.5);
-            //obramowanie tabeli
-            table.setStrokeDashStyle(DashStyle.Solid);
-            table.setStrokeThickness(1.5);
-            table.setCellFrameStyle(CellFrameStyle.None);
-            table.setStroke("#21272D");
-            //aktualizacja scrollbara
-            table.scroller.updateLocation();
-            table.scroller.updateContent();
-            //ustawienie haków
-            table.setHandlesStyle(2);
-
-            // set the first column to resize with the table
-            table.columns[0] = {width: 5, columnStyle: 0};
-            table.getColumn(1).columnStyle = ColumnStyle.AutoWidth;
-            table.getColumn(2).columnStyle = ColumnStyle.AutoWidth;
-            table.columns[3] = {width: 0, columnStyle: 0};
-            table.columns[4] = {width: 0, columnStyle: 0};
-            table.columns[5] = {width: 0, columnStyle: 0};
-            table.columns[6] = {width: 4.9, columnStyle: 0};
+            diagram.addEventListener(Events.nodeCreating, tableNodeCreatingHandler);
             generateSQL();
         }
     });
+
+    var tableNodeCreatingHandler = function (sender, args) {
+        var table = args.getNode();
+        //nadanie tagu
+        table.setTag(uniqueTagTable++);
+        //podstawowe ustawienia
+        table.redimTable(7, 0);
+        table.setScrollable(true);
+        table.setConnectionStyle(ConnectionStyle.Rows);
+        //nagłówek tabeli
+        table.setText("Table" + tableCount++);
+        table.setCaptionFont(new Font("Verdana", 3.5, true, true));
+        table.setCaptionBackBrush("#1a1f25");
+        table.setCaptionHeight(7.5);
+        //obramowanie tabeli
+        table.setStrokeDashStyle(DashStyle.Solid);
+        table.setStrokeThickness(1.5);
+        table.setCellFrameStyle(CellFrameStyle.None);
+        table.setStroke("#21272D");
+        //aktualizacja scrollbara
+        table.scroller.updateLocation();
+        table.scroller.updateContent();
+        //ustawienie haków
+        table.setHandlesStyle(2);
+
+        // set the first column to resize with the table
+        table.columns[0] = {width: 5, columnStyle: 0};
+        table.getColumn(1).columnStyle = ColumnStyle.AutoWidth;
+        table.getColumn(2).columnStyle = ColumnStyle.AutoWidth;
+        table.columns[3] = {width: 0, columnStyle: 0};
+        table.columns[4] = {width: 0, columnStyle: 0};
+        table.columns[5] = {width: 0, columnStyle: 0};
+        table.columns[6] = {width: 4.9, columnStyle: 0};
+
+        diagram.removeEventListener(Events.nodeCreating, tableNodeCreatingHandler);
+    };
+    diagram.addEventListener(Events.nodeCreating, tableNodeCreatingHandler);
+
+
+
 
     diagram.addEventListener(Events.clicked, function (sender, args) {
         turnOffHighlightSelected(selectedHighlightedTable, selectedHighlightedRow);
