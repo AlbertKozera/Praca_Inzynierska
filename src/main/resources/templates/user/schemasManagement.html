@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <th:block th:include="fragments/sidebar/headerinc :: head"/>
+    <link rel="stylesheet" href="/static/sidebar/common/styleWithoutDiagram.css">
 </head>
 <body>
 <div class="wrapper d-flex align-items-stretch">
@@ -18,10 +19,10 @@
             </div>
         </div>
         <ul class="list-unstyled components mb-5">
-            <li class="active">
-                <a href="#"><span class="fa fa-pencil-alt mr-3"></span> Rysuj diagram</a>
+            <li >
+                <a href="/drawdiagram"><span class="fa fa-pencil-alt mr-3"></span> Rysuj diagram</a>
             </li>
-            <li>
+            <li class="active">
                 <a href="/schemasManagement"><span class="fa fa-database mr-3"></span> Menedżer schematów</a>
             </li>
             <li>
@@ -35,7 +36,7 @@
     </nav>
     <!-- Page Content  -->
     <div id="content" style="position: relative; background-color: #272c32; overflow: hidden">
-        <th:block th:include="/fragments/diagramER/diagramER :: diagram"/>
+        <div th:replace="user/fragments/schemasManagementFragment.html :: schemasManagementFragment"></div>
     </div>
 </div>
 </body>

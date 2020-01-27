@@ -2,19 +2,17 @@ package com.systemobslugibazydanych.service;
 
 import com.systemobslugibazydanych.DTO.SaveSchemaInDatabaseDTO;
 import com.systemobslugibazydanych.entity.Schemas;
-import com.systemobslugibazydanych.entity.Users;
-import com.systemobslugibazydanych.repository.UsersRepository;
 import com.systemobslugibazydanych.repository.SchemasRepository;
-import org.apache.catalina.User;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import com.systemobslugibazydanych.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import javax.persistence.EntityManagerFactory;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.io.*;
 import java.io.Reader;
 import java.util.*;
@@ -29,6 +27,10 @@ public class SchemasService {
     private UsersRepository usersRepository;
     @Autowired
     private SchemasRepository schemasRepository;
+
+    @PersistenceContext
+    EntityManager entityManager;
+
 
     private List<Map<String, Object>> mapList;
     private List<Map<String, Object>> emptyMapList = null;
@@ -59,10 +61,6 @@ public class SchemasService {
             }
         }
         return success;
-    }
-
-    public void dropUser(String userName){
-        jdbcTemplate.execute("DROP USER " + userName + " CASCADE");
     }
 
     public ArrayList<String> executeSQL(String[] queryRows) {
@@ -122,12 +120,24 @@ public class SchemasService {
         Schemas schemas = new Schemas();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String emailOfCurrentUser = authentication.getName();
-
         schemas.setSchemaERD(saveSchemaInDatabaseDTO.getDiagramJson());
         schemas.setSchemaName(saveSchemaInDatabaseDTO.getSchemaName());
         schemas.setUsers(usersRepository.findByEmail(emailOfCurrentUser));
         schemasRepository.save(schemas);
     }
+
+    public List<Schemas> getAllSchemasForCurrentUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String emailOfCurrentUser = authentication.getName();
+        return usersRepository.findByUserId(usersRepository.findByEmail(emailOfCurrentUser));
+    }
+
+    public void dropUser(Integer id){
+        String userName = schemasRepository.findById(id).orElseThrow(() -> new NoSchemaException("No schema for id="+id)).getSchemaName();
+        schemasRepository.deleteById(id);
+        jdbcTemplate.execute("DROP USER \"" + userName + "\" CASCADE");
+    }
+
 
     public List<Map<String, Object>> getMapList() {
         return mapList;
@@ -148,6 +158,7 @@ public class SchemasService {
     public void setUpdateFlag(boolean updateFlag) {
         this.updateFlag = updateFlag;
     }
+
 }
 
 

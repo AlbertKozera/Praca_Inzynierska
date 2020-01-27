@@ -1,11 +1,9 @@
 package com.systemobslugibazydanych.controller;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.systemobslugibazydanych.DTO.SaveSchemaInDatabaseDTO;
 import com.systemobslugibazydanych.DTO.FeedbackDTO;
+import com.systemobslugibazydanych.entity.Schemas;
 import com.systemobslugibazydanych.entity.Users;
-import com.systemobslugibazydanych.repository.SchemasRepository;
 import com.systemobslugibazydanych.service.SchemasService;
-import jdk.nashorn.internal.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,17 +29,28 @@ public class SchemasController {
         return new ResponseEntity<>( response , HttpStatus.OK);
     }
 
-    @PostMapping(path = { "/user/dropUser" })
-    public String dropUser(@RequestBody String userName) {
-        schemasService.dropUser(userName);
-        return "redirect:/user";
-    }
-
     @PostMapping(path = { "/user/saveSchemaInDatabase" })
     public String saveSchemaInDatabase(@RequestBody SaveSchemaInDatabaseDTO saveSchemaInDatabaseDto) {
         schemasService.saveSchemaInDatabase(saveSchemaInDatabaseDto);
         return "redirect:/user";
     }
+
+    @GetMapping(path = "/schemasManagement")
+    public String getAllSchemasForCurrentUser(Model model)
+    {
+        List<Schemas> list = schemasService.getAllSchemasForCurrentUser();
+        model.addAttribute("schemas", list);
+
+        return "/user/schemasManagement";
+    }
+
+    @RequestMapping(path = "/deleteSchema/{id}")
+    public String deleteSchemaById(Model model, @PathVariable("id") Integer id)
+    {
+        schemasService.dropUser(id);
+        return "redirect:/schemasManagement";
+    }
+
 
     @GetMapping("/adduser")
     public String adduser(Model model) {
@@ -49,7 +58,6 @@ public class SchemasController {
         model.addAttribute("users", users);
         return "/admin/adduser";
     }
-
 
 }
 
