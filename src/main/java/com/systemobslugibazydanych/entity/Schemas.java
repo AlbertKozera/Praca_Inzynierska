@@ -13,6 +13,7 @@ public class Schemas {
     @Column(name = "schema_name")
     private String schemaName;
 
+    @Lob
     @Column(name = "schema_ERD")
     private String schemaERD;
 

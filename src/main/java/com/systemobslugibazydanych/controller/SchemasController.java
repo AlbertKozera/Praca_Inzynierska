@@ -19,9 +19,6 @@ import java.util.*;
 public class SchemasController {
 
     @Autowired
-    private SchemasRepository schemasRepository;
-
-    @Autowired
     SchemasService schemasService;
 
     @PostMapping(path = { "/user/executeSQL" })
@@ -42,6 +39,7 @@ public class SchemasController {
 
     @PostMapping(path = { "/user/saveSchemaInDatabase" })
     public String saveSchemaInDatabase(@RequestBody SaveSchemaInDatabaseDTO saveSchemaInDatabaseDto) {
+        schemasService.saveSchemaInDatabase(saveSchemaInDatabaseDto);
         return "redirect:/user";
     }
 

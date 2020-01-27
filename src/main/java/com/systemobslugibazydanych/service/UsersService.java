@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManagerFactory;
 
 
 @Service
@@ -27,7 +28,7 @@ public class UsersService {
 	@Autowired
 	private UsersRepository usersRepository;
 	@Autowired
-	private SomeService someService;
+	private EntityManagerFactory entityManagerFactory;
 
 
 	public void saveUser(Users users) {
@@ -96,7 +97,8 @@ public class UsersService {
 
 		if(users.isPresent())
 		{
-			SessionFactory hibernateFactory = someService.getHibernateFactory();
+			SessionFactory hibernateFactory = entityManagerFactory.unwrap(SessionFactory.class);
+
 			Session session = hibernateFactory.openSession();
 			String query = "DELETE FROM \"ALBERT\".\"USER_ROLE\" WHERE USER_ID = " + id;
 			session.doWork(connection -> connection.prepareStatement(query).execute());

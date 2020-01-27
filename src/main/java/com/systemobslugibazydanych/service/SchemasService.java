@@ -1,12 +1,18 @@
 package com.systemobslugibazydanych.service;
 
+import com.systemobslugibazydanych.DTO.SaveSchemaInDatabaseDTO;
+import com.systemobslugibazydanych.entity.Schemas;
+import com.systemobslugibazydanych.entity.Users;
 import com.systemobslugibazydanych.repository.UsersRepository;
 import com.systemobslugibazydanych.repository.SchemasRepository;
+import org.apache.catalina.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import javax.persistence.EntityManagerFactory;
 import java.io.*;
@@ -18,17 +24,12 @@ import java.util.regex.Pattern;
 public class SchemasService {
 
     @Autowired
-    SomeService someService;
-
+    private final JdbcTemplate jdbcTemplate = null;
     @Autowired
-    private final JdbcTemplate jdbcTemplate;
-
-    @Autowired
-    private EntityManagerFactory entityManagerFactory;
-
-
-    private SchemasRepository schemasRepository;
     private UsersRepository usersRepository;
+    @Autowired
+    private SchemasRepository schemasRepository;
+
     private List<Map<String, Object>> mapList;
     private List<Map<String, Object>> emptyMapList = null;
     private boolean updateFlag = false;
@@ -39,12 +40,6 @@ public class SchemasService {
         put("DDL", statementsListDDL);
         put("DML", statementsListDML);
     }};
-
-    public SchemasService(SchemasRepository schemasRepository, UsersRepository usersRepository) {
-        this.schemasRepository = schemasRepository;
-        this.usersRepository = usersRepository;
-        jdbcTemplate = null;
-    }
 
     public static String readAllCharactersOneByOne(Reader reader) throws IOException {
         StringBuilder content = new StringBuilder();
@@ -71,9 +66,6 @@ public class SchemasService {
     }
 
     public ArrayList<String> executeSQL(String[] queryRows) {
-        SessionFactory hibernateFactory = someService.getHibernateFactory();
-        Session session = hibernateFactory.openSession();
-
         ArrayList<String> listException = new ArrayList<String>();
         for (int i = 0; i < queryRows.length; ++i) {
             String query = queryRows[i];
@@ -126,62 +118,15 @@ public class SchemasService {
         return listException;
     }
 
+    public void saveSchemaInDatabase(SaveSchemaInDatabaseDTO saveSchemaInDatabaseDTO){
+        Schemas schemas = new Schemas();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String emailOfCurrentUser = authentication.getName();
 
-    public void nazwametody(String[] split) {
-
-
-/*        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username;
-        if (principal instanceof UserDetails) {
-            username = ((UserDetails)principal).getUsername();
-        } else {
-            username = principal.toString();
-        }
-        User user = userRepository.findByEmail(username);
-
-        String filename = user.getId() + "_" + databaseTable.getSchemaName()+".sql";*/
-/*        File file = new File("C:/Users/Alfu/IdeaProjects/Inzynierka/src/main/resources/sqlCodeFile/" + filename);
-        FileWriter fileWriter = null;
-        try {
-            fileWriter = new FileWriter(file);
-            fileWriter.write("DROP SCHEMA IF EXISTS '"+databaseTable.getSchemaName()+"';\n" + "CREATE SCHEMA '"+databaseTable.getSchemaName()+"';");
-            fileWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
-
-        SessionFactory hibernateFactory = someService.getHibernateFactory();
-        Session session = hibernateFactory.openSession();
-       /*  String query1 = null;
-        try {
-            query1 = new String(Files.readAllBytes(Paths.get(ClassLoader.getSystemResource("test.sql").toURI())));
-        } catch (IOException | URISyntaxException e) {
-            e.printStackTrace();
-        }
-        String finalQuery = query1;
-        session.doWork(connection -> connection.prepareStatement(finalQuery).execute());*/
-
-
-        for (int i = 0; i < split.length; i++) {
-            String query = split[i];
-            session.doWork(connection -> connection.prepareStatement(query).execute());
-        }
-        session.close();
-
-
-
-
-
-
-
-
-
-
-
-/*
-        databaseTable = databaseTableRepository.save(databaseTable);
-        return databaseTable;*/
+        schemas.setSchemaERD(saveSchemaInDatabaseDTO.getDiagramJson());
+        schemas.setSchemaName(saveSchemaInDatabaseDTO.getSchemaName());
+        schemas.setUsers(usersRepository.findByEmail(emailOfCurrentUser));
+        schemasRepository.save(schemas);
     }
 
     public List<Map<String, Object>> getMapList() {
