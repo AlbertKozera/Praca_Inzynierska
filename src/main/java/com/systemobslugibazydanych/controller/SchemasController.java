@@ -44,8 +44,15 @@ public class SchemasController {
         return "/user/schemasManagement";
     }
 
+    @RequestMapping(path = "/editSchema/{id}")
+    public String editSchemaById(@PathVariable("id") Integer id)
+    {
+
+        return "redirect:/schemasManagement";
+    }
+
     @RequestMapping(path = "/deleteSchema/{id}")
-    public String deleteSchemaById(Model model, @PathVariable("id") Integer id)
+    public String deleteSchemaById(@PathVariable("id") Integer id)
     {
         schemasService.dropUser(id);
         return "redirect:/schemasManagement";

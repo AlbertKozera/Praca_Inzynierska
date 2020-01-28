@@ -15,29 +15,29 @@ border: 0;">
                             <thead style="text-align: center; border-bottom: solid 2px; border-bottom-color: #ffffff">
                             <tr>
                                 <th style="border: 0;">Nazwa schematu</th>
+                                <th style="border: 0;">Edytuj</th>
                                 <th style="border: 0;">Usuń</th>
                             </tr>
                             </thead>
                             <tbody style="text-align: center;">
                             <tr th:each="schemas : ${schemas}">
                                 <td th:text="${schemas.schemaName}"></td>
-<!--                                <td>
-                                    <a th:href="@{/edit/{id}(id=${users.id})}"
+                                <td>
+                                    <a th:href="@{/editSchema/{id}(id=${schemas.id})}"
                                        class="btn btn-primary">
-                                        <i class="fas fa-user-edit ml-2"></i>
+                                        <i class="fas fa-project-diagram"></i>
                                     </a>
-                                </td>-->
+                                </td>
                                 <td>
                                     <a th:href="@{/deleteSchema/{id}(id=${schemas.id})}"
                                        class="btn btn-primary">
-                                        <i class="fas fa-user-times ml-2"></i>
+                                        <i class="fas fa-trash-alt"></i>
                                     </a>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
-
                 </div>
             </div>
         </div>
