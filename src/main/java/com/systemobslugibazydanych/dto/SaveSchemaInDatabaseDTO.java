@@ -1,6 +1,4 @@
-package com.systemobslugibazydanych.DTO;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
+package com.systemobslugibazydanych.dto;
 
 public class SaveSchemaInDatabaseDTO {
 

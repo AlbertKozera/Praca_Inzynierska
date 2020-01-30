@@ -1,7 +1,8 @@
 package com.systemobslugibazydanych.service;
 
-import com.systemobslugibazydanych.DTO.SaveSchemaInDatabaseDTO;
+import com.systemobslugibazydanych.dto.SaveSchemaInDatabaseDTO;
 import com.systemobslugibazydanych.entity.Schemas;
+import com.systemobslugibazydanych.exception.NoSchemaException;
 import com.systemobslugibazydanych.repository.SchemasRepository;
 import com.systemobslugibazydanych.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,7 +130,7 @@ public class SchemasService {
     public List<Schemas> getAllSchemasForCurrentUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String emailOfCurrentUser = authentication.getName();
-        return usersRepository.findByUserId(usersRepository.findByEmail(emailOfCurrentUser));
+        return schemasRepository.findByUserId(usersRepository.findByEmail(emailOfCurrentUser));
     }
 
     public void dropUser(Integer id){
@@ -138,6 +139,9 @@ public class SchemasService {
         jdbcTemplate.execute("DROP USER \"" + userName + "\" CASCADE");
     }
 
+    public String editUser(Integer id){
+        return schemasRepository.findById(id).orElseThrow(() -> new NoSchemaException("No schemaErd for id="+id)).getSchemaERD();
+    }
 
     public List<Map<String, Object>> getMapList() {
         return mapList;

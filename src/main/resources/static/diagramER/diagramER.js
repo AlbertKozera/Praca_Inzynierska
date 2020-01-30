@@ -52,6 +52,7 @@ var oneToOne = new Shape({outline: '', decoration: 'M13,110 L87,110 M13,80 L87,8
 var noShape = new Shape({outline: '', decoration: 'M0,0 L0,0', id: 'NoShape'});
 
 var copyRuler;
+var editedDiagramJson;
 
 $(document).ready(function () {
     // create a Diagram component that wraps the "diagram" canvas
@@ -516,8 +517,10 @@ $(document).ready(function () {
         infoOpen();
     });
 
-    $("#addRow-fieldType").selectmenu("destroy").selectmenu({style: "dropdown"}); // lista typów danych fix
-    $("#editRow-fieldType").selectmenu("destroy").selectmenu({style: "dropdown"}); // lista typów danych fix
+    $("#addRow-fieldType").selectmenu("destroy").selectmenu({style: "dropdown"});
+    $("#editRow-fieldType").selectmenu("destroy").selectmenu({style: "dropdown"});
+
+    loadFromJson(schemaERD);
 });
 
 function addRowOpen() {
@@ -1405,4 +1408,8 @@ function saveSchemaInDatabase(schemaName, diagramJson) {
     xhttp.open("POST", "/user/saveSchemaInDatabase", true);
     xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
     xhttp.send(JSON.stringify(Object.fromEntries(data)));
+}
+
+function loadFromJson(schemaERD) {
+    diagram.fromJson(schemaERD);
 }

@@ -1,4 +1,4 @@
-package com.systemobslugibazydanych.DTO;
+package com.systemobslugibazydanych.dto;
 
 import java.util.ArrayList;
 import java.util.List;

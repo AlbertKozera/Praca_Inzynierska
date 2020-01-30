@@ -1,6 +1,6 @@
 package com.systemobslugibazydanych.controller;
-import com.systemobslugibazydanych.DTO.SaveSchemaInDatabaseDTO;
-import com.systemobslugibazydanych.DTO.FeedbackDTO;
+import com.systemobslugibazydanych.dto.SaveSchemaInDatabaseDTO;
+import com.systemobslugibazydanych.dto.FeedbackDTO;
 import com.systemobslugibazydanych.entity.Schemas;
 import com.systemobslugibazydanych.entity.Users;
 import com.systemobslugibazydanych.service.SchemasService;
@@ -10,7 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.*;
 
 @Controller
@@ -45,10 +48,10 @@ public class SchemasController {
     }
 
     @RequestMapping(path = "/editSchema/{id}")
-    public String editSchemaById(@PathVariable("id") Integer id)
-    {
-
-        return "redirect:/schemasManagement";
+    public String editSchemaById(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes){
+        String schemaERD = schemasService.editUser(id);
+        redirectAttributes.addAttribute("schemaERD", schemaERD);
+        return "redirect:/drawdiagram";
     }
 
     @RequestMapping(path = "/deleteSchema/{id}")
@@ -57,7 +60,6 @@ public class SchemasController {
         schemasService.dropUser(id);
         return "redirect:/schemasManagement";
     }
-
 
     @GetMapping("/adduser")
     public String adduser(Model model) {

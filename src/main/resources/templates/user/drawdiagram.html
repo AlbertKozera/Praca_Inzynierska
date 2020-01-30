@@ -30,12 +30,16 @@
             <li>
                 <a th:href="@{/logout}"><span class="fa fa-sign-out-alt mr-3"></span> Wyloguj</a>
             </li>
-
         </ul>
     </nav>
     <!-- Page Content  -->
     <div id="content" style="position: relative; background-color: #272c32; overflow: hidden">
         <th:block th:include="/fragments/diagramER/diagramER :: diagram"/>
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            var schemaERD = /*[[${schemaERD}]]*/ 'default';
+            /*]]>*/
+        </script>
     </div>
 </div>
 </body>

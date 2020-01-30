@@ -2,14 +2,12 @@ package com.systemobslugibazydanych.repository;
 
 import com.systemobslugibazydanych.entity.Schemas;
 import com.systemobslugibazydanych.entity.Users;
-import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@Repository
-public class UsersRepositoryImpl implements UsersRepositoryCustom {
+public class SchemasRepositoryImpl implements SchemasRepositoryCustom{
 
     @PersistenceContext
     private EntityManager entityManager;

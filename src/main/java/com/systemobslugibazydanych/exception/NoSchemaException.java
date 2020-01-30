@@ -1,4 +1,4 @@
-package com.systemobslugibazydanych.service;
+package com.systemobslugibazydanych.exception;
 
 public class NoSchemaException extends RuntimeException {
 
