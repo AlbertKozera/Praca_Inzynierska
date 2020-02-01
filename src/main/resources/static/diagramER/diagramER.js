@@ -1386,14 +1386,14 @@ function genereteDatabase(generatedSql) {
     xhttp.send(genereteSqlHidden());
 }
 
-function dropUserIfOperationWasNotSuccessed(userName) {
+function dropUserIfOperationWasNotSuccessed(username) {
 
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
     };
 
     xhttp.open("POST", "/user/dropUser", true);
-    xhttp.send(userName);
+    xhttp.send(username);
 }
 
 function saveSchemaInDatabase(schemaName, diagramJson) {

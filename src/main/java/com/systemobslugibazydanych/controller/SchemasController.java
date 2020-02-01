@@ -12,8 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.*;
 
 @Controller
@@ -57,7 +55,7 @@ public class SchemasController {
     @RequestMapping(path = "/deleteSchema/{id}")
     public String deleteSchemaById(@PathVariable("id") Integer id)
     {
-        schemasService.dropUser(id);
+        schemasService.dropUserById(id);
         return "redirect:/schemasManagement";
     }
 
@@ -69,9 +67,9 @@ public class SchemasController {
     }
 
     @PostMapping(path = { "/user/dropUser" })
-    public String dropUser(@RequestBody String userName) {
-        schemasService.dropUser(userName);
-        return "redirect:/user";
+    public String dropUser(@RequestBody String username) {
+        schemasService.dropUserByUsername(username);
+        return "redirect:/drawdiagram";
     }
 }
 

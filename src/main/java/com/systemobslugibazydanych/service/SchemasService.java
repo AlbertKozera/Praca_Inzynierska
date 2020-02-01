@@ -133,13 +133,15 @@ public class SchemasService {
         return schemasRepository.findByUserId(usersRepository.findByEmail(emailOfCurrentUser));
     }
 
-    public void dropUser(Integer id){
+    public void dropUserById(Integer id){
         String userName = schemasRepository.findById(id).orElseThrow(() -> new NoSchemaException("No schema for id="+id)).getSchemaName();
         schemasRepository.deleteById(id);
         jdbcTemplate.execute("DROP USER \"" + userName + "\" CASCADE");
     }
 
-
+    public void dropUserByUsername(String userName){
+        jdbcTemplate.execute("DROP USER " + userName + " CASCADE");
+    }
 
     public String editUser(Integer id){
         return schemasRepository.findById(id).orElseThrow(() -> new NoSchemaException("No schemaErd for id="+id)).getSchemaERD();
