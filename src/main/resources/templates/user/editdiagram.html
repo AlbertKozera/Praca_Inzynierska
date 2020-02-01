@@ -19,7 +19,17 @@
         </div>
         <ul class="list-unstyled components mb-5">
             <li class="active">
-                <a href="#"><span class="fa fa-pencil-alt mr-3"></span> Rysuj diagram</a>
+                <a href="#"><span class="fa fas fa-edit mr-3"></span> Edytuj diagram
+                    <div style="position: absolute; left: 275px; top: 195px">
+                        <button id="goBackToDrawDiagram" onclick="location.href='/drawdiagram'" class="fas fa-reply mr-3" style="display: contents">
+                            <script>
+                            $(document).ready(function(){
+                            $('#goBackToDrawDiagram span').remove();
+                            });
+                            </script>
+                        </button>
+                    </div>
+                </a>
             </li>
             <li>
                 <a href="/schemasManagement"><span class="fa fa-database mr-3"></span> Menedżer schematów</a>
@@ -34,7 +44,7 @@
     </nav>
     <!-- Page Content  -->
     <div id="content" style="position: relative; background-color: #272c32; overflow: hidden">
-        <th:block th:include="/fragments/diagramER/diagramER :: diagram"/>
+        <th:block th:include="/user/fragments/diagramEReditFragment :: diagramEdit"/>
     </div>
 </div>
 </body>

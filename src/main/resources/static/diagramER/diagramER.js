@@ -521,6 +521,7 @@ $(document).ready(function () {
     $("#editRow-fieldType").selectmenu("destroy").selectmenu({style: "dropdown"});
 
     loadFromJson(schemaERD);
+    generateSQL();
 });
 
 function addRowOpen() {

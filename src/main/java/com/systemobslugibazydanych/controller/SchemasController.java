@@ -48,8 +48,10 @@ public class SchemasController {
     @RequestMapping(path = "/editSchema/{id}")
     public String editSchemaById(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes){
         String schemaERD = schemasService.editUser(id);
+        String schemaName = schemasService.returnNameById(id);
         redirectAttributes.addAttribute("schemaERD", schemaERD);
-        return "redirect:/drawdiagram";
+        redirectAttributes.addAttribute("schemaName", schemaName);
+        return "redirect:/editdiagram";
     }
 
     @RequestMapping(path = "/deleteSchema/{id}")

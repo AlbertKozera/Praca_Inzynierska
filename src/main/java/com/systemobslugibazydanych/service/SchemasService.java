@@ -147,6 +147,11 @@ public class SchemasService {
         return schemasRepository.findById(id).orElseThrow(() -> new NoSchemaException("No schemaErd for id="+id)).getSchemaERD();
     }
 
+    public String returnNameById(Integer id){
+        return schemasRepository.findById(id).orElseThrow(() -> new NoSchemaException("No schemaName for id="+id)).getSchemaName();
+    }
+
+
     public List<Map<String, Object>> getMapList() {
         return mapList;
     }

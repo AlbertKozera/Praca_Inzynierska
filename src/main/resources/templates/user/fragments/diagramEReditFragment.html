@@ -1,0 +1,284 @@
+﻿<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+</head>
+<body>
+<div th:fragment="diagramEdit">
+    <th:block th:include="fragments/diagramER/headerinc :: head"/>
+
+    <div id="justdraw">
+        <div id="ruler">
+            <!-- The Diagram component is bound to the canvas element below -->
+            <div id="canvas">
+                <canvas id="diagram" width="2100" height="2100">
+                    This page requires a browser that supports HTML 5 Canvas element.
+                </canvas>
+            </div>
+        </div>
+    </div>
+
+    <div id="justdrawOptions">
+        <div id="overview_div">
+            <canvas id="overview" width="165" height="165">
+            </canvas>
+        </div>
+
+        <div id="sliders">
+            <div>
+                <div class="slider">
+                    <input type="checkbox" value="None" id="gridSlider" onclick="gridSlider()" name="check" checked/>
+                    <label for="gridSlider"></label>
+                </div>
+                <a id="fa_th" class="fas fa-th"></a>
+            </div>
+            <div>
+                <div class="slider" style="margin-top: 31px;">
+                    <input type="checkbox" value="None" id="rulerSlider" onclick="rulerSlider()" name="check" checked/>
+                    <label for="rulerSlider"></label>
+                </div>
+                <a id="fa_ruler_combined" class="fas fa-ruler-combined fa-rotate-90"></a>
+            </div>
+        </div>
+
+        <div id="controls">
+                <fieldset id="controls_fieldset">
+                <button id="fa_undo" class="fas fa-undo" onclick="onUndo()">Cofnij</button>
+                <button class="fas fa-table" id="btnCreateTable">Dodaj tabelę</button>
+                <button class="fas fa-trash-alt" id="btnDeleteTable">Usuń tabelę</button>
+                <button class="fas fa-edit" id="btnRenameTable">Zmień nazwę tabeli</button>
+                <button id="fa_redo" class="fas fa-redo" onclick="onRedo()">Ponów</button>
+                <button class="fas fa-plus" id="btnAddRow">Dodaj wiersz</button>
+                <button class="fas fa-minus" id="btnDeleteRow">Usuń wiersz</button>
+                <button class="fas fa-pen-square" id="btnEditRow">Edytuj wiersz</button>
+                <button id="fa_search" class="fas fa-search" onclick="zoomToFit()">Dopasuj powiększenie</button>
+                <button id="fa_compress_arrows_alt" class="fas fa-compress-arrows-alt" onclick="resizeToFitText()">Dopasuj tabele</button>
+                <button id="fa_sitemap" class="fas fa-sitemap" onclick="resizeToFitLinks()">Dopasuj połączenia</button>
+            </fieldset>
+        </div>
+
+        <div  class="options_div">
+            <div sec:authorize="isAuthenticated()">
+                <div id="options_1_div">
+                    <input id="schema_name" class="options_input" type="text" placeholder="Nazwa schematu..." oninput="generateSQL()" disabled/>
+                        <button type="submit" id="new_schema" class="options_button" onclick="genereteDatabase('generatedSql')">
+                            <i class="fas fa-database"></i>
+                            <i class="fas fa-bolt fa-xs"></i><br />
+                            Generuj
+                        </button>
+                </div>
+                <div id="options_2_div">
+                    <input id="filenameJson" class="options_input" type="text" placeholder="Nazwa diagramu <json>..." />
+                        <a id="downloadJson" download="diagram.txt">
+                            <button class="options_button" onclick="exportAsJSON('downloadJson')">
+                                <i class="fas fa-file-code"></i><br />
+                                Pobierz
+                            </button>
+                        </a>
+                </div>
+                <div id="options_3_div">
+                    <input id="filenamePng" class="options_input" type="text" placeholder="Nazwa diagramu <png>..." />
+                        <a id="downloadPng" download="diagram.png">
+                            <button class="options_button" onclick="exportAsPNG('downloadPng')">
+                                <i class="fas fa-image"></i><br />
+                                Pobierz
+                            </button>
+                        </a>
+                </div>
+            </div>
+        </div>
+        <textarea id="generatedSql" readonly></textarea>
+    </div>
+
+    <div id="addRow-dialog" title="Dodawanie nowego pola">
+        <form>
+            <fieldset>
+                <input type="text" id="addRow-fieldName" placeholder="nazwa..."
+                       class="text ui-widget-content ui-corner-all"/>
+                <select id="addRow-fieldType">
+                    <option disabled>Popularne typy</option>
+                    <option>NUMBER</option>
+                    <option>VARCHAR(100)</option>
+                    <option>INTEGER</option>
+                    <option>FLOAT</option>
+                    <option>DATE</option>
+                    <option>CHAR(100)</option>
+                    <option>DECIMAL</option>
+                    <option>LONG(100)</option>
+                    <option disabled>Inne</option>
+                    <option>BFILE(100)</option>
+                    <option>BINARY ROWID</option>
+                    <option>BINARY_DOUBLE</option>
+                    <option>BINARY_FLOAT</option>
+                    <option>BLOB</option>
+                    <option>CFILE(100)</option>
+                    <option>CLOB</option>
+                    <option>CONTENT POINTER(100)</option>
+                    <option>CONTIGUOUS ARRAY</option>
+                    <option>DOUBLE PRECISION</option>
+                    <option>INTERVAL DAY TO SECOND(100)</option>
+                    <option>INTERVAL YEAR TO MONTH(100)</option>
+                    <option>LOB POINTER</option>
+                    <option>LONG RAW(100)</option>
+                    <option>NAMED COLLECTION</option>
+                    <option>NAMED OBJECT</option>
+                    <option>NCHAR(100)</option>
+                    <option>NCLOB</option>
+                    <option>NVARCHAR2(100)</option>
+                    <option>OCTET(100)</option>
+                    <option>OID(100)</option>
+                    <option>RAW(100)</option>
+                    <option>REAL</option>
+                    <option>REF</option>
+                    <option>REF CURSOR</option>
+                    <option>ROWID</option>
+                    <option>SIGNED BINARY INTEGER</option>
+                    <option>SMALLINT</option>
+                    <option>TABLE</option>
+                    <option>TIME</option>
+                    <option>TIME WITH TZ</option>
+                    <option>TIMESTAMP</option>
+                    <option>TIMESTAMP WITH LOCAL TIME ZONE</option>
+                    <option>TIMESTAMP WITH LOCAL TZ</option>
+                    <option>TIMESTAMP WITH TIME ZONE</option>
+                    <option>TIMESTAMP WITH TZ</option>
+                    <option>UNSIGNED BINARY INTEGER</option>
+                    <option>UROWID</option>
+                    <option>VARCHAR2(100)</option>
+                    <option>VARRAY</option>
+                    <option>VARYING ARRAY</option>
+                </select>
+                <div class="divPK">
+                    <input id="addRowPK" type="checkbox" class="checkbox_PK_UK_NN">
+                    <label class="label_PK_UK_NN" for="addRowPK">PK</label>
+                </div>
+                <div class="divUK">
+                    <input id="addRowUK" type="checkbox" class="checkbox_PK_UK_NN">
+                    <label class="label_PK_UK_NN" for="addRowUK">UK</label>
+                </div>
+                <div class="divNN">
+                    <input id="addRowNN" type="checkbox" class="checkbox_PK_UK_NN">
+                    <label class="label_PK_UK_NN" for="addRowNN">NN</label>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+
+    <div id="editRow-dialog" title="Edycja pola">
+        <form>
+            <fieldset>
+                <input type="text" id="editRow-fieldName" placeholder="nazwa pola"
+                       class="text ui-widget-content ui-corner-all"/>
+                <select id="editRow-fieldType">
+                    <option disabled>Popularne typy</option>
+                    <option>NUMBER</option>
+                    <option>VARCHAR(100)</option>
+                    <option>INTEGER</option>
+                    <option>FLOAT</option>
+                    <option>DATE</option>
+                    <option>CHAR(100)</option>
+                    <option>DECIMAL</option>
+                    <option>LONG(100)</option>
+                    <option disabled>Inne</option>
+                    <option>BFILE(100)</option>
+                    <option>BINARY ROWID</option>
+                    <option>BINARY_DOUBLE</option>
+                    <option>BINARY_FLOAT</option>
+                    <option>BLOB</option>
+                    <option>CFILE(100)</option>
+                    <option>CLOB</option>
+                    <option>CONTENT POINTER(100)</option>
+                    <option>CONTIGUOUS ARRAY</option>
+                    <option>DOUBLE PRECISION</option>
+                    <option>INTERVAL DAY TO SECOND(100)</option>
+                    <option>INTERVAL YEAR TO MONTH(100)</option>
+                    <option>LOB POINTER</option>
+                    <option>LONG RAW(100)</option>
+                    <option>NAMED COLLECTION</option>
+                    <option>NAMED OBJECT</option>
+                    <option>NCHAR(100)</option>
+                    <option>NCLOB</option>
+                    <option>NVARCHAR2(100)</option>
+                    <option>OCTET(100)</option>
+                    <option>OID(100)</option>
+                    <option>RAW(100)</option>
+                    <option>REAL</option>
+                    <option>REF</option>
+                    <option>REF CURSOR</option>
+                    <option>ROWID</option>
+                    <option>SIGNED BINARY INTEGER</option>
+                    <option>SMALLINT</option>
+                    <option>TABLE</option>
+                    <option>TIME</option>
+                    <option>TIME WITH TZ</option>
+                    <option>TIMESTAMP</option>
+                    <option>TIMESTAMP WITH LOCAL TIME ZONE</option>
+                    <option>TIMESTAMP WITH LOCAL TZ</option>
+                    <option>TIMESTAMP WITH TIME ZONE</option>
+                    <option>TIMESTAMP WITH TZ</option>
+                    <option>UNSIGNED BINARY INTEGER</option>
+                    <option>UROWID</option>
+                    <option>VARCHAR2(100)</option>
+                    <option>VARRAY</option>
+                    <option>VARYING ARRAY</option>
+                </select>
+                <div class="divPK">
+                    <input id="editRowPK" type="checkbox" class="checkbox_PK_UK_NN">
+                    <label class="label_PK_UK_NN" for="addRowPK">PK</label>
+                </div>
+                <div class="divUK">
+                    <input id="editRowUK" type="checkbox" class="checkbox_PK_UK_NN">
+                    <label class="label_PK_UK_NN" for="addRowUK">UK</label>
+                </div>
+                <div class="divNN">
+                    <input id="editRowNN" type="checkbox" class="checkbox_PK_UK_NN">
+                    <label class="label_PK_UK_NN" for="addRowNN">NN</label>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+
+    <div id="renameTable-dialog" title="Zmiana nazwy tabeli">
+        <form>
+            <fieldset>
+                <input type="text" id="renameTableCaption" placeholder="nazwa tabeli"
+                       class="text ui-widget-content ui-corner-all"/>
+            </fieldset>
+        </form>
+    </div>
+
+    <div id="info-dialog" title="Informacje o połączeniu">
+        <textarea id="generatedSqlFK" readonly></textarea>
+    </div>
+
+    <div id="feedback-dialog" title="Informacje o wygenerowanym schemacie">
+        <div id="wrapperCreateSchemaFeedback">
+            <textarea id="createSchemaFeedback" readonly></textarea>
+        </div>
+        <div id="wrapperCreateSchemaSqlGeneratedCode">
+            <textarea id="createSchemaSqlGeneratedCode" readonly></textarea>
+        </div>
+        <textarea id="createSchemaFinalFeedback" readonly></textarea>
+    </div>
+
+    <img id="oracle_watermark" src="static/sidebar/oracle_watermark.png">
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var schemaERD = /*[[${schemaERD}]]*/ 'default';
+        var schemaName = /*[[${schemaName}]]*/ 'default';
+        /*]]>*/
+    </script>
+    <script>
+        $(document).ready(function(){
+            $('#schema_name').val(schemaName);
+        });
+    </script>
+
+    <th:block th:include="fragments/diagramER/footerinc :: footer"/>
+</div>
+</body>
+<footer>
+</footer>
+</html>
+
+

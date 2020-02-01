@@ -10,10 +10,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class SidebarController {
 
-    @RequestMapping(path = {"/drawdiagram"}, method = RequestMethod.GET)
-    public String drawdiagram(@ModelAttribute("schemaERD") String schemaERD, Model model) {
-        model.addAttribute("schemaERD", schemaERD);
+    @GetMapping("/drawdiagram")
+    public String drawdiagram() {
         return "/user/drawdiagram";
+    }
+
+    @RequestMapping(path = {"/editdiagram"}, method = RequestMethod.GET)
+    public String editdiagram(@ModelAttribute("schemaERD") String schemaERD,@ModelAttribute("schemaName") String schemaName, Model model) {
+        model.addAttribute("schemaERD", schemaERD);
+        model.addAttribute("schemaName", schemaName);
+        return "/user/editdiagram";
     }
 
     @GetMapping("/interpreterSQL")
