@@ -68,6 +68,11 @@ public class SchemasController {
         return "/admin/adduser";
     }
 
+    @PostMapping(path = { "/user/dropUser" })
+    public String dropUser(@RequestBody String userName) {
+        schemasService.dropUser(userName);
+        return "redirect:/user";
+    }
 }
 
 
