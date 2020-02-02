@@ -1,5 +1,7 @@
 package com.systemobslugibazydanych.entity;
 
+import org.hibernate.annotations.Nationalized;
+
 import javax.persistence.*;
 
 @Entity
@@ -13,6 +15,7 @@ public class Schemas {
     @Column(name = "schema_name")
     private String schemaName;
 
+    @Nationalized
     @Lob
     @Column(name = "schema_ERD")
     private String schemaERD;
