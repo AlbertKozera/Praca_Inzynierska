@@ -61,16 +61,22 @@
                 <div id="options_1_div">
                     <input id="schema_name" class="options_input" type="text" placeholder="Nazwa schematu..." oninput="generateSQL()" disabled/>
                         <button type="submit" id="new_schema" class="options_button" onclick="genereteDatabase('generatedSql')">
-                            <i class="fas fa-database"></i>
+                            <i class="fas fa-database" style="padding-bottom: 4px"></i>
                             <i class="fas fa-bolt fa-xs"></i><br />
-                            Generuj
+                            Zapisz zmiany
+                            <script>
+                                $(document).ready(function(){
+                                    $('#new_schema span').css({'padding': '.4em 0em'});
+                                });
+                            </script>
                         </button>
+
                 </div>
                 <div id="options_2_div">
                     <input id="filenameJson" class="options_input" type="text" placeholder="Nazwa diagramu <json>..." />
                         <a id="downloadJson" download="diagram.txt">
                             <button class="options_button" onclick="exportAsJSON('downloadJson')">
-                                <i class="fas fa-file-code"></i><br />
+                                <i class="fas fa-file-code" style="padding-bottom: 4px"></i><br />
                                 Pobierz
                             </button>
                         </a>
@@ -79,7 +85,7 @@
                     <input id="filenamePng" class="options_input" type="text" placeholder="Nazwa diagramu <png>..." />
                         <a id="downloadPng" download="diagram.png">
                             <button class="options_button" onclick="exportAsPNG('downloadPng')">
-                                <i class="fas fa-image"></i><br />
+                                <i class="fas fa-image" style="padding-bottom: 4px"></i><br />
                                 Pobierz
                             </button>
                         </a>

@@ -520,8 +520,10 @@ $(document).ready(function () {
     $("#addRow-fieldType").selectmenu("destroy").selectmenu({style: "dropdown"});
     $("#editRow-fieldType").selectmenu("destroy").selectmenu({style: "dropdown"});
 
-    loadFromJson(schemaERD);
-    generateSQL();
+    if(typeof schemaERD !== 'undefined'){
+        loadFromJson(schemaERD);
+        generateSQL();
+    }
 });
 
 function addRowOpen() {
