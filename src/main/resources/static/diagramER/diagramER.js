@@ -817,10 +817,12 @@ function infoOpen() {
     text += " ADD CONSTRAINT " + tableOrigin.getText() + "_FK";
     text += " FOREIGN KEY " + "(";
     if ((tableOrigin.getCell(3, rowOrigin).getText() == "true") && (!origin)) {
+        text += regex(tableOrigin.getCell(1, rowOrigin).getText());
         text = addFieldToGeneratedText(3, tableOrigin, text);
         origin = true;
     }
     else if ((tableOrigin.getCell(4, rowOrigin).getText() == "true") && (!origin)) {
+        text += regex(tableOrigin.getCell(1, rowOrigin).getText());
         text = addFieldToGeneratedText(4, tableOrigin, text);
         origin = true;
     }
@@ -831,10 +833,12 @@ function infoOpen() {
     text += ")" + "\n";
     text += "REFERENCES " + tableDestination.getText() + " (";
     if ((tableDestination.getCell(3, rowDestination).getText() == "true") && (!destination)) {
+        text += regex(tableDestination.getCell(1, rowDestination).getText());
         text = addFieldToGeneratedText(3, tableDestination, text);
         destination = true;
     }
     if ((tableDestination.getCell(4, rowDestination).getText() == "true") && (!destination)) {
+        text += regex(tableDestination.getCell(1, rowDestination).getText());
         text = addFieldToGeneratedText(4, tableDestination, text);
         destination = true;
     }
