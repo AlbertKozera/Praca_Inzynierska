@@ -53,6 +53,8 @@ var noShape = new Shape({outline: '', decoration: 'M0,0 L0,0', id: 'NoShape'});
 
 var copyRuler;
 var editedDiagramJson;
+if(typeof diagramIsEdited !== 'undefined')
+    var textUpdateSchema = "";
 
 $(document).ready(function () {
     // create a Diagram component that wraps the "diagram" canvas
@@ -133,6 +135,7 @@ $(document).ready(function () {
         if (table) {
             diagram.addEventListener(Events.nodeCreating, tableNodeCreatingHandler);
             generateSQL();
+            generateSqlHidden__CreateTable(table);
         }
     });
 
@@ -596,8 +599,18 @@ function addRow() {
 
     // refresh SQL definition
     generateSQL();
-    if(diagramIsEdited)
-        genereteSqlHidden__AddColumn(table, name.getText(), type.getText())
+    if(diagramIsEdited){
+        generateSqlHidden__AddColumn(table.getText(), name.getText(), type.getText());
+        if(nn.getText() == "NOT NULL")
+            generateSqlHidden__ChangeNotNull(true);
+        else
+            generateSqlHidden__ChangeNotNull(false);
+        if(pk.getText() == "true")
+            generateSqlHidden__AddConstraint("primary", table);
+        else if(uk.getText() == "true")
+            generateSqlHidden__AddConstraint("unique", table);
+    }
+
 }
 
 function editRowOpen() {
@@ -634,8 +647,12 @@ function editRow() {
     var getcel = table.getCell(1, rowClicked);
     var textcel = table.getCell(1, rowClicked).getText();
     // use the cell indexer to access cells by their column and row
+    var oldName = table.getCell(1, rowClicked).getText();
     table.getCell(1, rowClicked).setText(editRowName[0].value);
+    var newName = table.getCell(1, rowClicked).getText();
+    var oldType = table.getCell(2, rowClicked).getText();
     table.getCell(2, rowClicked).setText(editRowType[0].value);
+    var newType = table.getCell(2, rowClicked).getText();
     table.getCell(3, rowClicked).setText(editRowPK[0].checked);
     table.getCell(4, rowClicked).setText(editRowUK[0].checked);
     if(editRowNN[0].checked == true)
@@ -668,6 +685,10 @@ function editRow() {
 
     // refresh SQL definition
     generateSQL();
+    if(regex(oldName)[0] != newName)
+        generateSqlHidden__RenameColumn(table.getText(), regex(oldName)[0], newName);
+    if(regex(oldType)[0] != newType)
+        generateSqlHidden__ChangeType(table.getText(), table.getCell(1, rowClicked).getText(), table.getCell(2, rowClicked).getText());
 }
 
 function deleteRow() {
@@ -676,6 +697,7 @@ function deleteRow() {
     if (!table || !AbstractionLayer.isInstanceOfType(TableNode, table) || rowClicked < 0)
         return;
 
+    generateSqlHidden__DropColumn(table.getText(), table.getCell(1, rowClicked).getText());
     table.deleteRow(rowClicked);
     var number_of_rows = table.rows.length;
 
@@ -730,6 +752,7 @@ function createTable() {
     table.columns[5] = {width: 0, columnStyle: 0};
     table.columns[6] = {width: 4.9, columnStyle: 0};
     generateSQL();
+    generateSqlHidden__CreateTable(table);
 }
 
 function deleteTable() {
@@ -738,6 +761,7 @@ function deleteTable() {
     if (!table || !AbstractionLayer.isInstanceOfType(TableNode, table))
         return;
 
+    generateSqlHidden__DropTable(table.getText(), false);
     diagram.removeItem(table);
 
     rowClicked = -1;
@@ -764,6 +788,7 @@ function renameTable() {
     if (!table || !AbstractionLayer.isInstanceOfType(TableNode, table))
         return;
 
+    var oldName = table.getText();
     table.setText(renameTableCaption[0].value);
 
     // close the dialog
@@ -771,6 +796,8 @@ function renameTable() {
 
     // refresh SQL definition
     generateSQL();
+    if(oldName != table.getText())
+        generateSqlHidden__RenameTable(oldName, table.getText());
 }
 
 function infoOpen() {
@@ -957,7 +984,7 @@ function generateSQL() {
     $('#generatedSql')[0].innerHTML = text;
 }
 
-function genereteSqlHidden() {
+function generateSqlHidden() {
     var text = '';
 
     text = "CREATE USER " + "\"" + $('#schema_name').val() + "\"" + " IDENTIFIED BY \"null\" DEFAULT TABLESPACE USERS TEMPORARY TABLESPACE TEMP QUOTA 25 M ON USERS ACCOUNT UNLOCK;\n";
@@ -1101,88 +1128,84 @@ function genereteSqlHidden() {
     return text;
 }
 
-function genereteSqlHidden_UpdateSchema() {
+function generateSqlHidden_UpdateSchema() {
     
 }
 
-function genereteSqlHidden__DropTable(tableName, cascade) {
+function generateSqlHidden__DropTable(tableName, cascade) {
     if(!cascade)
-        return "DROP TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + ";";
+        textUpdateSchema += "DROP TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + ";" + "\n";
     if(cascade)
-        return "DROP TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " CASCADE CONSTRAINTS;";
+        textUpdateSchema += "DROP TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " CASCADE CONSTRAINTS;" + "\n";
 }
 
-function genereteSqlHidden__DropColumn(tableName, columnName) {
-    return "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " DROP COLUMN " + columnName + ";";
+function generateSqlHidden__DropColumn(tableName, columnName) {
+    textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " DROP COLUMN " + columnName + ";" + "\n";
 }
 
-function genereteSqlHidden__DropConstraint(tableName, constraintName) {
-    return "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " DROP CONSTRAINT " + constraintName + ";";
+function generateSqlHidden__DropConstraint(tableName, constraintName) {
+    textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " DROP CONSTRAINT " + constraintName + ";" + "\n";
 }
 
-function gereneteSqlHidden__AddConstraint(constraintType, table) {
+function generateSqlHidden__AddConstraint(constraintType, table) {
     if(constraintType == "primary"){
-        var text;
         var flag_PK = true;
         for (var r = 0; r < table.cells.rows; ++r) {
             if (table.getCell(3, r).getText() == "true" && flag_PK)
             {
-                text += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + table.getText() + " ADD CONSTRAINT " + table.getText() + "_PK " + "PRIMARY KEY " + "(";
+                textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + table.getText() + " ADD CONSTRAINT " + table.getText() + "_PK " + "PRIMARY KEY " + "(";
                 flag_PK = false;
             }
             if (table.getCell(3, r).getText() == "true" && !flag_PK)
             {
-                text += regex(table.getCell(1, r).getText());
+                textUpdateSchema += regex(table.getCell(1, r).getText());
                 if (isThereMoreThanOne(table, 3) > 1 && r < counterOfPrimaryAndUniqueKeys(table, 3))
-                    text += ", ";
+                    textUpdateSchema += ", ";
             }
         }
         if (!flag_PK) {
-            text += ");\n";
+            textUpdateSchema += ");\n";
             flag_PK = true;
         }
-        return text;
     }
 }
 
-function genereteSqlHidden__CreateTable(table) {
-    var text = "CREATE TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + table.getText() + " (";
+function generateSqlHidden__CreateTable(table) {
+    textUpdateSchema += "CREATE TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + table.getText() + " (";
 
     // enumerate all rows of a table
     for (var r = 0; r < table.cells.rows; ++r) {
         // get text of cells in current row
-        text += "" + regex(table.getCell(1, r).getText()) + " " + table.getCell(2, r).getText();
+        textUpdateSchema += "" + regex(table.getCell(1, r).getText()) + " " + table.getCell(2, r).getText();
         if((table.getCell(5, r).getText()) == "NOT NULL")
-            text += " NOT NULL";
+            textUpdateSchema += " NOT NULL";
         if (r < table.cells.rows - 1)
-            text += ",";
+            textUpdateSchema += ",";
     }
-    text += ");";
-
-    return text;
+    textUpdateSchema += ");" + "\n";
 }
 
-function genereteSqlHidden__AddColumn(tableName,columnName,type) {
-    return "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " ADD " + columnName + " " + type + ";";
+function generateSqlHidden__AddColumn(tableName,columnName,type) {
+    textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " ADD " + columnName + " " + type + ";" + "\n";
 }
 
-function genereteSqlHidden__ChangeType(tableName, columnName, newType) {
-    return "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " MODIFY " + columnName + " " + newType + ";";
+function generateSqlHidden__ChangeType(tableName, columnName, newType) {
+    textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " MODIFY " + columnName + " " + newType + ";" + "\n";
 }
 
-function genereteSqlHidden__RenameTable(tableName, tableNewName) {
-    return "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " RENAME TO " + "\"" + tableNewName + "\"" + ";";
+function generateSqlHidden__RenameTable(tableName, tableNewName) {
+    textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " RENAME TO " + "\"" + tableNewName + "\"" + ";" + "\n";
 }
 
-function genereteSqlHidden__RenameColumn(tableName, columnName, columnNewName) {
-    return "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " RENAME COLUMN " + columnName + " TO " + "\"" + columnNewName + "\"" + ";";
+function generateSqlHidden__RenameColumn(tableName, columnName, columnNewName) {
+    textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " RENAME COLUMN " + columnName + " TO " + "\"" + columnNewName + "\"" + ";" + "\n";
 }
 
-function genereteSqlHidden__ChangeNotNull(notNull){
+function generateSqlHidden__ChangeNotNull(notNull){
     if(notNull)
-        return "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " MODIFY " + columnName + " NOT NULL;";
-    else if(!notnull)
-        return "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " MODIFY " + columnName + " NOT NULL;";
+        textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " MODIFY " + columnName + " NOT NULL;" + "\n";
+    else if(!notNull)
+        textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " MODIFY " + columnName + " NOT NULL;" + "\n";
 }
 
 
@@ -1443,7 +1466,7 @@ function onFileLoad() {
     }
 }
 
-function genereteDatabase(generatedSql) {
+function generateDatabase(generatedSql) {
     document.getElementById("createSchemaFeedback").value = "";
 
     var xhttp = new XMLHttpRequest();
@@ -1457,7 +1480,7 @@ function genereteDatabase(generatedSql) {
                 for(var r = 0; r < feedback.lista.length ; ++r){
                     document.getElementById("createSchemaFeedback").value += feedback.lista[r] + "\n";
                 }
-                document.getElementById("createSchemaSqlGeneratedCode").value = genereteSqlHidden();
+                document.getElementById("createSchemaSqlGeneratedCode").value = generateSqlHidden();
             }
             if(feedback.updateFlag){
                 document.getElementById("createSchemaFinalFeedback").value = "Schemat został pomyślnie utworzony!";
@@ -1469,14 +1492,14 @@ function genereteDatabase(generatedSql) {
                 document.getElementById("createSchemaFinalFeedback").value = "Nie udało się utworzyć schematu!";
                 ifOperationWasNotSuccessed('#createSchemaFeedback');
                 ifOperationWasNotSuccessed('#createSchemaFinalFeedback');
-                dropUserIfOperationWasNotSuccessed(genereteSqlHidden().split( " ")[2]);
+                dropUserIfOperationWasNotSuccessed(generateSqlHidden().split( " ")[2]);
             }
             feedbackDialog.dialog("open");
         }
     };
 
     xhttp.open("POST", "/user/executeSQL", true);
-    xhttp.send(genereteSqlHidden());
+    xhttp.send(generateSqlHidden());
 }
 
 function dropUserIfOperationWasNotSuccessed(username) {

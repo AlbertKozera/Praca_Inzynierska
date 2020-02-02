@@ -60,7 +60,7 @@
             <div sec:authorize="isAuthenticated()">
                 <div id="options_1_div">
                     <input id="schema_name" class="options_input" type="text" placeholder="Nazwa schematu..." oninput="generateSQL()"/>
-                        <button type="submit" id="new_schema" class="options_button" onclick="genereteDatabase('generatedSql')">
+                        <button type="submit" id="new_schema" class="options_button" onclick="generateDatabase('generatedSql')">
                             <i class="fas fa-database" style="padding-bottom: 4px"></i>
                             <i class="fas fa-bolt fa-xs"></i><br />
                             Generuj
@@ -88,7 +88,7 @@
             <div sec:authorize="isAnonymous()">
                 <div id="options_1_div">
                     <input id="schema_name" class="options_input" type="text" placeholder="Nazwa schematu..." oninput="generateSQL()" disabled/>
-                    <button type="submit" id="new_schema" class="options_button" onclick="genereteDatabase('generatedSql')" disabled>
+                    <button type="submit" id="new_schema" class="options_button" onclick="generateDatabase('generatedSql')" disabled>
                         <i class="fas fa-database" style="padding-bottom: 4px"></i>
                         <i class="fas fa-bolt fa-xs"></i><br />
                         Generuj
