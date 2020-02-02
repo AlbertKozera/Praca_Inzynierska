@@ -596,6 +596,8 @@ function addRow() {
 
     // refresh SQL definition
     generateSQL();
+    if(diagramIsEdited)
+        genereteSqlHidden__AddColumn(table, name.getText(), type.getText())
 }
 
 function editRowOpen() {
@@ -1103,24 +1105,88 @@ function genereteSqlHidden_UpdateSchema() {
     
 }
 
-function genereteSqlHidden__DropTable(table,cascade) {
+function genereteSqlHidden__DropTable(tableName, cascade) {
     if(!cascade)
-        return "DROP TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + table.getText() + ";";
+        return "DROP TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + ";";
     if(cascade)
-        return "DROP TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + table.getText() + " CASCADE CONSTRAINTS;";
+        return "DROP TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " CASCADE CONSTRAINTS;";
 }
 
-function genereteSqlHidden__DropColumn() {
-
+function genereteSqlHidden__DropColumn(tableName, columnName) {
+    return "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " DROP COLUMN " + columnName + ";";
 }
 
-function genereteSqlHidden__DropConstraint() {
-
+function genereteSqlHidden__DropConstraint(tableName, constraintName) {
+    return "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " DROP CONSTRAINT " + constraintName + ";";
 }
 
-function genereteSqlHidden__AddColumn() {
-
+function gereneteSqlHidden__AddConstraint(constraintType, table) {
+    if(constraintType == "primary"){
+        var text;
+        var flag_PK = true;
+        for (var r = 0; r < table.cells.rows; ++r) {
+            if (table.getCell(3, r).getText() == "true" && flag_PK)
+            {
+                text += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + table.getText() + " ADD CONSTRAINT " + table.getText() + "_PK " + "PRIMARY KEY " + "(";
+                flag_PK = false;
+            }
+            if (table.getCell(3, r).getText() == "true" && !flag_PK)
+            {
+                text += regex(table.getCell(1, r).getText());
+                if (isThereMoreThanOne(table, 3) > 1 && r < counterOfPrimaryAndUniqueKeys(table, 3))
+                    text += ", ";
+            }
+        }
+        if (!flag_PK) {
+            text += ");\n";
+            flag_PK = true;
+        }
+        return text;
+    }
 }
+
+function genereteSqlHidden__CreateTable(table) {
+    var text = "CREATE TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + table.getText() + " (";
+
+    // enumerate all rows of a table
+    for (var r = 0; r < table.cells.rows; ++r) {
+        // get text of cells in current row
+        text += "" + regex(table.getCell(1, r).getText()) + " " + table.getCell(2, r).getText();
+        if((table.getCell(5, r).getText()) == "NOT NULL")
+            text += " NOT NULL";
+        if (r < table.cells.rows - 1)
+            text += ",";
+    }
+    text += ");";
+
+    return text;
+}
+
+function genereteSqlHidden__AddColumn(tableName,columnName,type) {
+    return "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " ADD " + columnName + " " + type + ";";
+}
+
+function genereteSqlHidden__ChangeType(tableName, columnName, newType) {
+    return "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " MODIFY " + columnName + " " + newType + ";";
+}
+
+function genereteSqlHidden__RenameTable(tableName, tableNewName) {
+    return "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " RENAME TO " + "\"" + tableNewName + "\"" + ";";
+}
+
+function genereteSqlHidden__RenameColumn(tableName, columnName, columnNewName) {
+    return "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " RENAME COLUMN " + columnName + " TO " + "\"" + columnNewName + "\"" + ";";
+}
+
+function genereteSqlHidden__ChangeNotNull(notNull){
+    if(notNull)
+        return "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " MODIFY " + columnName + " NOT NULL;";
+    else if(!notnull)
+        return "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " MODIFY " + columnName + " NOT NULL;";
+}
+
+
+
 
 
 function isThisFieldIsForeignKey(str) {
