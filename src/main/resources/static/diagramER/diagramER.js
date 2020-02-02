@@ -1099,6 +1099,30 @@ function genereteSqlHidden() {
     return text;
 }
 
+function genereteSqlHidden_UpdateSchema() {
+    
+}
+
+function genereteSqlHidden__DropTable(table,cascade) {
+    if(!cascade)
+        return "DROP TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + table.getText() + ";";
+    if(cascade)
+        return "DROP TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + table.getText() + " CASCADE CONSTRAINTS;";
+}
+
+function genereteSqlHidden__DropColumn() {
+
+}
+
+function genereteSqlHidden__DropConstraint() {
+
+}
+
+function genereteSqlHidden__AddColumn() {
+
+}
+
+
 function isThisFieldIsForeignKey(str) {
     if(str.search("🗝") > -1)
         return true;
