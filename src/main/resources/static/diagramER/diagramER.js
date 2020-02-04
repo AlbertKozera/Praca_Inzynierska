@@ -295,6 +295,7 @@ $(document).ready(function () {
 
     diagram.addEventListener(Events.linkDeleted, function (sender, args) {
         var tableOrigin = args.link.getOrigin();
+        var tableDestination = args.link.getDestination();
         var rowOrigin = args.link.getOriginIndex();
         var getcel = tableOrigin.getCell(1, rowOrigin);
 
@@ -306,6 +307,8 @@ $(document).ready(function () {
             getcel.setText(regex(getcel.getText()));
 
         generateSQL();
+            if(typeof diagramIsEdited !== 'undefined')
+                generateSqlHidden__DropConstraint(tableDestination.getText(),args.link.getTag());
     });
 
     diagram.addEventListener(Events.linkCreating, function (sender, args) {
@@ -563,8 +566,10 @@ function addRow() {
     type.setTag(uniqueTagCell++);
     type.setText(addRowType[0].value);
     pk = table.getCell(3, lastRow); // pk
+    pk.setTag(table.getText() + "_PK");
     pk.setText(addRowPK[0].checked);
     uk = table.getCell(4, lastRow); // uk
+    uk.setTag(table.getText() + "_UK");
     uk.setText(addRowUK[0].checked);
     nn = table.getCell(5, lastRow); // nn
     if (addRowNN[0].checked == true)
@@ -604,9 +609,9 @@ function addRow() {
     generateSQL();
     if(typeof diagramIsEdited !== 'undefined'){
         if(nn.getText() == "NOT NULL")
-            generateSqlHidden__AddColumn(table.getText(), regex(name.getText())[0], type.getText(), "NOT NULL");
+            generateSqlHidden__AddColumn(table.getText(), regex(name.getText())[0], type.getText(), "NOT NULL", table);
         else
-            generateSqlHidden__AddColumn(table.getText(), regex(name.getText())[0], type.getText(), "NULL");
+            generateSqlHidden__AddColumn(table.getText(), regex(name.getText())[0], type.getText(), "NULL", table);
         if(pk.getText() == "true")
             generateSqlHidden__AddConstraint("primary", table);
         else if(uk.getText() == "true")
@@ -657,9 +662,9 @@ function editRow() {
     var oldPkState = table.getCell(3, rowClicked).getText();
     table.getCell(3, rowClicked).setText(editRowPK[0].checked);
     var newPkState = table.getCell(3, rowClicked).getText();
-    var oldUkState = table.getCell(3, rowClicked).getText();
+    var oldUkState = table.getCell(4, rowClicked).getText();
     table.getCell(4, rowClicked).setText(editRowUK[0].checked);
-    var newUkState = table.getCell(3, rowClicked).getText();
+    var newUkState = table.getCell(4, rowClicked).getText();
     var oldNullable = table.getCell(5, rowClicked).getText();
     if(editRowNN[0].checked == true)
         table.getCell(5, rowClicked).setText("NOT NULL");
@@ -703,7 +708,13 @@ function editRow() {
             if(newPkState == "true")
                 generateSqlHidden__AddConstraint("primary", table);
             else if(newPkState == "false")
-                generateSqlHidden__DropConstraint(table.getText(),table.getText() + "_PK");
+                generateSqlHidden__DropConstraint(table.getText(), table.getCell(3, rowClicked).getTag());
+        }
+        if (oldUkState != newUkState){
+            if(newUkState == "true")
+                generateSqlHidden__AddConstraint("unique", table);
+            else if(newUkState == "false")
+                generateSqlHidden__DropConstraint(table.getText(),table.getCell(4, rowClicked).getTag());
         }
 
     }
@@ -1174,7 +1185,7 @@ function generateSqlHidden__AddConstraint(constraintType, table) {
         for (var r = 0; r < table.cells.rows; ++r) {
             if (table.getCell(3, r).getText() == "true" && flag_PK)
             {
-                textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + table.getText() + " ADD CONSTRAINT " + table.getText() + "_PK " + "PRIMARY KEY " + "(";
+                textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + table.getText() + " ADD CONSTRAINT " + table.getText() + "_PK" + " PRIMARY KEY " + "(";
                 flag_PK = false;
             }
             if (table.getCell(3, r).getText() == "true" && !flag_PK)
@@ -1189,25 +1200,61 @@ function generateSqlHidden__AddConstraint(constraintType, table) {
             flag_PK = true;
         }
     }
+    else if(constraintType == "unique"){
+        textUpdateSchema = textUpdateSchema.replace(/.*UNIQUE KEY.*;(\s)*/ig, '');
+        var flag_UK = true;
+        for (var r = 0; r < table.cells.rows; ++r) {
+            if (table.getCell(4, r).getText() == "true" && flag_UK) // sprawdz czy wiersz to unique key
+            {
+                textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + table.getText() + " ADD CONSTRAINT " + table.getText() + "_UK" + " UNIQUE KEY " + "(";
+                flag_UK = false;
+            }
+            if (table.getCell(4, r).getText() == "true" && !flag_UK) // sprawdz czy wiersz to unique key
+            {
+                textUpdateSchema += regex(table.getCell(1, r).getText());
+                if (isThereMoreThanOne(table, 4) > 1 && r < counterOfPrimaryAndUniqueKeys(table, 4))
+                    textUpdateSchema += ", ";
+            }
+        }
+        if (!flag_UK) {
+            textUpdateSchema += ");\n";
+            flag_UK = true;
+        }
+    }
+
 }
 
 function generateSqlHidden__CreateTable(table) {
     textUpdateSchema += "CREATE TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + table.getText() + " (";
+    textUpdateSchema += ");" + "\n";
+}
+
+function generateSqlHidden__ReturnCreateTable(table) {
+    var text = "";
+    text += "CREATE TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + table.getText() + " (";
 
     // enumerate all rows of a table
     for (var r = 0; r < table.cells.rows; ++r) {
         // get text of cells in current row
-        textUpdateSchema += "" + regex(table.getCell(1, r).getText()) + " " + table.getCell(2, r).getText();
+        text += "" + regex(table.getCell(1, r).getText()) + " " + table.getCell(2, r).getText();
         if((table.getCell(5, r).getText()) == "NOT NULL")
-            textUpdateSchema += " NOT NULL";
+            text += " NOT NULL";
         if (r < table.cells.rows - 1)
-            textUpdateSchema += ",";
+            text += ",";
     }
-    textUpdateSchema += ");" + "\n";
+    text += ");" + "\n";
+    return text;
 }
 
-function generateSqlHidden__AddColumn(tableName, columnName, type, nullable) {
-    textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " ADD " + columnName + " " + type + " " + nullable + ";" + "\n";
+function generateSqlHidden__AddColumn(tableName, columnName, type, nullable, table) {
+    //sprawdz czy tabela juz istnieje czy nalezy ją utworzyc
+    if(textUpdateSchema.search("CREATE TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName) == -1)
+        textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " ADD " + columnName + " " + type + " " + nullable + ";" + "\n";
+    else{
+        var text = "CREATE TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName;
+        var regex = new RegExp(".*" + text + ".*;(\\s)*", "ig");
+        textUpdateSchema = textUpdateSchema.replace(regex, generateSqlHidden__ReturnCreateTable(table));
+    }
 }
 
 function generateSqlHidden__ChangeType(tableName, columnName, newType) {
@@ -1215,17 +1262,6 @@ function generateSqlHidden__ChangeType(tableName, columnName, newType) {
 }
 
 function generateSqlHidden__RenameTable(table, tableName, tableNewName) {
-
-    var tableLinks = [];
-    for(var i = 0; i<table.rows.length; i++){
-        if(typeof table.rows[i].outgoingLinks[0] !== 'undefined'){
-            tableLinks.push(table.rows[i].outgoingLinks[0]);
-        }
-    }
-
-
-
-
     textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " RENAME TO " + "\"" + tableNewName + "\"" + ";" + "\n";
 }
 
