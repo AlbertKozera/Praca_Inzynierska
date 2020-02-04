@@ -2,11 +2,9 @@ package com.systemobslugibazydanych.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class SidebarController {
@@ -16,11 +14,10 @@ public class SidebarController {
         return "/user/drawdiagram";
     }
 
-    @RequestMapping(path = {"/editdiagram"}, method = RequestMethod.GET)
-    public String editdiagram(@ModelAttribute("schemaERD") String schemaERD,@ModelAttribute("schemaName") String schemaName, Model model) {
-        model.addAttribute("schemaERD", schemaERD);
-        model.addAttribute("schemaName", schemaName);
-        return "/user/editdiagram";
+    @RequestMapping(path = "/editSchema/{id}")
+    public String editSchemaById(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes){
+        redirectAttributes.addAttribute("id", id);
+        return "redirect:/editdiagram";
     }
 
     @GetMapping("/interpreterSQL")

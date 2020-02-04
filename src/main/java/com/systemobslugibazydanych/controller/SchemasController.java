@@ -45,13 +45,13 @@ public class SchemasController {
         return "/user/schemasManagement";
     }
 
-    @RequestMapping(path = "/editSchema/{id}")
-    public String editSchemaById(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes){
+    @RequestMapping(path = {"/editdiagram"}, method = RequestMethod.GET)
+    public String editdiagram(@ModelAttribute("id") Integer id, Model model) {
         String schemaERD = schemasService.editUser(id);
         String schemaName = schemasService.returnNameById(id);
-        redirectAttributes.addAttribute("schemaERD", schemaERD);
-        redirectAttributes.addAttribute("schemaName", schemaName);
-        return "redirect:/editdiagram";
+        model.addAttribute("schemaERD", schemaERD);
+        model.addAttribute("schemaName", schemaName);
+        return "/user/editdiagram";
     }
 
     @RequestMapping(path = "/deleteSchema/{id}")
