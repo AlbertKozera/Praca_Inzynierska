@@ -51,6 +51,7 @@ var link_youCanNotConnectNormalPool = null;
 var oneToOne = new Shape({outline: '', decoration: 'M13,110 L87,110 M13,80 L87,80', id: 'OneToOne'});
 var noShape = new Shape({outline: '', decoration: 'M0,0 L0,0', id: 'NoShape'});
 
+var iterator_numbersFK = 0;
 var copyRuler;
 var editedDiagramJson;
 if(typeof diagramIsEdited !== 'undefined')
@@ -325,6 +326,8 @@ $(document).ready(function () {
         var tableOrigin = linkCreated.getOrigin();
         var rowDestination = linkCreated.getDestinationIndex();
         var rowOrigin = linkCreated.getOriginIndex();
+
+        linkCreated.setTag(tableOrigin.getText() + "_FK" + iterator_numbersFK++);
         if (
             ((tableDestination.getCell(3, rowDestination).getText() == "true") || (tableDestination.getCell(4, rowDestination).getText() == "true"))
             &&
@@ -599,12 +602,11 @@ function addRow() {
 
     // refresh SQL definition
     generateSQL();
-    if(diagramIsEdited){
-        generateSqlHidden__AddColumn(table.getText(), name.getText(), type.getText());
+    if(typeof diagramIsEdited !== 'undefined'){
         if(nn.getText() == "NOT NULL")
-            generateSqlHidden__ChangeNotNull(true);
+            generateSqlHidden__AddColumn(table.getText(), regex(name.getText())[0], type.getText(), "NOT NULL");
         else
-            generateSqlHidden__ChangeNotNull(false);
+            generateSqlHidden__AddColumn(table.getText(), regex(name.getText())[0], type.getText(), "NULL");
         if(pk.getText() == "true")
             generateSqlHidden__AddConstraint("primary", table);
         else if(uk.getText() == "true")
@@ -644,7 +646,6 @@ function editRow() {
     if (!table || !AbstractionLayer.isInstanceOfType(TableNode, table) || rowClicked < 0)
         return;
 
-    var getcel = table.getCell(1, rowClicked);
     var textcel = table.getCell(1, rowClicked).getText();
     // use the cell indexer to access cells by their column and row
     var oldName = table.getCell(1, rowClicked).getText();
@@ -653,42 +654,59 @@ function editRow() {
     var oldType = table.getCell(2, rowClicked).getText();
     table.getCell(2, rowClicked).setText(editRowType[0].value);
     var newType = table.getCell(2, rowClicked).getText();
+    var oldPkState = table.getCell(3, rowClicked).getText();
     table.getCell(3, rowClicked).setText(editRowPK[0].checked);
+    var newPkState = table.getCell(3, rowClicked).getText();
+    var oldUkState = table.getCell(3, rowClicked).getText();
     table.getCell(4, rowClicked).setText(editRowUK[0].checked);
+    var newUkState = table.getCell(3, rowClicked).getText();
+    var oldNullable = table.getCell(5, rowClicked).getText();
     if(editRowNN[0].checked == true)
         table.getCell(5, rowClicked).setText("NOT NULL");
     else
         table.getCell(5, rowClicked).setText("");
-
+    var newNullable = table.getCell(5, rowClicked).getText();
     var PK_state = editRowPK[0].checked, UK_state = editRowUK[0].checked;
 
+
     if((PK_state == true) && (isThisFieldIsForeignKey(textcel)))
-        getcel.setText("🗝🔑 " + regex(getcel.getText()));
+        table.getCell(1, rowClicked).setText("🗝🔑 " + regex(table.getCell(1, rowClicked).getText()));
     else if((PK_state == true) && !(isThisFieldIsForeignKey(textcel)))
-        getcel.setText("🔑 " + regex(getcel.getText()));
+        table.getCell(1, rowClicked).setText("🔑 " + regex(table.getCell(1, rowClicked).getText()));
     else if((PK_state == false) && (isThisFieldIsForeignKey(textcel)))
-        getcel.setText("🗝 " + regex(getcel.getText()));
+        table.getCell(1, rowClicked).setText("🗝 " + regex(table.getCell(1, rowClicked).getText()));
     else
-        getcel.setText(regex(getcel.getText()));
+        table.getCell(1, rowClicked).setText(regex(table.getCell(1, rowClicked).getText()));
 
     if((UK_state == true) && (isThisFieldIsForeignKey(textcel)))
-        getcel.setText("🗝 " + regex(getcel.getText()) + " 🔹");
+        table.getCell(1, rowClicked).setText("🗝 " + regex(table.getCell(1, rowClicked).getText()) + " 🔹");
     else if((UK_state == true) && !(isThisFieldIsForeignKey(textcel)))
-        getcel.setText(regex(getcel.getText()) + " 🔹");
+        table.getCell(1, rowClicked).setText(regex(table.getCell(1, rowClicked).getText()) + " 🔹");
     else if((UK_state == false) && (PK_state == false) && (isThisFieldIsForeignKey(textcel)))
-        getcel.setText("🗝 " + regex(getcel.getText()));
+        table.getCell(1, rowClicked).setText("🗝 " + regex(table.getCell(1, rowClicked).getText()));
     else if((UK_state == false) && (PK_state == false) && !(isThisFieldIsForeignKey(textcel)))
-        getcel.setText(regex(getcel.getText()));
+        table.getCell(1, rowClicked).setText(regex(table.getCell(1, rowClicked).getText()));
 
     // close the dialog
     editRowDialog.dialog("close");
 
     // refresh SQL definition
     generateSQL();
-    if(regex(oldName)[0] != newName)
-        generateSqlHidden__RenameColumn(table.getText(), regex(oldName)[0], newName);
-    if(regex(oldType)[0] != newType)
-        generateSqlHidden__ChangeType(table.getText(), table.getCell(1, rowClicked).getText(), table.getCell(2, rowClicked).getText());
+    if(typeof diagramIsEdited !== 'undefined') {
+        if (regex(oldName)[0] != newName)
+            generateSqlHidden__RenameColumn(table.getText(), regex(oldName)[0], newName);
+        if (oldType != newType)
+            generateSqlHidden__ChangeType(table.getText(), regex(newName)[0], newType);
+        if (oldNullable != newNullable)
+            generateSqlHidden__ChangeNotNull(table.getText(), regex(newName)[0], newNullable);
+        if (oldPkState != newPkState){
+            if(newPkState == "true")
+                generateSqlHidden__AddConstraint("primary", table);
+            else if(newPkState == "false")
+                generateSqlHidden__DropConstraint(table.getText(),table.getText() + "_PK");
+        }
+
+    }
 }
 
 function deleteRow() {
@@ -697,7 +715,8 @@ function deleteRow() {
     if (!table || !AbstractionLayer.isInstanceOfType(TableNode, table) || rowClicked < 0)
         return;
 
-    generateSqlHidden__DropColumn(table.getText(), table.getCell(1, rowClicked).getText());
+    if(typeof diagramIsEdited !== 'undefined')
+         generateSqlHidden__DropColumn(table.getText(), table.getCell(1, rowClicked).getText());
     table.deleteRow(rowClicked);
     var number_of_rows = table.rows.length;
 
@@ -796,8 +815,10 @@ function renameTable() {
 
     // refresh SQL definition
     generateSQL();
-    if(oldName != table.getText())
-        generateSqlHidden__RenameTable(oldName, table.getText());
+    if(typeof diagramIsEdited !== 'undefined'){
+        if(oldName != table.getText())
+            generateSqlHidden__RenameTable(table, oldName, table.getText());
+    }
 }
 
 function infoOpen() {
@@ -814,7 +835,7 @@ function infoOpen() {
 
     var text = '';
     text += "ALTER TABLE " + tableOrigin.getText();
-    text += " ADD CONSTRAINT " + tableOrigin.getText() + "_FK";
+    text += " ADD CONSTRAINT " + link.getTag();
     text += " FOREIGN KEY " + "(";
     if ((tableOrigin.getCell(3, rowOrigin).getText() == "true") && (!origin)) {
         text += regex(tableOrigin.getCell(1, rowOrigin).getText());
@@ -893,13 +914,12 @@ function generateSQL() {
 
     // alter table Unique Key
     var flag_UK = true;
-    var iterator_numbersUK = 0;
     ArrayList.forEach(diagram.nodes, function (table) {
         for (var r = 0; r < table.cells.rows; ++r) {
             if (table.getCell(4, r).getText() == "true" && flag_UK) // sprawdz czy wiersz to unique key
             {
                 text += "\nALTER TABLE " + table.getText();
-                text += " ADD CONSTRAINT " + table.getText() + "_UK" + ++iterator_numbersUK + " UNIQUE " + "(";
+                text += " ADD CONSTRAINT " + table.getText() + "_UK" + " UNIQUE " + "(";
                 flag_UK = false;
             }
             if (table.getCell(4, r).getText() == "true" && !flag_UK) // sprawdz czy wiersz to unique key
@@ -916,7 +936,6 @@ function generateSQL() {
     });
 
     // alter table Foreign Key
-    var iterator_numbersFK = 0;
     ArrayList.forEach(diagram.links, function (link) {
             var origin = false, destination = false;
             var tableDestination = link.getDestination();
@@ -925,7 +944,7 @@ function generateSQL() {
             var rowOrigin = link.getOriginIndex();
 
             text += "\nALTER TABLE " + tableOrigin.getText();
-            text += " ADD CONSTRAINT " + tableOrigin.getText() + "_FK" + ++iterator_numbersFK;
+            text += " ADD CONSTRAINT " + link.getTag();
             text += " FOREIGN KEY " + "(";
 
             if ((tableOrigin.getCell(3, rowOrigin).getText() == "true") && (!origin)) {
@@ -955,7 +974,6 @@ function generateSQL() {
                 destination = true;
             }
             text += ");";
-
     });
 
     ArrayList.forEach(diagram.links, function (link) {
@@ -1040,12 +1058,11 @@ function generateSqlHidden() {
 
     // alter table Unique Key
     var flag_UK = true;
-    var iterator_numbersUK = 0;
     ArrayList.forEach(diagram.nodes, function (table) {
         for (var r = 0; r < table.cells.rows; ++r) {
             if (table.getCell(4, r).getText() == "true" && flag_UK) // sprawdz czy wiersz to unique key
             {
-                text += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + table.getText() + " ADD CONSTRAINT " + table.getText() + "_UK" + ++iterator_numbersUK + " UNIQUE " + "(";
+                text += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + table.getText() + " ADD CONSTRAINT " + table.getText() + "_UK" + " UNIQUE " + "(";
                 flag_UK = false;
             }
             if (table.getCell(4, r).getText() == "true" && !flag_UK) // sprawdz czy wiersz to unique key
@@ -1062,7 +1079,6 @@ function generateSqlHidden() {
     });
 
     // alter table Foreign Key
-    var iterator_numbersFK = 0;
     ArrayList.forEach(diagram.links, function (link) {
         var origin = false, destination = false;
         var tableDestination = link.getDestination();
@@ -1070,7 +1086,7 @@ function generateSqlHidden() {
         var rowDestination = link.getDestinationIndex();
         var rowOrigin = link.getOriginIndex();
 
-        text += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableOrigin.getText() + " ADD CONSTRAINT " + tableOrigin.getText() + "_FK" + ++iterator_numbersFK + " FOREIGN KEY " + "(";
+        text += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableOrigin.getText() + " ADD CONSTRAINT " + link.getTag() + " FOREIGN KEY " + "(";
 
         if ((tableOrigin.getCell(3, rowOrigin).getText() == "true") && (!origin)) {
             text += regex(tableOrigin.getCell(1, rowOrigin).getText());
@@ -1153,6 +1169,7 @@ function generateSqlHidden__DropConstraint(tableName, constraintName) {
 
 function generateSqlHidden__AddConstraint(constraintType, table) {
     if(constraintType == "primary"){
+        textUpdateSchema = textUpdateSchema.replace(/.*PRIMARY KEY.*;(\s)*/ig, '');
         var flag_PK = true;
         for (var r = 0; r < table.cells.rows; ++r) {
             if (table.getCell(3, r).getText() == "true" && flag_PK)
@@ -1189,15 +1206,26 @@ function generateSqlHidden__CreateTable(table) {
     textUpdateSchema += ");" + "\n";
 }
 
-function generateSqlHidden__AddColumn(tableName,columnName,type) {
-    textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " ADD " + columnName + " " + type + ";" + "\n";
+function generateSqlHidden__AddColumn(tableName, columnName, type, nullable) {
+    textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " ADD " + columnName + " " + type + " " + nullable + ";" + "\n";
 }
 
 function generateSqlHidden__ChangeType(tableName, columnName, newType) {
     textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " MODIFY " + columnName + " " + newType + ";" + "\n";
 }
 
-function generateSqlHidden__RenameTable(tableName, tableNewName) {
+function generateSqlHidden__RenameTable(table, tableName, tableNewName) {
+
+    var tableLinks = [];
+    for(var i = 0; i<table.rows.length; i++){
+        if(typeof table.rows[i].outgoingLinks[0] !== 'undefined'){
+            tableLinks.push(table.rows[i].outgoingLinks[0]);
+        }
+    }
+
+
+
+
     textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " RENAME TO " + "\"" + tableNewName + "\"" + ";" + "\n";
 }
 
@@ -1205,16 +1233,9 @@ function generateSqlHidden__RenameColumn(tableName, columnName, columnNewName) {
     textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " RENAME COLUMN " + columnName + " TO " + "\"" + columnNewName + "\"" + ";" + "\n";
 }
 
-function generateSqlHidden__ChangeNotNull(notNull){
-    if(notNull)
-        textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " MODIFY " + columnName + " NOT NULL;" + "\n";
-    else if(!notNull)
-        textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " MODIFY " + columnName + " NOT NULL;" + "\n";
+function generateSqlHidden__ChangeNotNull(tableName, columnName, nullable){
+    textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " MODIFY " + columnName + " " + nullable + ";" + "\n";
 }
-
-
-
-
 
 function isThisFieldIsForeignKey(str) {
     if(str.search("🗝") > -1)
