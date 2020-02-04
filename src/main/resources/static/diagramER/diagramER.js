@@ -189,6 +189,8 @@ $(document).ready(function () {
 
     diagram.addEventListener(Events.nodeDeleted, function (sender, args) {
         generateSQL();
+        if(typeof diagramIsEdited !== 'undefined')
+            generateSqlHidden__DropTable(args.node.getText(), false);
     });
 
     canvas.addEventListener('mousemove', function () {
@@ -308,7 +310,7 @@ $(document).ready(function () {
 
         generateSQL();
             if(typeof diagramIsEdited !== 'undefined')
-                generateSqlHidden__DropConstraint(tableDestination.getText(),args.link.getTag());
+                generateSqlHidden__DropConstraint(tableOrigin.getText(),args.link.getTag());
     });
 
     diagram.addEventListener(Events.linkCreating, function (sender, args) {
@@ -360,6 +362,8 @@ $(document).ready(function () {
             tableOrigin.getCell(1, rowOrigin).setText("🗝 " + fk);
         }
         generateSQL();
+            if(typeof diagramIsEdited !== 'undefined')
+                generateSqlHidden__AddConstraint("foreign", table, linkCreated)
     });
 
     diagram.addEventListener(Events.nodeSelected, function (sender, args) {
@@ -613,9 +617,9 @@ function addRow() {
         else
             generateSqlHidden__AddColumn(table.getText(), regex(name.getText())[0], type.getText(), "NULL", table);
         if(pk.getText() == "true")
-            generateSqlHidden__AddConstraint("primary", table);
+            generateSqlHidden__AddConstraint("primary", table, null);
         else if(uk.getText() == "true")
-            generateSqlHidden__AddConstraint("unique", table);
+            generateSqlHidden__AddConstraint("unique", table, null);
     }
 
 }
@@ -706,13 +710,13 @@ function editRow() {
             generateSqlHidden__ChangeNotNull(table.getText(), regex(newName)[0], newNullable);
         if (oldPkState != newPkState){
             if(newPkState == "true")
-                generateSqlHidden__AddConstraint("primary", table);
+                generateSqlHidden__AddConstraint("primary", table, null);
             else if(newPkState == "false")
                 generateSqlHidden__DropConstraint(table.getText(), table.getCell(3, rowClicked).getTag());
         }
         if (oldUkState != newUkState){
             if(newUkState == "true")
-                generateSqlHidden__AddConstraint("unique", table);
+                generateSqlHidden__AddConstraint("unique", table, null);
             else if(newUkState == "false")
                 generateSqlHidden__DropConstraint(table.getText(),table.getCell(4, rowClicked).getTag());
         }
@@ -791,7 +795,8 @@ function deleteTable() {
     if (!table || !AbstractionLayer.isInstanceOfType(TableNode, table))
         return;
 
-    generateSqlHidden__DropTable(table.getText(), false);
+    if(typeof diagramIsEdited !== 'undefined')
+        generateSqlHidden__DropTable(table.getText(), false);
     diagram.removeItem(table);
 
     rowClicked = -1;
@@ -1178,7 +1183,7 @@ function generateSqlHidden__DropConstraint(tableName, constraintName) {
     textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " DROP CONSTRAINT " + constraintName + ";" + "\n";
 }
 
-function generateSqlHidden__AddConstraint(constraintType, table) {
+function generateSqlHidden__AddConstraint(constraintType, table, link) {
     if(constraintType == "primary"){
         textUpdateSchema = textUpdateSchema.replace(/.*PRIMARY KEY.*;(\s)*/ig, '');
         var flag_PK = true;
@@ -1220,6 +1225,43 @@ function generateSqlHidden__AddConstraint(constraintType, table) {
             textUpdateSchema += ");\n";
             flag_UK = true;
         }
+    }
+    else if(constraintType == "foreign"){
+        var origin = false, destination = false;
+        var tableDestination = link.getDestination();
+        var tableOrigin = link.getOrigin();
+        var rowDestination = link.getDestinationIndex();
+        var rowOrigin = link.getOriginIndex();
+
+        textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableOrigin.getText() + " ADD CONSTRAINT " + link.getTag() + " FOREIGN KEY " + "(";
+
+        if ((tableOrigin.getCell(3, rowOrigin).getText() == "true") && (!origin)) {
+            textUpdateSchema += regex(tableOrigin.getCell(1, rowOrigin).getText());
+            textUpdateSchema = addFieldToGeneratedText(3, tableOrigin, textUpdateSchema);
+            origin = true;
+        }
+        else if ((tableOrigin.getCell(4, rowOrigin).getText() == "true") && (!origin)) {
+            textUpdateSchema += regex(tableOrigin.getCell(1, rowOrigin).getText());
+            textUpdateSchema = addFieldToGeneratedText(4, tableOrigin, textUpdateSchema);
+            origin = true;
+        }
+        else if (!origin){
+            textUpdateSchema += regex(tableOrigin.getCell(1, rowOrigin).getText());
+            origin = true;
+        }
+        textUpdateSchema += ")";
+        textUpdateSchema += " REFERENCES " + "\"" + $('#schema_name').val() + "\"" + "." + tableDestination.getText() + " (";
+        if ((tableDestination.getCell(3, rowDestination).getText() == "true") && (!destination)) {
+            textUpdateSchema += regex(tableDestination.getCell(1, rowDestination).getText());
+            textUpdateSchema = addFieldToGeneratedText(3, tableDestination, textUpdateSchema);
+            destination = true;
+        }
+        if ((tableDestination.getCell(4, rowDestination).getText() == "true") && (!destination)) {
+            textUpdateSchema += regex(tableDestination.getCell(1, rowDestination).getText());
+            textUpdateSchema = addFieldToGeneratedText(4, tableDestination, textUpdateSchema);
+            destination = true;
+        }
+        textUpdateSchema += ");\n";
     }
 
 }
@@ -1541,26 +1583,41 @@ function generateDatabase(generatedSql) {
                 for(var r = 0; r < feedback.lista.length ; ++r){
                     document.getElementById("createSchemaFeedback").value += feedback.lista[r] + "\n";
                 }
-                document.getElementById("createSchemaSqlGeneratedCode").value = generateSqlHidden();
+                if(typeof diagramIsEdited === 'undefined')
+                    document.getElementById("createSchemaSqlGeneratedCode").value = generateSqlHidden();
+                else
+                    document.getElementById("createSchemaSqlGeneratedCode").value = textUpdateSchema;
             }
             if(feedback.updateFlag){
-                document.getElementById("createSchemaFinalFeedback").value = "Schemat został pomyślnie utworzony!";
+                if(typeof diagramIsEdited === 'undefined')
+                    document.getElementById("createSchemaFinalFeedback").value = "Schemat został pomyślnie utworzony!";
+                else
+                    document.getElementById("createSchemaFinalFeedback").value = "Schemat został pomyślnie zaktualizowany!";
                 ifOperationWasSuccessed('#createSchemaFeedback');
                 ifOperationWasSuccessed('#createSchemaFinalFeedback');
                 saveSchemaInDatabase($('#schema_name').val(), diagram.toJson());
             }
             else if(!feedback.updateFlag){
-                document.getElementById("createSchemaFinalFeedback").value = "Nie udało się utworzyć schematu!";
+                if(typeof diagramIsEdited === 'undefined')
+                    document.getElementById("createSchemaFinalFeedback").value = "Nie udało się utworzyć schematu!";
+                else
+                    document.getElementById("createSchemaFinalFeedback").value = "Nie udało się zaktualizować schematu!";
                 ifOperationWasNotSuccessed('#createSchemaFeedback');
                 ifOperationWasNotSuccessed('#createSchemaFinalFeedback');
-                dropUserIfOperationWasNotSuccessed(generateSqlHidden().split( " ")[2]);
+                if(typeof diagramIsEdited === 'undefined')
+                    dropUserIfOperationWasNotSuccessed(generateSqlHidden().split( " ")[2]);
+                else
+                    dropUserIfOperationWasNotSuccessed(textUpdateSchema.split( " ")[2]);
             }
             feedbackDialog.dialog("open");
         }
     };
 
     xhttp.open("POST", "/user/executeSQL", true);
-    xhttp.send(generateSqlHidden());
+    if(typeof diagramIsEdited === 'undefined')
+        xhttp.send(generateSqlHidden());
+    else
+        xhttp.send(textUpdateSchema);
 }
 
 function dropUserIfOperationWasNotSuccessed(username) {

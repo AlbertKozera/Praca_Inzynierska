@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SchemasRepository extends JpaRepository<Schemas, Integer>,SchemasRepositoryCustom {
 
-
+    Schemas findBySchemaName(String schemaName);
 
 }

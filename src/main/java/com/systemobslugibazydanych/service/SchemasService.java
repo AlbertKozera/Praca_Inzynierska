@@ -121,7 +121,9 @@ public class SchemasService {
         Schemas schemas = new Schemas();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String emailOfCurrentUser = authentication.getName();
-        schemas.setSchemaERD(saveSchemaInDatabaseDTO.getDiagramJson());
+
+        //if(schemasRepository.findBySchemaName(saveSchemaInDatabaseDTO.getSchemaName()) != null)
+            schemas.setSchemaERD(saveSchemaInDatabaseDTO.getDiagramJson());
         schemas.setSchemaName(saveSchemaInDatabaseDTO.getSchemaName());
         schemas.setUsers(usersRepository.findByEmail(emailOfCurrentUser));
         schemasRepository.save(schemas);
