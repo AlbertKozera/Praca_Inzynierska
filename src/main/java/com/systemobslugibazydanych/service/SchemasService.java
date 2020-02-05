@@ -123,7 +123,7 @@ public class SchemasService {
         String emailOfCurrentUser = authentication.getName();
 
         //if(schemasRepository.findBySchemaName(saveSchemaInDatabaseDTO.getSchemaName()) != null)
-            schemas.setSchemaERD(saveSchemaInDatabaseDTO.getDiagramJson());
+        schemas.setSchemaERD(saveSchemaInDatabaseDTO.getDiagramJson());
         schemas.setSchemaName(saveSchemaInDatabaseDTO.getSchemaName());
         schemas.setUsers(usersRepository.findByEmail(emailOfCurrentUser));
         schemasRepository.save(schemas);

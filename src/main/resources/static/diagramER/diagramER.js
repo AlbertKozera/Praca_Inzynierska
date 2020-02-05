@@ -1581,12 +1581,20 @@ function generateDatabase(generatedSql) {
 
             if(feedback != null){
                 for(var r = 0; r < feedback.lista.length ; ++r){
-                    document.getElementById("createSchemaFeedback").value += feedback.lista[r] + "\n";
+                    document.getElementById("createSchemaFeedback").value += r+1 + ".  " + feedback.lista[r] + "\n";
                 }
-                if(typeof diagramIsEdited === 'undefined')
-                    document.getElementById("createSchemaSqlGeneratedCode").value = generateSqlHidden();
-                else
-                    document.getElementById("createSchemaSqlGeneratedCode").value = textUpdateSchema;
+                if(typeof diagramIsEdited === 'undefined'){
+                    var feedbackSql = generateSqlHidden();
+                    var i = 1;
+                    feedbackSql = feedbackSql.replace(/.+;/g, line => `${i++}.  ${line}`);
+                    document.getElementById("createSchemaSqlGeneratedCode").value = feedbackSql;
+                }
+                else{
+                    var feedbackSql = textUpdateSchema;
+                    var i = 1;
+                    feedbackSql = feedbackSql.replace(/.+;/g, line => `${i++}.  ${line}`);
+                    document.getElementById("createSchemaSqlGeneratedCode").value = feedbackSql;
+                }
             }
             if(feedback.updateFlag){
                 if(typeof diagramIsEdited === 'undefined')
@@ -1596,6 +1604,7 @@ function generateDatabase(generatedSql) {
                 ifOperationWasSuccessed('#createSchemaFeedback');
                 ifOperationWasSuccessed('#createSchemaFinalFeedback');
                 saveSchemaInDatabase($('#schema_name').val(), diagram.toJson());
+                textUpdateSchema = "";
             }
             else if(!feedback.updateFlag){
                 if(typeof diagramIsEdited === 'undefined')
