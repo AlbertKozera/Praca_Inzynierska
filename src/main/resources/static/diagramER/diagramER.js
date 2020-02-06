@@ -1170,17 +1170,17 @@ function generateSqlHidden_UpdateSchema() {
 
 function generateSqlHidden__DropTable(tableName, cascade) {
     if(!cascade)
-        textUpdateSchema += "DROP TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + ";" + "\n";
+        textUpdateSchema += "DROP TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + "\"" + tableName + "\"" + ";" + "\n";
     if(cascade)
-        textUpdateSchema += "DROP TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " CASCADE CONSTRAINTS;" + "\n";
+        textUpdateSchema += "DROP TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + "\"" + tableName + "\"" + " CASCADE CONSTRAINTS;" + "\n";
 }
 
 function generateSqlHidden__DropColumn(tableName, columnName) {
-    textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " DROP COLUMN " + columnName + ";" + "\n";
+    textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + "\"" + tableName + "\"" + " DROP COLUMN " + columnName + ";" + "\n";
 }
 
 function generateSqlHidden__DropConstraint(tableName, constraintName) {
-    textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " DROP CONSTRAINT " + constraintName + ";" + "\n";
+    textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + "\"" + tableName + "\"" + " DROP CONSTRAINT " + constraintName + ";" + "\n";
 }
 
 function generateSqlHidden__AddConstraint(constraintType, table, link) {
@@ -1190,7 +1190,7 @@ function generateSqlHidden__AddConstraint(constraintType, table, link) {
         for (var r = 0; r < table.cells.rows; ++r) {
             if (table.getCell(3, r).getText() == "true" && flag_PK)
             {
-                textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + table.getText() + " ADD CONSTRAINT " + table.getText() + "_PK" + " PRIMARY KEY " + "(";
+                textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + "\"" + table.getText() + "\"" + " ADD CONSTRAINT " + table.getText() + "_PK" + " PRIMARY KEY " + "(";
                 flag_PK = false;
             }
             if (table.getCell(3, r).getText() == "true" && !flag_PK)
@@ -1211,7 +1211,7 @@ function generateSqlHidden__AddConstraint(constraintType, table, link) {
         for (var r = 0; r < table.cells.rows; ++r) {
             if (table.getCell(4, r).getText() == "true" && flag_UK) // sprawdz czy wiersz to unique key
             {
-                textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + table.getText() + " ADD CONSTRAINT " + table.getText() + "_UK" + " UNIQUE KEY " + "(";
+                textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + "\"" + table.getText() + "\"" + " ADD CONSTRAINT " + table.getText() + "_UK" + " UNIQUE KEY " + "(";
                 flag_UK = false;
             }
             if (table.getCell(4, r).getText() == "true" && !flag_UK) // sprawdz czy wiersz to unique key
@@ -1233,7 +1233,7 @@ function generateSqlHidden__AddConstraint(constraintType, table, link) {
         var rowDestination = link.getDestinationIndex();
         var rowOrigin = link.getOriginIndex();
 
-        textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableOrigin.getText() + " ADD CONSTRAINT " + link.getTag() + " FOREIGN KEY " + "(";
+        textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + "\"" + tableOrigin.getText() + "\"" + " ADD CONSTRAINT " + link.getTag() + " FOREIGN KEY " + "(";
 
         if ((tableOrigin.getCell(3, rowOrigin).getText() == "true") && (!origin)) {
             textUpdateSchema += regex(tableOrigin.getCell(1, rowOrigin).getText());
@@ -1250,7 +1250,7 @@ function generateSqlHidden__AddConstraint(constraintType, table, link) {
             origin = true;
         }
         textUpdateSchema += ")";
-        textUpdateSchema += " REFERENCES " + "\"" + $('#schema_name').val() + "\"" + "." + tableDestination.getText() + " (";
+        textUpdateSchema += " REFERENCES " + "\"" + $('#schema_name').val() + "\"" + "." + "\"" + tableDestination.getText() + "\"" + " (";
         if ((tableDestination.getCell(3, rowDestination).getText() == "true") && (!destination)) {
             textUpdateSchema += regex(tableDestination.getCell(1, rowDestination).getText());
             textUpdateSchema = addFieldToGeneratedText(3, tableDestination, textUpdateSchema);
@@ -1300,19 +1300,19 @@ function generateSqlHidden__AddColumn(tableName, columnName, type, nullable, tab
 }
 
 function generateSqlHidden__ChangeType(tableName, columnName, newType) {
-    textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " MODIFY " + columnName + " " + newType + ";" + "\n";
+    textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + "\"" + tableName + "\"" + " MODIFY " + columnName + " " + newType + ";" + "\n";
 }
 
 function generateSqlHidden__RenameTable(table, tableName, tableNewName) {
-    textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " RENAME TO " + "\"" + tableNewName + "\"" + ";" + "\n";
+    textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + "\"" + tableName + "\"" + " RENAME TO " + "\"" + tableNewName + "\"" + ";" + "\n";
 }
 
 function generateSqlHidden__RenameColumn(tableName, columnName, columnNewName) {
-    textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " RENAME COLUMN " + columnName + " TO " + "\"" + columnNewName + "\"" + ";" + "\n";
+    textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + "\"" + tableName + "\"" + " RENAME COLUMN " + columnName + " TO " + "\"" + columnNewName + "\"" + ";" + "\n";
 }
 
 function generateSqlHidden__ChangeNotNull(tableName, columnName, nullable){
-    textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + tableName + " MODIFY " + columnName + " " + nullable + ";" + "\n";
+    textUpdateSchema += "ALTER TABLE " + "\"" + $('#schema_name').val() + "\"" + "." + "\"" + tableName + "\"" + " MODIFY " + columnName + " " + nullable + ";" + "\n";
 }
 
 function isThisFieldIsForeignKey(str) {

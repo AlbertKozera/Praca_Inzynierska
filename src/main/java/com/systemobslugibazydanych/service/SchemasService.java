@@ -19,8 +19,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.io.*;
 import java.io.Reader;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -72,7 +70,7 @@ public class SchemasService {
     }
 
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public ArrayList<String> executeSQL(String[] queryRows) {
 
 
