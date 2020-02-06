@@ -8,14 +8,19 @@ import com.systemobslugibazydanych.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.io.*;
 import java.io.Reader;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -24,6 +29,8 @@ public class SchemasService {
 
     @Autowired
     private final JdbcTemplate jdbcTemplate = null;
+    @Autowired
+    private PlatformTransactionManager ptm;
     @Autowired
     private UsersRepository usersRepository;
     @Autowired
@@ -64,7 +71,11 @@ public class SchemasService {
         return success;
     }
 
+
+    @Transactional
     public ArrayList<String> executeSQL(String[] queryRows) {
+
+
         ArrayList<String> listException = new ArrayList<String>();
         for (int i = 0; i < queryRows.length; ++i) {
             String query = queryRows[i];
@@ -115,18 +126,25 @@ public class SchemasService {
             }
         }
         return listException;
+
     }
 
     public void saveSchemaInDatabase(SaveSchemaInDatabaseDTO saveSchemaInDatabaseDTO){
-        Schemas schemas = new Schemas();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String emailOfCurrentUser = authentication.getName();
+        Schemas schemas;
 
-        //if(schemasRepository.findBySchemaName(saveSchemaInDatabaseDTO.getSchemaName()) != null)
+        if(schemasRepository.findBySchemaName(saveSchemaInDatabaseDTO.getSchemaName()) == null){
+            schemas = new Schemas();
+        }
+        else {
+            schemas = schemasRepository.findBySchemaName(saveSchemaInDatabaseDTO.getSchemaName());
+        }
         schemas.setSchemaERD(saveSchemaInDatabaseDTO.getDiagramJson());
         schemas.setSchemaName(saveSchemaInDatabaseDTO.getSchemaName());
         schemas.setUsers(usersRepository.findByEmail(emailOfCurrentUser));
         schemasRepository.save(schemas);
+
     }
 
     public List<Schemas> getAllSchemasForCurrentUser(){
