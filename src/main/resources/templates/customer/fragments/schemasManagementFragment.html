@@ -23,13 +23,13 @@ border: 0;">
                             <tr th:each="schemas : ${schemas}">
                                 <td th:text="${schemas.schemaName}"></td>
                                 <td>
-                                    <a th:href="@{/editSchema/{id}(id=${schemas.id})}"
+                                    <a th:href="@{/customer/editSchema/{id}(id=${schemas.id})}"
                                        class="btn btn-primary">
                                         <i class="fas fa-project-diagram"></i>
                                     </a>
                                 </td>
                                 <td>
-                                    <a th:href="@{/deleteSchema/{id}(id=${schemas.id})}"
+                                    <a th:href="@{/customer/deleteSchema/{id}(id=${schemas.id})}"
                                        class="btn btn-primary">
                                         <i class="fas fa-trash-alt"></i>
                                     </a>

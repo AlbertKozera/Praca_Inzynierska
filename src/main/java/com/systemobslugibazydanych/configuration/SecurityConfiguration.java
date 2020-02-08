@@ -39,9 +39,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 		http.authorizeRequests()
 				// URLs matching for access rights
-				.antMatchers("/").anonymous()
+				.antMatchers("/").permitAll()
 				.antMatchers("/login").anonymous()
-				.antMatchers("/index").anonymous()
+				.antMatchers("/index").permitAll()
 				.antMatchers("/admin/**").hasAuthority("ADMIN")
 				.antMatchers("/user/**").hasAuthority("CUSTOMER")
 				.anyRequest().authenticated()

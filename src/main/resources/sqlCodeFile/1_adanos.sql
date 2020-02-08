@@ -1,2 +1,0 @@
-DROP SCHEMA IF EXISTS 'adanos';
-CREATE SCHEMA 'adanos';

@@ -57,7 +57,7 @@ function executeSQL(interpreterSQL) {
         }
     };
 
-    xhttp.open("POST", "/user/executeSQL", true);
+    xhttp.open("POST", "/customer/executeSQL", true);
     xhttp.send(document.getElementById(interpreterSQL).value);
 }
 

@@ -11,9 +11,9 @@
             </button>
         </div>
 
-        <div class="img bg-wrap text-center py-4" style="background-image: url(sidebar/images/bg_1.jpg);">
+        <div class="img bg-wrap text-center py-4" style="background-image: url(/static/sidebar/images/bg_1.jpg);">
             <div class="user-logo">
-                <div class="img" style="background-image: url(sidebar/images/logo.jpg);"></div>
+                <div class="img" style="background-image: url(/static/sidebar/images/logo.jpg);"></div>
                 <h3 sec:authentication="principal.username"></h3>
             </div>
         </div>
@@ -22,10 +22,10 @@
                 <a href="#"><span class="fa fa-pencil-alt mr-3"></span> Rysuj diagram</a>
             </li>
             <li>
-                <a href="/schemasManagement"><span class="fa fa-database mr-3"></span> Menedżer schematów</a>
+                <a href="/customer/schemasManagement"><span class="fa fa-database mr-3"></span> Menedżer schematów</a>
             </li>
             <li>
-                <a href="/interpreterSQL"><span class="fa fa-terminal mr-3"></span> Interpreter SQL</a>
+                <a href="/customer/interpreterSQL"><span class="fa fa-terminal mr-3"></span> Interpreter SQL</a>
             </li>
             <li>
                 <a th:href="@{/logout}"><span class="fa fa-sign-out-alt mr-3"></span> Wyloguj</a>

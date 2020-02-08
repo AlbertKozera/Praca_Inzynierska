@@ -1622,7 +1622,7 @@ function generateDatabase(generatedSql) {
         }
     };
 
-    xhttp.open("POST", "/user/executeSQL", true);
+    xhttp.open("POST", "/customer/executeSQL", true);
     if(typeof diagramIsEdited === 'undefined')
         xhttp.send(generateSqlHidden());
     else
@@ -1635,7 +1635,7 @@ function dropUserIfOperationWasNotSuccessed(username) {
     xhttp.onreadystatechange = function() {
     };
 
-    xhttp.open("POST", "/user/dropUser", true);
+    xhttp.open("POST", "/customer/dropUser", true);
     xhttp.send(username);
 }
 
@@ -1648,7 +1648,7 @@ function saveSchemaInDatabase(schemaName, diagramJson) {
     xhttp.onreadystatechange = function() {
     };
 
-    xhttp.open("POST", "/user/saveSchemaInDatabase", true);
+    xhttp.open("POST", "/customer/saveSchemaInDatabase", true);
     xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
     xhttp.send(JSON.stringify(Object.fromEntries(data)));
 }

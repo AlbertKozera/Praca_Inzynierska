@@ -1,2 +1,0 @@
-DROP SCHEMA IF EXISTS 'awf';
-CREATE SCHEMA 'awf';

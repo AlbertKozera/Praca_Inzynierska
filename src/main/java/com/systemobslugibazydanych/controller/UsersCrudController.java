@@ -21,7 +21,7 @@ public class UsersCrudController
     @Autowired
     UsersService service;
 
-    @GetMapping(path = "/users")
+    @GetMapping(path = "/admin/users")
     public String getAllUsers(Model model)
     {
         List<Users> list = service.getAllUsers();
@@ -30,7 +30,14 @@ public class UsersCrudController
         return "/admin/users";
     }
 
-    @RequestMapping(path = {"/edit", "/edit/{id}"})
+    @GetMapping("/admin/adduser")
+    public String adduser(Model model) {
+        Users users = new Users();
+        model.addAttribute("users", users);
+        return "/admin/adduser";
+    }
+
+    @RequestMapping(path = {"/admin/edit", "/admin/edit/{id}"})
     public String editUsersById(Model model, @PathVariable("id") Optional<Integer> id)
             throws RuntimeException
     {
@@ -43,18 +50,18 @@ public class UsersCrudController
         return "/admin/edituser";
     }
 
-    @RequestMapping(path = "/delete/{id}")
+    @RequestMapping(path = "/admin/delete/{id}")
     public String deleteUsersById(Model model, @PathVariable("id") Integer id)
             throws RuntimeException
     {
         service.deleteUsersById(id);
-        return "redirect:/users";
+        return "redirect:/admin/users";
     }
 
-    @RequestMapping(path = "/createUser", method = RequestMethod.POST)
+    @RequestMapping(path = "/admin/createUser", method = RequestMethod.POST)
     public String createOrUpdateUsers(Users users)
     {
         service.createOrUpdateUsers(users);
-        return "redirect:/users";
+        return "redirect:/admin/users";
     }
 }

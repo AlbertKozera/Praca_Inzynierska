@@ -27,13 +27,13 @@ border: 0;">
                                 <td th:text="${users.lastName}"></td>
                                 <td th:text="${users.email}"></td>
                                 <td>
-                                    <a th:href="@{/edit/{id}(id=${users.id})}"
+                                    <a th:href="@{/admin/edit/{id}(id=${users.id})}"
                                        class="btn btn-primary">
                                         <i class="fas fa-user-edit ml-2"></i>
                                     </a>
                                 </td>
                                 <td>
-                                    <a th:href="@{/delete/{id}(id=${users.id})}"
+                                    <a th:href="@{/admin/delete/{id}(id=${users.id})}"
                                        class="btn btn-primary">
                                         <i class="fas fa-user-times ml-2"></i>
                                     </a>

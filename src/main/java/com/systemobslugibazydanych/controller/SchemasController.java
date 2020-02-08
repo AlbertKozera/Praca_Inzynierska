@@ -2,7 +2,6 @@ package com.systemobslugibazydanych.controller;
 import com.systemobslugibazydanych.dto.SaveSchemaInDatabaseDTO;
 import com.systemobslugibazydanych.dto.FeedbackDTO;
 import com.systemobslugibazydanych.entity.Schemas;
-import com.systemobslugibazydanych.entity.Users;
 import com.systemobslugibazydanych.service.SchemasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.*;
 
@@ -20,7 +18,7 @@ public class SchemasController {
     @Autowired
     SchemasService schemasService;
 
-    @PostMapping(path = { "/user/executeSQL" })
+    @PostMapping(path = {"/customer/executeSQL"})
     public ResponseEntity<Object> executeSQL(@RequestBody String sqlCode) {
         String[] split = sqlCode.replace("\n", "").replace("\t", "").replace("\r", "").split(";");
         schemasService.clearMapList();
@@ -30,48 +28,41 @@ public class SchemasController {
         return new ResponseEntity<>( response , HttpStatus.OK);
     }
 
-    @PostMapping(path = { "/user/saveSchemaInDatabase" })
+    @PostMapping(path = {"/customer/saveSchemaInDatabase"})
     public String saveSchemaInDatabase(@RequestBody SaveSchemaInDatabaseDTO saveSchemaInDatabaseDto) {
         schemasService.saveSchemaInDatabase(saveSchemaInDatabaseDto);
         return "redirect:/user";
     }
 
-    @GetMapping(path = "/schemasManagement")
+    @GetMapping(path = "/customer/schemasManagement")
     public String getAllSchemasForCurrentUser(Model model)
     {
         List<Schemas> list = schemasService.getAllSchemasForCurrentUser();
         model.addAttribute("schemas", list);
 
-        return "/user/schemasManagement";
+        return "/customer/schemasManagement";
     }
 
-    @RequestMapping(path = {"/editdiagram"}, method = RequestMethod.GET)
+    @RequestMapping(path = {"/customer/editdiagram"}, method = RequestMethod.GET)
     public String editdiagram(@ModelAttribute("id") Integer id, Model model) {
         String schemaERD = schemasService.editUser(id);
         String schemaName = schemasService.returnNameById(id);
         model.addAttribute("schemaERD", schemaERD);
         model.addAttribute("schemaName", schemaName);
-        return "/user/editdiagram";
+        return "/customer/editdiagram";
     }
 
-    @RequestMapping(path = "/deleteSchema/{id}")
+    @RequestMapping(path = "/customer/deleteSchema/{id}")
     public String deleteSchemaById(@PathVariable("id") Integer id)
     {
         schemasService.dropUserById(id);
-        return "redirect:/schemasManagement";
+        return "redirect:/customer/schemasManagement";
     }
 
-    @GetMapping("/adduser")
-    public String adduser(Model model) {
-        Users users = new Users();
-        model.addAttribute("users", users);
-        return "/admin/adduser";
-    }
-
-    @PostMapping(path = { "/user/dropUser" })
+    @PostMapping(path = {"/customer/dropUser"})
     public String dropUser(@RequestBody String username) {
         schemasService.dropUserByUsername(username);
-        return "redirect:/drawdiagram";
+        return "redirect:/customer/drawdiagram";
     }
 }
 
