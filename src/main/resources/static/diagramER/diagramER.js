@@ -83,6 +83,7 @@ $(document).ready(function () {
     copyRuler = ruler;
 
     // set some Diagram properties.
+    diagram.setBounds(new Rect(0, 0, 700, 700));
     diagram.setBehavior(Behavior.LinkTables);
     diagram.setAllowSelfLoops(false);
     diagram.setBackBrush('rgba(64,69,75,0.87)');
