@@ -98,6 +98,7 @@ $(document).ready(function () {
     // set the Diagram style.
     var theme = new Theme();
 
+    // set some Table properties.
     var tableNodeStyle = new Style();
     tableNodeStyle.setBrush({
         type: 'RadialGradientBrush',
@@ -105,7 +106,6 @@ $(document).ready(function () {
         color2: 'rgb(39,44,50)',
         angle: 30
     });
-    //ustawienia tekstu wszystkich tabel
     tableNodeStyle.setFontName('Verdana');
     tableNodeStyle.setTextColor({type: 'SolidBrush', color: "#000000"});
     tableNodeStyle.setFontSize(4);
