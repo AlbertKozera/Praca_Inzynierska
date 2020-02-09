@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.util.*;
 
 @Controller
@@ -19,7 +20,7 @@ public class SchemasController {
     SchemasService schemasService;
 
     @PostMapping(path = {"/customer/executeSQL"})
-    public ResponseEntity<Object> executeSQL(@RequestBody String sqlCode) {
+    public ResponseEntity<Object> executeSQL(@RequestBody String sqlCode) throws SQLException {
         String[] split = sqlCode.replace("\n", "").replace("\t", "").replace("\r", "").split(";");
         schemasService.clearMapList();
         FeedbackDTO feedbackDTO = new FeedbackDTO(schemasService.executeSQL(split), schemasService.getMapList(), schemasService.isUpdateFlag());

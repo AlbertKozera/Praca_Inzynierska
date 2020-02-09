@@ -72,8 +72,6 @@ public class SchemasService {
 
     @Transactional(rollbackFor = Exception.class)
     public ArrayList<String> executeSQL(String[] queryRows) {
-
-
         ArrayList<String> listException = new ArrayList<String>();
         for (int i = 0; i < queryRows.length; ++i) {
             String query = queryRows[i];
