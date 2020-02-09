@@ -6,17 +6,16 @@
 <div th:fragment="diagram">
     <th:block th:include="fragments/diagramER/headerinc :: head"/>
 
-
-    <!-- The Diagram component is bound to the canvas element below -->
-    <div id="canvas">
-        <canvas id="diagram" width="2100" height="2100">
-            This page requires a browser that supports HTML 5 Canvas element.
-        </canvas>
+    <div id="justdraw">
+        <div id="ruler">
+            <!-- The Diagram component is bound to the canvas element below -->
+            <div id="canvas">
+                <canvas id="diagram" width="2100" height="2100">
+                    This page requires a browser that supports HTML 5 Canvas element.
+                </canvas>
+            </div>
+        </div>
     </div>
-
-
-
-
 
     <div id="justdrawOptions">
         <div id="overview_div">
