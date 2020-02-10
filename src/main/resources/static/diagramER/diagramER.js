@@ -1327,6 +1327,20 @@ function regex(text) {
     return textRegex;
 }
 
+function schemaNameSecurity() {
+    if ($('#schema_name').val().search(idOfCurrentUser + "_") > -1){
+        var schemaName = $('#schema_name').val().replace(idOfCurrentUser + "_", "");
+        var newSchemaName = idOfCurrentUser + "_" + schemaName;
+        $('#schema_name').val(newSchemaName);
+    }
+    else{
+        if(typeof schemaName !== 'undefined')
+            $('#schema_name').val(idOfCurrentUser + "_" + schemaName);
+        else
+            $('#schema_name').val(idOfCurrentUser + "_");
+    }
+}
+
 function addFieldToGeneratedText(primaryOrUnique, table, text){
     for (var r = 0; r < table.cells.rows; ++r) {
         if ((table.getCell(primaryOrUnique, r).getText() == "true") && (table.rows[r].outgoingLinks.length == 0) && (table.rows[r].incomingLinks.length == 0)) {

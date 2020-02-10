@@ -59,7 +59,7 @@
         <div  class="options_div">
             <div sec:authorize="isAuthenticated()">
                 <div id="options_1_div">
-                    <input id="schema_name" class="options_input" type="text" placeholder="Nazwa schematu..." oninput="generateSQL()"/>
+                    <input id="schema_name" class="options_input" type="text" placeholder="Nazwa schematu..." oninput="schemaNameSecurity()" onchange="generateSQL()"/>
                         <button type="submit" id="new_schema" class="options_button" onclick="generateDatabase('generatedSql')">
                             <i class="fas fa-database" style="padding-bottom: 4px"></i>
                             <i class="fas fa-bolt fa-xs"></i><br />
@@ -291,6 +291,12 @@
     </div>
 
     <img id="oracle_watermark" src="/static/sidebar/oracle_watermark.png">
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var idOfCurrentUser = /*[[${idOfCurrentUser}]]*/ 'default';
+        /*]]>*/
+    </script>
 
     <th:block th:include="fragments/diagramER/footerinc :: footer"/>
 </div>

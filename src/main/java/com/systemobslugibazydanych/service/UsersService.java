@@ -12,6 +12,8 @@ import com.systemobslugibazydanych.repository.RoleRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +32,10 @@ public class UsersService {
 	@Autowired
 	private EntityManagerFactory entityManagerFactory;
 
+	public int getIdOfCurrentUser(){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		return usersRepository.findByEmail(authentication.getName()).getId();
+	}
 
 	public void saveUser(Users users) {
 		users.setPassword(encoder.encode(users.getPassword()));
