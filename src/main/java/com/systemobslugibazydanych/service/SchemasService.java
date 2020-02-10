@@ -77,12 +77,11 @@ public class SchemasService {
     public ArrayList<String> executeSQL(String[] queryRows) {
         ArrayList<String> listException = new ArrayList<String>();
         for (int i = 0; i < queryRows.length; ++i) {
-            String query = queryRows[i];
             // Select statement
-            if(query.trim().length() > 5 &&
-                    query.trim().substring(0, 6).toUpperCase().equals("SELECT")){
+            if(queryRows[i].trim().length() > 5 &&
+                    queryRows[i].trim().substring(0, 6).toUpperCase().equals("SELECT")){
                 try{
-                    mapList = jdbcTemplate.queryForList(query);
+                    mapList = jdbcTemplate.queryForList(queryRows[i]);
                     int rows = mapList.size();
                     listException.add("Operacja została wykonana pomyślnie! { zaafektowane wiersze --> [" + rows + "] }");
                     updateFlag = true;
@@ -93,9 +92,9 @@ public class SchemasService {
                 }
             }
             // DDL statement
-            else if(whatKindOfStatementIsThat(query,"DDL")){
+            else if(whatKindOfStatementIsThat(queryRows[i],"DDL")){
                 try{
-                    jdbcTemplate.execute(query);
+                    jdbcTemplate.execute(queryRows[i]);
                     listException.add("Operacja została wykonana pomyślnie!");
                     updateFlag = true;
                 }catch (DataAccessException exceptionDDL){
@@ -105,9 +104,9 @@ public class SchemasService {
                 }
             }
             // DML statement
-            else if (whatKindOfStatementIsThat(query,"DML")){
+            else if (whatKindOfStatementIsThat(queryRows[i],"DML")){
                 try {
-                    int rows = jdbcTemplate.update(query);
+                    int rows = jdbcTemplate.update(queryRows[i]);
                     listException.add("Operacja została wykonana pomyślnie! " +
                             "{ zaafektowane wiersze --> [" + rows + "] }");
                     updateFlag = true;
@@ -120,7 +119,7 @@ public class SchemasService {
             // Else statement
             else{
                 try{
-                    jdbcTemplate.execute(query);
+                    jdbcTemplate.execute(queryRows[i]);
                     listException.add("Operacja została wykonana pomyślnie!");
                     updateFlag = true;
                 }catch (Exception exception){

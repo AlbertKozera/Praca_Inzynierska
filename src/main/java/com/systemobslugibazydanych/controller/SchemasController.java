@@ -20,7 +20,7 @@ public class SchemasController {
     SchemasService schemasService;
 
     @PostMapping(path = {"/customer/executeSQL"})
-    public ResponseEntity<Object> executeSQL(@RequestBody String sqlCode) throws SQLException {
+    public ResponseEntity<Object> executeSQL(@RequestBody String sqlCode){
         String[] split = sqlCode.replace("\n", "").replace("\t", "").replace("\r", "").split(";");
         schemasService.clearMapList();
         FeedbackDTO feedbackDTO = new FeedbackDTO(schemasService.executeSQL(split), schemasService.getMapList(), schemasService.isUpdateFlag());
