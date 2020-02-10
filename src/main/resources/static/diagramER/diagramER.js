@@ -1624,7 +1624,7 @@ function generateDatabase(generatedSql) {
                 if(typeof diagramIsEdited === 'undefined')
                     document.getElementById("createSchemaFinalFeedback").value = "Nie udało się utworzyć schematu!";
                 else
-                    document.getElementById("createSchemaFinalFeedback").value = "Nie udało się zaktualizować schematu!";
+                    document.getElementById("createSchemaFinalFeedback").value = "Nie wszystko udało się zaktualizować!";
                 ifOperationWasNotSuccessed('#createSchemaFeedback');
                 ifOperationWasNotSuccessed('#createSchemaFinalFeedback');
                 if(typeof diagramIsEdited === 'undefined')

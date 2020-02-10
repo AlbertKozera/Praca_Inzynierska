@@ -69,12 +69,17 @@ public class SchemasService {
         return success;
     }
 
-
+    /**
+     * Interpreter SQL
+     * @param queryRows
+     * @return
+     */
     @Transactional(rollbackFor = Exception.class)
     public ArrayList<String> executeSQL(String[] queryRows) {
         ArrayList<String> listException = new ArrayList<String>();
         for (int i = 0; i < queryRows.length; ++i) {
             String query = queryRows[i];
+            // Select statement
             if(query.trim().length() > 5 && query.trim().substring(0, 6).toUpperCase().equals("SELECT")){
                 try{
                     mapList = jdbcTemplate.queryForList(query);
@@ -87,6 +92,7 @@ public class SchemasService {
                     break;
                 }
             }
+            // DDL statement
             else if(whatKindOfStatementIsThat(query,"DDL")){
                 try{
                     jdbcTemplate.execute(query);
@@ -98,6 +104,7 @@ public class SchemasService {
                     break;
                 }
             }
+            // DML statement
             else if (whatKindOfStatementIsThat(query,"DML")){
                 try {
                     int rows = jdbcTemplate.update(query);
@@ -109,6 +116,7 @@ public class SchemasService {
                     break;
                 }
             }
+            // Else statement
             else{
                 try{
                     jdbcTemplate.execute(query);
@@ -122,7 +130,6 @@ public class SchemasService {
             }
         }
         return listException;
-
     }
 
     public void saveSchemaInDatabase(SaveSchemaInDatabaseDTO saveSchemaInDatabaseDTO){
