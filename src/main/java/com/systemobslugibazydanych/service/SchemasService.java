@@ -74,13 +74,13 @@ public class SchemasService {
      * @param queryRows
      * @return
      */
-    @Transactional(rollbackFor = Exception.class)
     public ArrayList<String> executeSQL(String[] queryRows) {
         ArrayList<String> listException = new ArrayList<String>();
         for (int i = 0; i < queryRows.length; ++i) {
             String query = queryRows[i];
             // Select statement
-            if(query.trim().length() > 5 && query.trim().substring(0, 6).toUpperCase().equals("SELECT")){
+            if(query.trim().length() > 5 &&
+                    query.trim().substring(0, 6).toUpperCase().equals("SELECT")){
                 try{
                     mapList = jdbcTemplate.queryForList(query);
                     int rows = mapList.size();
@@ -108,7 +108,8 @@ public class SchemasService {
             else if (whatKindOfStatementIsThat(query,"DML")){
                 try {
                     int rows = jdbcTemplate.update(query);
-                    listException.add("Operacja została wykonana pomyślnie! { zaafektowane wiersze --> [" + rows + "] }");
+                    listException.add("Operacja została wykonana pomyślnie! " +
+                            "{ zaafektowane wiersze --> [" + rows + "] }");
                     updateFlag = true;
                 }catch (DataAccessException exceptionDML){
                     listException.add(exceptionDML.getCause().getMessage());
