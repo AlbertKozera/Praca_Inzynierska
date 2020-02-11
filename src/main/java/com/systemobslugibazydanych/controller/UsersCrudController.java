@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping("/")
-public class UsersCrudController
-{
+public class UsersCrudController {
     @Autowired
     UsersService service;
 
@@ -64,4 +63,5 @@ public class UsersCrudController
         service.createOrUpdateUsers(users);
         return "redirect:/admin/users";
     }
+
 }

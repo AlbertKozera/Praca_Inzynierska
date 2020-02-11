@@ -15,6 +15,3 @@ $('#sidebarCollapse').click(function() {
         flag = true;
     }
 });
-
-
-

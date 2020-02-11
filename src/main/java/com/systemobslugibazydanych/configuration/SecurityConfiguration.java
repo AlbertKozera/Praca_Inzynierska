@@ -36,14 +36,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-
 		http.authorizeRequests()
 				// URLs matching for access rights
 				.antMatchers("/").permitAll()
 				.antMatchers("/login").anonymous()
 				.antMatchers("/index").permitAll()
 				.antMatchers("/admin/**").hasAuthority("ADMIN")
-				.antMatchers("/user/**").hasAuthority("CUSTOMER")
+				.antMatchers("/customer/**").hasAuthority("CUSTOMER")
 				.anyRequest().authenticated()
 				.and()
 				// form login

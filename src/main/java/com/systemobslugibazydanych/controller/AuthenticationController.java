@@ -45,14 +45,5 @@ public class AuthenticationController {
 		modelAndView.setViewName("/admin/adduser");
 		return modelAndView;
 	}
+
 }
-
-
-
-
-
-
-
-
-
-

@@ -52,4 +52,5 @@ public class SidebarController {
     public String startPage() {
         return "redirect:/index";
     }
+
 }

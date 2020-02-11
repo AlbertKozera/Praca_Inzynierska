@@ -8,6 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer{
+
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
@@ -19,6 +20,5 @@ public class WebMvcConfig implements WebMvcConfigurer{
 				.addResourceHandler("/webjars/**", "/static/**", "/templates/**")
 				.addResourceLocations("/webjars/", "classpath:/static/", "classpath:/templates/");
 	}
+
 }
-
-
