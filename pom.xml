@@ -41,8 +41,7 @@
             <groupId>com.oracle</groupId>
             <artifactId>ojdbc</artifactId>
             <version>6</version>
-            <scope>system</scope>
-            <systemPath>C:/Users/Alfu/Desktop/hibernate_sample/lib/ojdbc6.jar</systemPath>
+            <systemPath>C:/Users/Alfu/IdeaProjects/Inzynierka/libs/ojdbc6.jar</systemPath>
         </dependency>
 
         <dependency>
